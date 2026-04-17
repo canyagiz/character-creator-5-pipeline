@@ -26,7 +26,8 @@ GROUPS = {
     "athletic_hyper": {"alloc": 0.10, "fat": (0.05, 0.15), "muscle": (0.66, 1.00)},
 }
 
-LENGTH_SCORES = ["chest_height_score", "hip_length_score", "thigh_length_score", "lower_leg_length_score"]
+LENGTH_SCORES = ["chest_height_score", "hip_length_score", "thigh_length_score", "lower_leg_length_score",
+                 "upper_arm_length_score", "forearm_length_score", "neck_length_score"]
 
 AGE_STRATA = [
     {"lo": 14, "hi": 18, "alloc": 0.15},
@@ -74,17 +75,20 @@ def sample_ages(group, n):
 def generate_cell(group, gender, n):
     g = GROUPS[group]
 
-    # LHS: fat_score, muscle_score, height_score + 4 segment score
-    lhs = qmc.LatinHypercube(d=7, seed=int(rng.integers(1_000_000))).random(n)
+    # LHS: fat_score, muscle_score, height_score + 7 segment score
+    lhs = qmc.LatinHypercube(d=10, seed=int(rng.integers(1_000_000))).random(n)
     fat_lo, fat_hi = g["fat"]
     mus_lo, mus_hi = g["muscle"]
-    fat          = fat_lo + lhs[:, 0] * (fat_hi - fat_lo)
-    muscle       = mus_lo + lhs[:, 1] * (mus_hi - mus_lo)
-    height_hs    = lhs[:, 2].copy()
-    chest_hs     = lhs[:, 3].copy()
-    hip_hs       = lhs[:, 4].copy()
-    thigh_hs     = lhs[:, 5].copy()
-    lower_leg_hs = lhs[:, 6].copy()
+    fat               = fat_lo + lhs[:, 0] * (fat_hi - fat_lo)
+    muscle            = mus_lo + lhs[:, 1] * (mus_hi - mus_lo)
+    height_hs         = lhs[:, 2].copy()
+    chest_hs          = lhs[:, 3].copy()
+    hip_hs            = lhs[:, 4].copy()
+    thigh_hs          = lhs[:, 5].copy()
+    lower_leg_hs      = lhs[:, 6].copy()
+    upper_arm_hs      = lhs[:, 7].copy()
+    forearm_hs        = lhs[:, 8].copy()
+    neck_hs           = lhs[:, 9].copy()
 
     ages = sample_ages(group, n)
 
@@ -92,7 +96,7 @@ def generate_cell(group, gender, n):
     m18 = ages < 18   # AGE-03
     m16 = ages < 16   # AGE-01, AGE-04
 
-    for seg in [height_hs, chest_hs, hip_hs, thigh_hs, lower_leg_hs]:
+    for seg in [height_hs, chest_hs, hip_hs, thigh_hs, lower_leg_hs, upper_arm_hs, forearm_hs, neck_hs]:
         seg[m18] = np.minimum(seg[m18], 0.80)
     fat[m16]    = np.minimum(fat[m16],    0.70)
     muscle[m16] = np.minimum(muscle[m16], 0.40)
@@ -113,8 +117,11 @@ def generate_cell(group, gender, n):
         "chest_height_score":     chest_hs.round(4),
         "hip_length_score":       hip_hs.round(4),
         "thigh_length_score":     thigh_hs.round(4),
-        "lower_leg_length_score": lower_leg_hs.round(4),
-        "height_cm":              "",
+        "lower_leg_length_score":  lower_leg_hs.round(4),
+        "upper_arm_length_score":  upper_arm_hs.round(4),
+        "forearm_length_score":    forearm_hs.round(4),
+        "neck_length_score":       neck_hs.round(4),
+        "height_cm":               "",
         "training_pattern":       patterns,
     })
 

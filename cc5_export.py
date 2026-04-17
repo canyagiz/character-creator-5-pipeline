@@ -63,6 +63,9 @@ for i, row in enumerate(rows):
         hip_length_score       = float(row["hip_length_score"]),
         thigh_length_score     = float(row["thigh_length_score"]),
         lower_leg_length_score = float(row["lower_leg_length_score"]),
+        upper_arm_length_score = float(row["upper_arm_length_score"]),
+        forearm_length_score   = float(row["forearm_length_score"]),
+        neck_length_score      = float(row["neck_length_score"]),
         pattern                = row.get("training_pattern", "balanced"),
         gender                 = gender,
     )

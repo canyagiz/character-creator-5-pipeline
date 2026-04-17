@@ -14,7 +14,9 @@ PROJECT_FILES = {
 
 M_SHOULDER_SCALE   = "cc embed morphs/embed_arm101"
 M_UPPER_ARM_SCALE  = "cc embed morphs/embed_arm3"
+M_UPPER_ARM_LENGTH = "cc embed morphs/embed_arm4"
 M_FOREARM_SCALE    = "cc embed morphs/embed_arm2"
+M_FOREARM_LENGTH   = "cc embed morphs/embed_arm5"
 M_CHEST_SCALE      = "cc embed morphs/embed_torso104"
 M_CHEST_HEIGHT     = "cc embed morphs/embed_torso112"
 M_CHEST_WIDTH      = "cc embed morphs/embed_torso105"
@@ -23,6 +25,8 @@ M_BREAST_SCALE_B   = "cc embed morphs/embed_torso102"
 M_BREAST_PROXIMITY = "cc embed morphs/embed_torso101"
 M_PECTORAL_SCALE   = "cc embed morphs/embed_torso114"
 M_PECTORAL_HEIGHT  = "cc embed morphs/embed_torso115"
+M_NECK_SCALE       = "cc embed morphs/embed_torso110"
+M_NECK_LENGTH      = "cc embed morphs/embed_torso109"
 M_ABDOMEN_SCALE    = "cc embed morphs/embed_torso113"
 M_ABDOMEN_DEPTH    = "cc embed morphs/embed_torso111"
 M_ABS_LINE_DEPTH   = "cc embed morphs/embed_torso106"
@@ -61,7 +65,9 @@ M_SKIN_NECK     = "2025-05-07-12-04-51_pack_skinny_neck_01"
 M_SKIN_SPINE    = "2025-05-07-14-17-56_pack_skinny_spine_01"
 
 ALL_MORPHS = [
+    M_NECK_SCALE, M_NECK_LENGTH,
     M_SHOULDER_SCALE, M_UPPER_ARM_SCALE, M_FOREARM_SCALE,
+    M_UPPER_ARM_LENGTH, M_FOREARM_LENGTH,
     M_CHEST_SCALE, M_CHEST_WIDTH, M_CHEST_DEPTH,
     M_BREAST_SCALE_B, M_BREAST_PROXIMITY,
     M_PECTORAL_SCALE, M_PECTORAL_HEIGHT,
@@ -121,6 +127,8 @@ def segment_weight(height_score, seg_score):
 
 def compute_all_weights(fat, muscle, height_score, chest_height_score,
                         hip_length_score, thigh_length_score, lower_leg_length_score,
+                        upper_arm_length_score, forearm_length_score,
+                        neck_length_score,
                         pattern, gender):
     hd = 1.0 if gender == "male" else FEMALE_HD_SCALE
     m  = PATTERN_MULTIPLIERS.get(pattern, PATTERN_MULTIPLIERS["balanced"])
@@ -187,4 +195,9 @@ def compute_all_weights(fat, muscle, height_score, chest_height_score,
         M_HIP_LENGTH:       segment_weight(height_score, hip_length_score),
         M_THIGH_LENGTH:     segment_weight(height_score, thigh_length_score),
         M_LOWER_LEG_LENGTH: segment_weight(height_score, lower_leg_length_score),
+        M_UPPER_ARM_LENGTH: segment_weight(height_score, upper_arm_length_score),
+        M_FOREARM_LENGTH:   segment_weight(height_score, forearm_length_score),
+        # Neck: range [0, 1] — negatife gitmiyor, max(0, ...) ile clamp
+        M_NECK_SCALE:       min(muscle * m["upper"] * 0.6, 1.0),
+        M_NECK_LENGTH:      max(0.0, segment_weight(height_score, neck_length_score)),
     }
