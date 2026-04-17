@@ -1,0 +1,211 @@
+================================================================================
+CC5 SLIDER MAPPING SPECIFICATION
+Dataset: Synthetic Anthropometric Dataset v1.0
+================================================================================
+
+KURAL: Hiçbir full-body morph kullanılmaz.
+  ❌ Body Thin / Body Fat B / Body Muscular A / Body Bodybuilder
+  ❌ Male Muscular Body / Male Skinny Body
+  ❌ Character Scale A
+Yalnızca bölge bazlı (Actor/Body/... ve Actor/HD Body/.../Male Muscular|Skinny) morph'lar.
+
+
+================================================================================
+1. BÖLGESEL MORPH KATALOĞU
+================================================================================
+
+── Actor/Body/Shoulder ─────────────────────────────────────────────────────────
+  Shoulder Scale      | cc embed morphs/embed_arm101   | [1.0, -0.5]
+
+── Actor/Body/Arm ──────────────────────────────────────────────────────────────
+  Upper Arm Scale     | cc embed morphs/embed_arm3     | [1.0, -1.0]
+  Forearm Scale       | cc embed morphs/embed_arm2     | [1.0, -1.0]
+
+── Actor/Body/Chest ────────────────────────────────────────────────────────────
+  Chest Scale         | cc embed morphs/embed_torso104 | [1.0, -0.5]
+  Chest Width         | cc embed morphs/embed_torso105 | [1.0, -0.5]
+  Chest Depth         | cc embed morphs/embed_torso103 | [1.0, -0.5]
+  Pectoral Scale      | cc embed morphs/embed_torso114 | [1.0,  0.0]
+
+── Actor/Body/Waist ────────────────────────────────────────────────────────────
+  Abdomen Scale       | cc embed morphs/embed_torso113 | [1.0, -1.0]
+  Abdomen Depth       | cc embed morphs/embed_torso111 | [1.0, -1.0]
+  Abs Center Line Depth| cc embed morphs/embed_torso106| [1.0,  0.0]
+
+── Actor/Body/Hip ──────────────────────────────────────────────────────────────
+  Hip Love Handles    | cc embed morphs/embed_torso107 | [1.0,  0.0]
+  Hip Scale           | cc embed morphs/embed_torso2   | [1.0, -0.3]
+  Hip Length A        | cc embed morphs/embed_torso4   | [1.0, -1.0]   ← boy
+
+── Actor/Body/Glute ────────────────────────────────────────────────────────────
+  Glute Scale         | cc embed morphs/embed_torso1   | [1.0, -1.0]
+
+── Actor/Body/Leg/Thigh ────────────────────────────────────────────────────────
+  Thigh Scale         | cc embed morphs/embed_leg3     | [1.0, -1.0]
+  Thigh Length        | cc embed morphs/embed_leg4     | [1.0, -1.0]   ← boy
+
+── Actor/Body/Leg/Lower Leg ────────────────────────────────────────────────────
+  Lower Leg Scale     | cc embed morphs/embed_leg2     | [1.0, -1.0]
+  Lower Leg Length    | cc embed morphs/embed_leg5     | [1.0, -1.0]   ← boy
+
+── Actor/HD Body / Male Muscular  (fullbody hariç) ─────────────────────────────
+  Male Muscular Arm      | 2025-05-05-12-31-36_embed_athetic_arn_01      | [1.0, 0.0]
+  Male Muscular Shoulder | 2025-05-05-12-22-16_embed_athetic_shoulder_01 | [1.0, 0.0]
+  Male Muscular Back     | 2025-05-05-12-31-03_embed_athetic_back_01     | [1.0, 0.0]
+  Male Muscular Chest A  | 2025-05-05-12-07-08_embed_athetic_chest_01    | [1.0, 0.0]
+  Male Muscular Chest B  | 2025-05-08-11-32-58_embed_athetic_chest_02    | [1.0, 0.0]
+  Male Muscular Chest C  | 2025-06-10-15-34-47_embed_athetic_chest_c     | [1.0, 0.0]
+  Male Muscular Abs      | 2025-05-08-15-26-33_embed_athetic_abs_iso_01  | [1.0, 0.0]
+  Male Muscular Obliques | 2025-05-08-15-29-44_embed_athetic_side_abs_01 | [1.0, 0.0]
+  Male Muscular Thigh    | 2025-05-05-12-32-25_embed_athetic_thigh_01    | [1.0, 0.0]
+  Male Muscular Calf     | 2025-05-05-12-33-02_embed_athetic_calf_01     | [1.0, 0.0]
+  Male Muscular Neck     | 2025-05-05-13-47-33_embed_athetic_chest_01    | [1.0, 0.0]
+  Male Muscular Waist    | 2025-05-05-12-18-34_embed_athetic_abs_01      | [1.0, 0.0]
+
+── Actor/HD Body / Male Skinny  (fullbody hariç) ───────────────────────────────
+  Male Skinny Arm        | 2025-05-07-14-12-07_pack_skinny_arm_01        | [1.0, 0.0]
+  Male Skinny Shoulder   | 2025-05-07-12-21-11_pack_skinny_shoulder_01   | [1.0, 0.0]
+  Male Skinny Back       | 2025-06-10-17-08-24_pack_skinny_back_02       | [1.0, 0.0]
+  Male Skinny Chest      | 2025-05-08-14-58-30_pack_skinny_chest_03      | [1.0, 0.0]
+  Male Skinny Abs        | 2025-05-07-13-43-26_pack_skinny_abs_01        | [1.0, 0.0]
+  Male Skinny Rib Cage   | 2025-05-07-12-27-17_pack_skinny_rib_01        | [1.0, 0.0]
+  Male Skinny Thigh      | 2025-06-10-17-18-17_pack_skinny_thigh_02      | [1.0, 0.0]
+  Male Skinny Calf       | 2025-05-07-14-35-43_pack_skinny_calf_01       | [1.0, 0.0]
+  Male Skinny Buttocks   | 2025-06-10-17-01-51_pack_skinny_bottom_02     | [1.0, 0.0]
+  Male Skinny Neck       | 2025-05-07-12-04-51_pack_skinny_neck_01       | [1.0, 0.0]
+  Male Skinny Spine      | 2025-05-07-14-17-56_pack_skinny_spine_01      | [1.0, 0.0]
+
+
+================================================================================
+2. fat_score + muscle_score → Actor/Body SCALE MORPH FORMÜLLER
+================================================================================
+
+Her morph iki sinyal alır: fat_score ve muscle_score.
+Kas sinyali bölgeye göre training_pattern çarpanı alır (§5).
+Yağ sinyali pattern çarpanı almaz (yağ vücuda uniform dağılır).
+
+  W = clip(fat_score × α_fat  +  muscle_score × α_musc × pattern_m[region],
+           range_min, range_max)
+
+Bölge    | Morph                | α_fat | α_musc | pattern bölgesi
+---------|----------------------|-------|--------|------------------
+Shoulder | Shoulder Scale       | 0.10  | 0.90   | upper
+Arm      | Upper Arm Scale      | 0.60  | 0.70   | upper
+Arm      | Forearm Scale        | 0.50  | 0.60   | upper
+Chest    | Chest Scale          | 0.60  | 0.20   | chest
+Chest    | Chest Width          | 0.30  | 0.70   | chest
+Chest    | Chest Depth          | 0.80  | 0.10   | chest
+Chest    | Pectoral Scale       | 0.00  | 0.90   | chest
+Waist    | Abdomen Scale        | 0.90  | 0.20   | abs
+Waist    | Abdomen Depth        | 1.00  | 0.00   | —  (fat only)
+Waist    | Abs Center Line Depth| 0.00  | 0.90   | abs
+Hip      | Hip Love Handles     | 0.90  | 0.00   | —  (fat only)
+Hip      | Hip Scale            | 0.70  | 0.00   | —  (fat only)
+Glute    | Glute Scale          | 0.70  | 0.40   | lower
+Thigh    | Thigh Scale          | 0.80  | 0.60   | lower
+LowerLeg | Lower Leg Scale      | 0.40  | 0.60   | lower
+
+range_min/max: morph'un CC5 native sınırına göre clip edilir.
+  Örn. Pectoral Scale → clip(W, 0.0, 1.0)   (min=0)
+       Shoulder Scale  → clip(W, -0.5, 1.0)  (min=-0.5)
+       diğerleri       → clip(W, -1.0, 1.0)  (aksi belirtilmediğinde)
+
+Not: Abdomen Depth ve Hip Love Handles min=0.0'dır (negatife gidemez).
+
+
+================================================================================
+3. muscle_score → HD Male Muscular FORMÜLLER
+================================================================================
+
+W_musc_r = clip(muscle_score × pattern_m[region], 0.0, 1.0) × hd_scale
+  hd_scale: male=1.0 / female=0.4
+
+Chest A/B/C aynı bütçeyi paylaşır:
+  W_chest_total = clip(muscle_score × pattern_m["chest"], 0, 1) × hd_scale
+  Chest A = Chest B = Chest C = W_chest_total / 3
+
+Abs + Obliques aynı bütçeyi paylaşır:
+  W_abs_total = clip(muscle_score × pattern_m["abs"], 0, 1) × hd_scale
+  Abs = Obliques = W_abs_total / 2
+
+Waist ayrı (bölünmez):
+  Waist = clip(muscle_score × pattern_m["abs"], 0, 1) × hd_scale
+
+
+================================================================================
+4. fat_score → HD Male Skinny FORMÜLLER
+================================================================================
+
+Aktif bölge: fat_score ≤ 0.15
+
+W_thin = max((0.15 - fat_score) / 0.15,  0.0)
+
+W_skin_r = clip(W_thin × (2.0 − pattern_m[region]), 0.0, 1.0) × hd_scale
+
+  Düşük pattern_m (ihmal edilen bölge) → daha belirgin skinny görünüm
+  Yüksek pattern_m (gelişmiş bölge)    → daha az skinny görünüm
+
+Bölge atamaları:
+  Arm, Shoulder, Neck → "upper"
+  Back, Spine         → "back"
+  Chest, Rib Cage     → "chest"
+  Abs                 → "abs"
+  Thigh, Calf, Buttocks → "lower"
+
+
+================================================================================
+5. training_pattern ÇARPANLARI
+================================================================================
+
+Sadece athletic_lean ve athletic_hyper gruplarda dağılımlı örneklenir.
+Diğer gruplar her zaman "balanced".
+
+  pattern          | upper | lower | chest | back  | abs
+  -----------------|-------|-------|-------|-------|------
+  balanced         | 1.00  | 1.00  | 1.00  | 1.00  | 1.00
+  upper_dominant   | 1.30  | 0.55  | 1.30  | 1.30  | 1.20
+  lower_dominant   | 0.55  | 1.30  | 0.55  | 0.55  | 0.80
+  push_dominant    | 1.10  | 0.90  | 1.40  | 0.65  | 1.10
+  pull_dominant    | 1.10  | 0.90  | 0.65  | 1.40  | 1.10
+
+Dağılım (athletic gruplar):
+  balanced 45% / upper_dominant 20% / lower_dominant 15%
+  push_dominant 12% / pull_dominant 8%
+
+
+================================================================================
+6. height_cm → BOY MORPH FORMÜLÜ  (kalibrasyon tabanlı)
+================================================================================
+
+height_score / ethnicity delta formülü kullanılmaz.
+CSV'deki height_cm doğrudan hedef alınır.
+
+Kalibrasyon (script başında bir kez, height_calibration.json'a kaydedilir):
+  1. Hip Length A = Thigh Length = Lower Leg Length = 0.0  → neutral_cm  (GetBounds)
+  2. Üçü = +1.0                                            → max_cm
+  3. Üçü = −1.0                                            → min_cm
+
+Weight hesabı:
+  target_cm >= neutral_cm  →  W = (target_cm − neutral_cm) / (max_cm − neutral_cm)
+  target_cm <  neutral_cm  →  W = −(neutral_cm − target_cm) / (neutral_cm − min_cm)
+  W = clip(W, −1.0, 1.0)
+
+Üç morph eşit W alır:
+  Hip Length A     (embed_torso4)
+  Thigh Length     (embed_leg4)
+  Lower Leg Length (embed_leg5)
+
+height_score ve ethnicity delta CSV'de etiket olarak kalır, export'ta kullanılmaz.
+
+
+================================================================================
+7. UYGULAMA SIRASI
+================================================================================
+
+  1. Tüm morph'ları 0.0'a reset et
+  2. fat + muscle + pattern → Actor/Body scale morph'ları set et  (§2)
+  3. muscle + pattern       → HD Male Muscular morph'ları set et  (§3)
+  4. fat + pattern          → HD Male Skinny morph'ları set et    (§4)
+  5. height + ethnicity     → Hip Length A, Thigh Length, Lower Leg Length (§6)
+
+================================================================================

@@ -1,0 +1,12 @@
+=== SHAPING COMPONENT FONKSIYONLARI ===
+CreateSlider
+GetShapingMorphCatergoryNames
+GetShapingMorphDisplayNames
+GetShapingMorphIDs
+GetShapingMorphMinMax
+GetShapingMorphWeight
+IsValid
+SetShapingMorphDisplayName
+SetShapingMorphWeight
+this
+thisown
