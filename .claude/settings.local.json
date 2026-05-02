@@ -23,7 +23,16 @@
       "Bash(Select-Object -Property FullName, PSIsContainer)",
       "Bash(Sort-Object FullName)",
       "WebSearch",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(python test_dsine_external.py)",
+      "Bash(pip show *)",
+      "Bash(pip index *)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "PowerShell(pip show *)",
+      "PowerShell(pip *)",
+      "PowerShell(pip install *)",
+      "PowerShell(python -c \"import diffusers; import inspect; from diffusers.models import controlnet; print\\(inspect.getfile\\(controlnet\\)\\)\" 2>&1)",
+      "PowerShell(python -c \"from diffusers.models.controlnets.controlnet import ControlNetOutput; print\\('found at controlnets.controlnet'\\)\" 2>&1)"
     ]
   }
 }
