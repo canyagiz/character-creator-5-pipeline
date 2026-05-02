@@ -7,7 +7,7 @@ Bağımlılık: numpy, pandas, scipy
 
 import numpy as np
 import pandas as pd
-from scipy.stats import qmc
+from scipy.stats import qmc, beta as beta_dist, truncnorm
 
 TOTAL  = 30_000
 SEED   = 42
@@ -28,6 +28,14 @@ GROUPS = {
 
 LENGTH_SCORES = ["chest_height_score", "hip_length_score", "thigh_length_score", "lower_leg_length_score",
                  "upper_arm_length_score", "forearm_length_score", "neck_length_score"]
+
+HEIGHT_SCORE_MIN        = 0.20    # ≈150 cm (probe: 149.36)
+HEIGHT_SCORE_MAX_MALE   = 0.735   # ≈210 cm (probe interpolasyon)
+HEIGHT_SCORE_MAX_FEMALE = 0.561   # ≈190 cm (erkek eğrisi yaklaşımı)
+HEIGHT_CENTER_MALE      = 0.4284  # ≈175 cm (probe interpolasyon)
+HEIGHT_CENTER_FEMALE    = 0.2954  # ≈160 cm (probe interpolasyon)
+HEIGHT_SCORE_STD        = 0.062   # ≈7 cm std (probe: 1 score ≈ 113 cm)
+SEG_MAX_DEV             = 0.30    # segment score'lar grup ortalamasından max bu kadar sapabilir
 
 AGE_STRATA = [
     {"lo": 14, "hi": 18, "alloc": 0.15},
@@ -79,8 +87,8 @@ def generate_cell(group, gender, n):
     lhs = qmc.LatinHypercube(d=10, seed=int(rng.integers(1_000_000))).random(n)
     fat_lo, fat_hi = g["fat"]
     mus_lo, mus_hi = g["muscle"]
-    fat               = fat_lo + lhs[:, 0] * (fat_hi - fat_lo)
-    muscle            = mus_lo + lhs[:, 1] * (mus_hi - mus_lo)
+    fat               = fat_lo + beta_dist.ppf(lhs[:, 0], 2, 2) * (fat_hi - fat_lo)
+    muscle            = mus_lo + beta_dist.ppf(lhs[:, 1], 2, 2) * (mus_hi - mus_lo)
     height_hs         = lhs[:, 2].copy()
     chest_hs          = lhs[:, 3].copy()
     hip_hs            = lhs[:, 4].copy()
@@ -91,6 +99,25 @@ def generate_cell(group, gender, n):
     neck_hs           = lhs[:, 9].copy()
 
     ages = sample_ages(group, n)
+
+    # ── Boy sınırları ─────────────────────────────────────────────────────────
+    h_max    = HEIGHT_SCORE_MAX_MALE   if gender == "male" else HEIGHT_SCORE_MAX_FEMALE
+    h_center = HEIGHT_CENTER_MALE      if gender == "male" else HEIGHT_CENTER_FEMALE
+    a = (HEIGHT_SCORE_MIN - h_center) / HEIGHT_SCORE_STD
+    b = (h_max            - h_center) / HEIGHT_SCORE_STD
+    height_hs = truncnorm.ppf(lhs[:, 2], a, b, loc=h_center, scale=HEIGHT_SCORE_STD)
+
+    # ── Segment orantısızlık kısıtı ───────────────────────────────────────────
+    # Spread (max-min) > SEG_MAX_SPREAD olduğunda merkeze doğru sıkıştır.
+    segs = np.stack([chest_hs, hip_hs, thigh_hs, lower_leg_hs,
+                     upper_arm_hs, forearm_hs, neck_hs], axis=1)
+    seg_min = segs.min(axis=1, keepdims=True)
+    seg_max = segs.max(axis=1, keepdims=True)
+    spread  = seg_max - seg_min
+    center  = (seg_max + seg_min) / 2
+    scale   = np.where(spread > SEG_MAX_DEV, SEG_MAX_DEV / np.maximum(spread, 1e-9), 1.0)
+    segs    = np.clip(center + (segs - center) * scale, 0.0, 1.0)
+    chest_hs, hip_hs, thigh_hs, lower_leg_hs, upper_arm_hs, forearm_hs, neck_hs = segs.T
 
     # ── Yaş-morfoloji kısıtları (hard rules) ─────────────────────────────────
     m18 = ages < 18   # AGE-03

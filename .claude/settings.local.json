@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python generate_dataset.py)",
+      "Bash(python -c ' *)",
+      "Bash(where blender *)",
+      "Read(//c/Program Files/Blender Foundation/**)",
+      "Bash(cat)",
+      "Bash(\"C:/Program Files/Blender Foundation/Blender 4.5/blender.exe\" --background --python /tmp/list_bones.py -- \"C:/Users/aliya/workspace/cc5-scripts/fbx_export/extremes/char_11256.fbx\")",
+      "Bash(C:/Program Files/Blender Foundation/Blender 4.5/blender.exe *)",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/measure_anthropometry.py -- fbx_export/extremes/char_11256.fbx renders/measurements)",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/measure_anthropometry.py -- fbx_export/extremes/char_14274.fbx renders/measurements)",
+      "Bash(python blender-pipeline/batch_render.py --dir fbx_export/extremes --overwrite)",
+      "Bash(mkdir -p renders/debug)",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/render_debug_measurements.py -- fbx_export/extremes/char_11256.fbx renders/debug)",
+      "Bash(grep -v \"^$\")",
+      "Bash(python blender-pipeline/annotate_debug.py --id char_11256)",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/render_debug_measurements.py -- \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\fbx_export\\\\extremes\\\\char_11256.fbx\" \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\debug\")",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/_diag_bone.py -- \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\fbx_export\\\\extremes\\\\char_11256.fbx\")",
+      "Bash(python docs/eda/generate_plots.py)",
+      "Bash(pip install *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\blender-pipeline\" -Recurse -Force)",
+      "Bash(Select-Object -Property FullName, PSIsContainer)",
+      "Bash(Sort-Object FullName)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

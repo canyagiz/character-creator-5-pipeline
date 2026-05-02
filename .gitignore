@@ -1,3 +1,5 @@
 logs
 fbx*
 __pycache__
+claude*
+output*
