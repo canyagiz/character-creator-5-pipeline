@@ -168,12 +168,66 @@ def measure_circumference_cm(z_m):
     return round(total_cm, 2)
 
 # ── Referans yükseklikleri ────────────────────────────────────────────────────
-z_neck      = bone_z("CC_Base_NeckTwist02")
+z_neck      = bone_z("CC_Base_NeckTwist01")   # NeckTwist02 çene hizasında kalıyor
 z_chest     = bone_z("CC_Base_L_Breast")
 z_waist     = bone_z("CC_Base_Waist")
 z_hip       = bone_z("CC_Base_L_Thigh") - (bone_z("CC_Base_L_Thigh") - bone_z("CC_Base_L_Calf")) * 0.15
 z_mid_thigh = (bone_z("CC_Base_L_Thigh") + bone_z("CC_Base_L_Calf")) / 2
-z_calf      = (bone_z("CC_Base_L_Calf") + bone_z("CC_Base_L_CalfTwist02")) / 2
+z_calf      = bone_z("CC_Base_L_CalfTwist02") # Calf-CalfTwist02 orta noktası fazla yüksekti
+
+# ── Kol çevre ölçümü: kol eksenine dik düzlemde keser, en yakın bileşen alınır ──
+def measure_arm_circumference_cm(bone_start_name, bone_end_name):
+    p0   = bone_world(bone_start_name)
+    p1   = bone_world(bone_end_name)
+    mid  = (p0 + p1) * 0.5
+    axis = (p1 - p0).normalized()   # kol ekseni = kesim düzleminin normali
+
+    eval_obj  = body_obj.evaluated_get(depsgraph)
+    eval_mesh = eval_obj.to_mesh()
+    bm = bmesh.new()
+    bm.from_mesh(eval_mesh)
+    bm.transform(eval_obj.matrix_world)
+    eval_obj.to_mesh_clear()
+    bm.faces.ensure_lookup_table()
+
+    geom = bm.verts[:] + bm.edges[:] + bm.faces[:]
+    ret  = bmesh.ops.bisect_plane(bm, geom=geom,
+                                   plane_co=(mid.x,  mid.y,  mid.z),
+                                   plane_no=(axis.x, axis.y, axis.z))
+    cut_edges = [e for e in ret['geom_cut'] if isinstance(e, bmesh.types.BMEdge)]
+    if not cut_edges:
+        bm.free()
+        return 0.0
+
+    neighbors = {}
+    for e in cut_edges:
+        for v in e.verts:
+            neighbors.setdefault(v.index, []).append(e)
+    visited = set(); components = []
+    for start_e in cut_edges:
+        if id(start_e) in visited: continue
+        comp = []; queue = [start_e]
+        while queue:
+            e = queue.pop()
+            if id(e) in visited: continue
+            visited.add(id(e)); comp.append(e)
+            for v in e.verts:
+                for ne in neighbors.get(v.index, []):
+                    if id(ne) not in visited: queue.append(ne)
+        components.append(comp)
+
+    def dist_to_mid(comp):
+        vecs = [v.co for e in comp for v in e.verts]
+        cx = sum(v.x for v in vecs) / len(vecs)
+        cy = sum(v.y for v in vecs) / len(vecs)
+        cz = sum(v.z for v in vecs) / len(vecs)
+        return (mathutils.Vector((cx, cy, cz)) - mid).length
+
+    # Kemik orta noktasına en yakın bileşen = kol kesiti
+    arm_comp = min(components, key=dist_to_mid)
+    circ_cm  = sum(e.calc_length() for e in arm_comp) * 100
+    bm.free()
+    return round(circ_cm, 2)
 
 # ── Genişlikler ───────────────────────────────────────────────────────────────
 shoulder_width_cm = round(
@@ -192,6 +246,8 @@ measurements = {
     "hip_circ_cm":       measure_circumference_cm(z_hip),
     "mid_thigh_circ_cm": measure_circumference_cm(z_mid_thigh),
     "calf_circ_cm":      measure_circumference_cm(z_calf),
+    "upper_arm_circ_cm": measure_arm_circumference_cm("CC_Base_L_Upperarm", "CC_Base_L_Forearm"),
+    "forearm_circ_cm":   measure_arm_circumference_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand"),
 
     "upper_arm_length_cm": bone_dist_cm("CC_Base_L_Upperarm", "CC_Base_L_Forearm"),
     "forearm_length_cm":   bone_dist_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand"),

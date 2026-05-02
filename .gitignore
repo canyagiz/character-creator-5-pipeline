@@ -3,3 +3,5 @@ fbx*
 __pycache__
 claude*
 output*
+renders*
+*export*

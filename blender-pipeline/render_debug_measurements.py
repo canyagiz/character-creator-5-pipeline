@@ -10,6 +10,8 @@ Renkler:
   hip       — blue
   mid_thigh — orange
   calf      — magenta
+  upper_arm — yellow
+  forearm   — purple
 """
 
 import bpy
@@ -117,20 +119,32 @@ bg = scene.world.node_tree.nodes["Background"]
 bg.inputs["Color"].default_value    = (0.06, 0.06, 0.06, 1.0)
 bg.inputs["Strength"].default_value = 1.0
 
-# ── Ölçüm yükseklikleri ───────────────────────────────────────────────────────
+# ── Ölçüm tanımları ───────────────────────────────────────────────────────────
+# Her giriş: (label, plane_co, plane_no, color, ref_point)
+# ref_point=None → en büyük bileşen (gövde ölçümleri)
+# ref_point=Vector → bone orta noktasına en yakın bileşen (kol ölçümleri)
+
+def _z_entry(label, z_m, color):
+    return (label, mathutils.Vector((0.0, 0.0, z_m)),
+            mathutils.Vector((0.0, 0.0, 1.0)), color, None)
+
+def _arm_entry(label, b0, b1, color):
+    p0  = bone_world(b0); p1 = bone_world(b1)
+    mid = (p0 + p1) * 0.5
+    ax  = (p1 - p0).normalized()
+    return (label, mid, ax, color, mid)
+
 MEASUREMENTS = [
-    ("neck",      bone_z("CC_Base_NeckTwist02"),
-                  (0.0, 1.0, 1.0)),
-    ("chest",     bone_z("CC_Base_L_Breast"),
-                  (1.0, 0.2, 0.2)),
-    ("waist",     bone_z("CC_Base_Waist"),
-                  (0.2, 1.0, 0.2)),
-    ("hip",       bone_z("CC_Base_L_Thigh") - (bone_z("CC_Base_L_Thigh") - bone_z("CC_Base_L_Calf")) * 0.15,
-                  (0.3, 0.5, 1.0)),
-    ("mid_thigh", (bone_z("CC_Base_L_Thigh") + bone_z("CC_Base_L_Calf")) / 2,
-                  (1.0, 0.55, 0.0)),
-    ("calf",      (bone_z("CC_Base_L_Calf") + bone_z("CC_Base_L_CalfTwist02")) / 2,
-                  (1.0, 0.0, 1.0)),
+    _z_entry("neck",      bone_z("CC_Base_NeckTwist01"),  (0.0, 1.0, 1.0)),
+    _z_entry("chest",     bone_z("CC_Base_L_Breast"),     (1.0, 0.2, 0.2)),
+    _z_entry("waist",     bone_z("CC_Base_Waist"),        (0.2, 1.0, 0.2)),
+    _z_entry("hip",       bone_z("CC_Base_L_Thigh") - (bone_z("CC_Base_L_Thigh") - bone_z("CC_Base_L_Calf")) * 0.15,
+                                                           (0.3, 0.5, 1.0)),
+    _z_entry("mid_thigh", (bone_z("CC_Base_L_Thigh") + bone_z("CC_Base_L_Calf")) / 2,
+                                                           (1.0, 0.55, 0.0)),
+    _z_entry("calf",      bone_z("CC_Base_L_CalfTwist02"),(1.0, 0.0, 1.0)),
+    _arm_entry("upper_arm", "CC_Base_L_Upperarm", "CC_Base_L_Forearm", (1.0, 1.0, 0.0)),
+    _arm_entry("forearm",   "CC_Base_L_Forearm",  "CC_Base_L_Hand",    (0.7, 0.0, 1.0)),
 ]
 
 # ── Edge loop sıralama ────────────────────────────────────────────────────────
@@ -165,7 +179,7 @@ def order_loop(edges):
 # ── Kontur eğrileri ───────────────────────────────────────────────────────────
 z_data = {}
 
-for label, z_m, color in MEASUREMENTS:
+for label, plane_co, plane_no, color, ref_point in MEASUREMENTS:
     eval_obj  = body_obj.evaluated_get(depsgraph)
     eval_mesh = eval_obj.to_mesh()
     bm = bmesh.new()
@@ -176,8 +190,8 @@ for label, z_m, color in MEASUREMENTS:
 
     geom = bm.verts[:] + bm.edges[:] + bm.faces[:]
     ret  = bmesh.ops.bisect_plane(bm, geom=geom,
-                                   plane_co=(0.0, 0.0, z_m),
-                                   plane_no=(0.0, 0.0, 1.0))
+                                   plane_co=tuple(plane_co),
+                                   plane_no=tuple(plane_no))
     cut_edges = [e for e in ret['geom_cut'] if isinstance(e, bmesh.types.BMEdge)]
 
     if not cut_edges:
@@ -202,13 +216,24 @@ for label, z_m, color in MEASUREMENTS:
                     if id(ne) not in visited: queue.append(ne)
         components.append(comp)
 
-    ranked  = sorted(components, key=lambda c: sum(e.calc_length() for e in c), reverse=True)
-    largest = ranked[0]
-    circ_cm = sum(e.calc_length() for e in largest) * 100
-    if circ_cm > 200.0 and len(ranked) > 1:
-        second_cm = sum(e.calc_length() for e in ranked[1]) * 100
-        if second_cm > 20.0:
-            largest = ranked[1]; circ_cm = second_cm
+    if ref_point is not None:
+        # Kol: bone orta noktasına en yakın bileşen
+        def dist_to_ref(comp):
+            vecs = [v.co for e in comp for v in e.verts]
+            cx = sum(v.x for v in vecs) / len(vecs)
+            cy = sum(v.y for v in vecs) / len(vecs)
+            cz = sum(v.z for v in vecs) / len(vecs)
+            return (mathutils.Vector((cx, cy, cz)) - ref_point).length
+        largest = min(components, key=dist_to_ref)
+        circ_cm = sum(e.calc_length() for e in largest) * 100
+    else:
+        ranked  = sorted(components, key=lambda c: sum(e.calc_length() for e in c), reverse=True)
+        largest = ranked[0]
+        circ_cm = sum(e.calc_length() for e in largest) * 100
+        if circ_cm > 200.0 and len(ranked) > 1:
+            second_cm = sum(e.calc_length() for e in ranked[1]) * 100
+            if second_cm > 20.0:
+                largest = ranked[1]; circ_cm = second_cm
 
     path = order_loop(largest)
     bm.free()
@@ -231,8 +256,8 @@ for label, z_m, color in MEASUREMENTS:
     scene.collection.objects.link(co)
     co.data.materials.append(make_emit_mat(f"m_{label}", color, strength=6.0))
 
-    z_data[label] = {"z_m": z_m, "circ_cm": round(circ_cm, 2), "color": list(color)}
-    print(f"  {label:12s} z={z_m:.3f}  circ={circ_cm:.1f} cm  ({len(path)} pts)")
+    z_data[label] = {"plane_co": list(plane_co), "circ_cm": round(circ_cm, 2), "color": list(color)}
+    print(f"  {label:12s} co={list(round(v,3) for v in plane_co)}  circ={circ_cm:.1f} cm  ({len(path)} pts)")
 
 # Debug JSON (PIL annotation için)
 with open(os.path.join(out_dir, f"{char_name}_debug.json"), "w") as f:
