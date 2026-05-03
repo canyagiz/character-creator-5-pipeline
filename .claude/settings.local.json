@@ -34,7 +34,10 @@
       "PowerShell(python -c \"import diffusers; import inspect; from diffusers.models import controlnet; print\\(inspect.getfile\\(controlnet\\)\\)\" 2>&1)",
       "PowerShell(python -c \"from diffusers.models.controlnets.controlnet import ControlNetOutput; print\\('found at controlnets.controlnet'\\)\" 2>&1)",
       "Bash(gh api *)",
-      "WebFetch(domain:lotus3d.github.io)"
+      "WebFetch(domain:lotus3d.github.io)",
+      "Bash(python blender-pipeline/batch_debug.py --id char_00003 --overwrite)",
+      "Bash(dir c:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\debug\\\\char_00003 *)",
+      "Bash(dir c:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\debug\\\\ *)"
     ]
   }
 }

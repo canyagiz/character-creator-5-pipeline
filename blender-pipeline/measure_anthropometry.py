@@ -118,15 +118,30 @@ def measure_circumference_cm(z_m):
                     if id(ne) not in visited: queue.append(ne)
         components.append(comp)
 
-    ranked   = sorted(components, key=lambda c: sum(e.calc_length() for e in c), reverse=True)
-    largest  = ranked[0]
-    total_cm = sum(e.calc_length() for e in largest) * 100
+    ranked  = sorted(components, key=lambda c: sum(e.calc_length() for e in c), reverse=True)
+    primary = ranked[0]
+    total_cm = sum(e.calc_length() for e in primary) * 100
 
     if total_cm > 200.0 and len(ranked) > 1:
         second_cm = sum(e.calc_length() for e in ranked[1]) * 100
         if second_cm > 20.0:
             print(f"  [WARN] circ {total_cm:.1f} cm > 200, 2nd component {second_cm:.1f} cm kullaniliyor")
             total_cm = second_cm
+    else:
+        # Açık yay tespiti: kasık boşluğu gibi mesh gap'larında uç vertex'ler degree=1 olur.
+        deg = {}
+        for e in primary:
+            for v in e.verts:
+                deg[v.index] = deg.get(v.index, 0) + 1
+        is_open = any(d == 1 for d in deg.values())
+        if is_open:
+            # Gap mesafesini (iki uç vertex arası düz çizgi) ölçüme ekle.
+            # Fiziksel şerit metre bu boşluğu düz geçer.
+            ep_positions = [v.co.copy() for e in primary for v in e.verts
+                            if deg[v.index] == 1]
+            if len(ep_positions) >= 2:
+                gap_cm = (ep_positions[0] - ep_positions[1]).length * 100
+                total_cm += gap_cm
 
     bm.free()
     return round(total_cm, 2)

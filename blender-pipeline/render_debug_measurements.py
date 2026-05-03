@@ -139,15 +139,27 @@ MEASUREMENTS = [
 
 # ── Edge loop sıralama ────────────────────────────────────────────────────────
 def order_loop(edges):
+    """
+    Edge listesini sıralı yol olarak döner.
+    Açık yaylarda (degree=1 uç vertex) uçtan başlar.
+    Junction vertex içeren karmaşık topolojilerde kaçırılan edge'leri
+    ikinci dönüş değeri olarak verir.
+    Döner: (path: List[Vector], missed_edges: List[BMEdge])
+    """
     if not edges:
-        return []
+        return [], []
     adj = {}
+    deg = {}
     for e in edges:
         v0, v1 = e.verts
         adj.setdefault(v0.index, []).append((v1, e))
         adj.setdefault(v1.index, []).append((v0, e))
+        deg[v0.index] = deg.get(v0.index, 0) + 1
+        deg[v1.index] = deg.get(v1.index, 0) + 1
 
-    start_v   = edges[0].verts[0]
+    endpoints = [v for e in edges for v in e.verts if deg[v.index] == 1]
+    start_v   = endpoints[0] if endpoints else edges[0].verts[0]
+
     path      = [start_v.co.copy()]
     visited_e = set()
     visited_v = {start_v.index}
@@ -164,7 +176,9 @@ def order_loop(edges):
                 break
         if not moved:
             break
-    return path
+
+    missed = [e for e in edges if id(e) not in visited_e]
+    return path, missed
 
 # ── Kontur eğrileri ───────────────────────────────────────────────────────────
 z_data = {}
@@ -239,38 +253,71 @@ for label, plane_co, plane_no, color, ref_point in MEASUREMENTS:
         else:
             largest = max(components, key=lambda c: sum(e.calc_length() for e in c))
         circ_cm = sum(e.calc_length() for e in largest) * 100
+        draw_comps = [largest]
     else:
         ranked  = sorted(components, key=lambda c: sum(e.calc_length() for e in c), reverse=True)
-        largest = ranked[0]
-        circ_cm = sum(e.calc_length() for e in largest) * 100
+        primary = ranked[0]
+        circ_cm = sum(e.calc_length() for e in primary) * 100
+        draw_comps = [primary]
+
         if circ_cm > 200.0 and len(ranked) > 1:
             second_cm = sum(e.calc_length() for e in ranked[1]) * 100
             if second_cm > 20.0:
-                largest = ranked[1]; circ_cm = second_cm
+                draw_comps = [ranked[1]]; circ_cm = second_cm
+        else:
+            # Açık yay tespiti: kasık boşluğu gibi durumlarda ikinci yayı da göster
+            deg = {}
+            for e in primary:
+                for v in e.verts:
+                    deg[v.index] = deg.get(v.index, 0) + 1
+            if any(d == 1 for d in deg.values()) and len(ranked) > 1:
+                second_cm = sum(e.calc_length() for e in ranked[1]) * 100
+                if second_cm > 5.0:
+                    draw_comps.append(ranked[1]); circ_cm += second_cm
 
-    path = order_loop(largest)
-    bm.free()
+        largest = draw_comps[0]
 
-    if len(path) < 2:
-        continue
+    draw_comps_final = draw_comps if ref_point is None else [largest]
 
-    # Blender eğri nesnesi
     cd = bpy.data.curves.new(f"c_{label}", 'CURVE')
     cd.dimensions  = '3D'
-    cd.bevel_depth = height_m * 0.005   # ~5mm kalınlık (görünür olsun)
+    cd.bevel_depth = height_m * 0.005
 
-    sp = cd.splines.new('POLY')
-    sp.points.add(len(path) - 1)
-    for i, co in enumerate(path):
-        sp.points[i].co = (co.x, co.y, co.z, 1.0)
-    sp.use_cyclic_u = True
+    for comp in draw_comps_final:
+        path, missed = order_loop(comp)
+
+        if len(path) >= 2:
+            # Açık yay (uç vertex var): use_cyclic_u=True gövde içinden görünmez çizgi çizer.
+            # is_open tespiti: path[0] != path[-1] ve missed boş ise açık arc.
+            deg_comp = {}
+            for e in comp:
+                for v in e.verts:
+                    deg_comp[v.index] = deg_comp.get(v.index, 0) + 1
+            arc_is_open = any(d == 1 for d in deg_comp.values())
+
+            sp = cd.splines.new('POLY')
+            sp.points.add(len(path) - 1)
+            for i, co in enumerate(path):
+                sp.points[i].co = (co.x, co.y, co.z, 1.0)
+            sp.use_cyclic_u = not arc_is_open
+
+        # Junction vertex nedeniyle atlanan edge'leri ayrı segment olarak ekle
+        for e in missed:
+            sp = cd.splines.new('POLY')
+            sp.points.add(1)
+            v0, v1 = e.verts
+            sp.points[0].co = (v0.co.x, v0.co.y, v0.co.z, 1.0)
+            sp.points[1].co = (v1.co.x, v1.co.y, v1.co.z, 1.0)
+            sp.use_cyclic_u = False
+
+    bm.free()
 
     co = bpy.data.objects.new(f"c_{label}", cd)
     scene.collection.objects.link(co)
     co.data.materials.append(make_emit_mat(f"m_{label}", color, strength=6.0))
 
     z_data[label] = {"plane_co": list(plane_co), "circ_cm": round(circ_cm, 2), "color": list(color)}
-    print(f"  {label:12s} co={list(round(v,3) for v in plane_co)}  circ={circ_cm:.1f} cm  ({len(path)} pts)")
+    print(f"  {label:12s} co={list(round(v,3) for v in plane_co)}  circ={circ_cm:.1f} cm")
 
 # Debug JSON (PIL annotation için)
 with open(os.path.join(out_dir, f"{char_name}_debug.json"), "w") as f:
