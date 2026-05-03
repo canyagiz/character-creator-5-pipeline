@@ -121,20 +121,20 @@ def render_pass(out_dir, label):
 # ══════════════════════════════════════════════════════════════════════════════
 set_world(0.15, 0.15, 0.15)
 
-def add_light(name, offset, energy, color=(1, 1, 1)):
+def add_light(name, offset, energy, color=(1, 1, 1), size_mult=2.5):
     loc = cam_target + mathutils.Vector(offset)
     bpy.ops.object.light_add(type='AREA', location=loc)
     l = bpy.context.active_object
     l.name = name
     l.data.energy = energy
-    l.data.size   = height_m * 0.9
+    l.data.size   = height_m * size_mult  # büyük ışık → yumuşak specular
     l.data.color  = color
     l.rotation_euler = (cam_target - loc).to_track_quat('-Z', 'Y').to_euler()
 
 r = height_m
-add_light("Key",  ( r*0.8, -r*0.8,  r*0.6), 350)
-add_light("Fill", (-r*0.6, -r*0.5,  r*0.2), 280, (0.9, 0.95, 1.0))
-add_light("Rim",  ( 0,      r*1.2,  r*0.4), 180)
+add_light("Key",  ( r*0.8, -r*0.8,  r*0.6), 160)               # 350 → 160
+add_light("Fill", (-r*0.6, -r*0.5,  r*0.2), 100, (0.9, 0.95, 1.0))  # 280 → 100
+add_light("Rim",  ( 0,      r*1.2,  r*0.4),  70)                # 180 → 70
 
 render_pass(raw_dir, "raw")
 

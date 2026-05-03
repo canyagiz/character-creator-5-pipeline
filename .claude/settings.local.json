@@ -32,7 +32,9 @@
       "PowerShell(pip *)",
       "PowerShell(pip install *)",
       "PowerShell(python -c \"import diffusers; import inspect; from diffusers.models import controlnet; print\\(inspect.getfile\\(controlnet\\)\\)\" 2>&1)",
-      "PowerShell(python -c \"from diffusers.models.controlnets.controlnet import ControlNetOutput; print\\('found at controlnets.controlnet'\\)\" 2>&1)"
+      "PowerShell(python -c \"from diffusers.models.controlnets.controlnet import ControlNetOutput; print\\('found at controlnets.controlnet'\\)\" 2>&1)",
+      "Bash(gh api *)",
+      "WebFetch(domain:lotus3d.github.io)"
     ]
   }
 }

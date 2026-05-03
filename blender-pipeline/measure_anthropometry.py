@@ -12,7 +12,6 @@ import bmesh
 import sys
 import os
 import json
-import math
 import mathutils
 
 # ── Args ──────────────────────────────────────────────────────────────────────
@@ -72,42 +71,7 @@ print(f"Body mesh: {body_obj.name} ({len(body_obj.data.vertices)} vertex)")
 
 height_cm = round(height_m * 100, 2)
 
-# ── A-pose uygula (kol kesişimini önler) ──────────────────────────────────────
-def apply_a_pose(angle_deg=45):
-    """
-    T-pose kollarını angle_deg kadar aşağı indirir.
-    pbone.matrix (fresh import'ta rest pose = armature space) üzerinden
-    doğrudan dünya rotasyonu uygular.
-    """
-    bpy.context.view_layer.objects.active = arm_obj
-    bpy.ops.object.mode_set(mode='POSE')
 
-    angle = math.radians(angle_deg)
-
-    for side, sign in [('L', 1), ('R', -1)]:
-        pbone = arm_obj.pose.bones.get(f'CC_Base_{side}_Upperarm')
-        if pbone is None:
-            print(f"  [WARN] CC_Base_{side}_Upperarm bulunamadi")
-            continue
-
-        # Sadece rotasyon değişsin, omuz pozisyonu (translation) sabit kalsın
-        current_world = arm_obj.matrix_world @ pbone.matrix.copy()
-        loc, rot_q, scale = current_world.decompose()
-
-        # Delta rotasyonu dünya Y ekseni etrafında ekle
-        delta = mathutils.Quaternion((0, 1, 0), sign * angle)
-        new_rot = delta @ rot_q
-
-        new_world = (mathutils.Matrix.Translation(loc) @
-                     new_rot.to_matrix().to_4x4() @
-                     mathutils.Matrix.Diagonal((*scale, 1.0)))
-        pbone.matrix = arm_obj.matrix_world.inverted() @ new_world
-        bpy.context.view_layer.update()
-
-    bpy.ops.object.mode_set(mode='OBJECT')
-    bpy.context.view_layer.update()
-
-apply_a_pose(angle_deg=45)
 depsgraph = bpy.context.evaluated_depsgraph_get()
 
 # ── Çevre ölçümü: A-posed evaluated mesh + en büyük bağlı döngü ──────────────
@@ -168,19 +132,31 @@ def measure_circumference_cm(z_m):
     return round(total_cm, 2)
 
 # ── Referans yükseklikleri ────────────────────────────────────────────────────
-z_neck      = bone_z("CC_Base_NeckTwist01")   # NeckTwist02 çene hizasında kalıyor
 z_chest     = bone_z("CC_Base_L_Breast")
 z_waist     = bone_z("CC_Base_Waist")
 z_hip       = bone_z("CC_Base_L_Thigh") - (bone_z("CC_Base_L_Thigh") - bone_z("CC_Base_L_Calf")) * 0.15
 z_mid_thigh = (bone_z("CC_Base_L_Thigh") + bone_z("CC_Base_L_Calf")) / 2
-z_calf      = bone_z("CC_Base_L_CalfTwist02") # Calf-CalfTwist02 orta noktası fazla yüksekti
+z_calf      = bone_z("CC_Base_L_CalfTwist02")
 
-# ── Kol çevre ölçümü: kol eksenine dik düzlemde keser, en yakın bileşen alınır ──
-def measure_arm_circumference_cm(bone_start_name, bone_end_name):
-    p0   = bone_world(bone_start_name)
-    p1   = bone_world(bone_end_name)
-    mid  = (p0 + p1) * 0.5
-    axis = (p1 - p0).normalized()   # kol ekseni = kesim düzleminin normali
+# ── Genel kemik-eksen çevre ölçümü: vertex filtresi + eksene dik bisect ──────
+def measure_segment_circumference_cm(bone_start_name, bone_end_name,
+                                     cut_at="mid", radius_factor=0.65, margin_factor=0.35,
+                                     pick="largest"):
+    """
+    bone_start → bone_end segmenti boyunca vertex filtresi uygular, ardından
+    segment eksenine dik düzlemde keser.
+    cut_at        : "mid" → segment ortası | "end" → bone_end pozisyonu
+    radius_factor : bone_len çarpanı. None → yarıçap filtresi uygulanmaz (sadece eksen marjı)
+    margin_factor : eksen boyunca marj çarpanı
+    pick          : "largest" → en uzun bileşen (kol) | "closest" → cut_pt'ye en yakın (boyun)
+    """
+    p0       = bone_world(bone_start_name)
+    p1       = bone_world(bone_end_name)
+    axis     = (p1 - p0).normalized()
+    bone_len = (p1 - p0).length
+
+    cut_pt = (p0 + p1) * 0.5 if cut_at == "mid" else p1
+    margin = bone_len * margin_factor
 
     eval_obj  = body_obj.evaluated_get(depsgraph)
     eval_mesh = eval_obj.to_mesh()
@@ -188,12 +164,24 @@ def measure_arm_circumference_cm(bone_start_name, bone_end_name):
     bm.from_mesh(eval_mesh)
     bm.transform(eval_obj.matrix_world)
     eval_obj.to_mesh_clear()
+
+    remove = []
+    for v in bm.verts:
+        to_v = v.co - p0
+        proj = to_v.dot(axis)
+        if proj < -margin or proj > bone_len + margin:
+            remove.append(v)
+            continue
+        if radius_factor is not None:
+            if (to_v - axis * proj).length > bone_len * radius_factor:
+                remove.append(v)
+    bmesh.ops.delete(bm, geom=remove, context='VERTS')
     bm.faces.ensure_lookup_table()
 
     geom = bm.verts[:] + bm.edges[:] + bm.faces[:]
     ret  = bmesh.ops.bisect_plane(bm, geom=geom,
-                                   plane_co=(mid.x,  mid.y,  mid.z),
-                                   plane_no=(axis.x, axis.y, axis.z))
+                                   plane_co=(cut_pt.x, cut_pt.y, cut_pt.z),
+                                   plane_no=(axis.x,   axis.y,   axis.z))
     cut_edges = [e for e in ret['geom_cut'] if isinstance(e, bmesh.types.BMEdge)]
     if not cut_edges:
         bm.free()
@@ -216,16 +204,19 @@ def measure_arm_circumference_cm(bone_start_name, bone_end_name):
                     if id(ne) not in visited: queue.append(ne)
         components.append(comp)
 
-    def dist_to_mid(comp):
-        vecs = [v.co for e in comp for v in e.verts]
-        cx = sum(v.x for v in vecs) / len(vecs)
-        cy = sum(v.y for v in vecs) / len(vecs)
-        cz = sum(v.z for v in vecs) / len(vecs)
-        return (mathutils.Vector((cx, cy, cz)) - mid).length
+    if pick == "closest":
+        def centroid_dist(comp):
+            vecs = [v.co for e in comp for v in e.verts]
+            n = len(vecs)
+            c = mathutils.Vector((sum(v.x for v in vecs)/n,
+                                  sum(v.y for v in vecs)/n,
+                                  sum(v.z for v in vecs)/n))
+            return (c - cut_pt).length
+        best = min(components, key=centroid_dist)
+    else:
+        best = max(components, key=lambda c: sum(e.calc_length() for e in c))
 
-    # Kemik orta noktasına en yakın bileşen = kol kesiti
-    arm_comp = min(components, key=dist_to_mid)
-    circ_cm  = sum(e.calc_length() for e in arm_comp) * 100
+    circ_cm = sum(e.calc_length() for e in best) * 100
     bm.free()
     return round(circ_cm, 2)
 
@@ -240,14 +231,21 @@ measurements = {
     "char_id":   char_name,
     "height_cm": height_cm,
 
-    "neck_circ_cm":      measure_circumference_cm(z_neck),
+    # Boyun: NeckTwist01–NeckTwist02 ortası, yarıçap filtresi yok (obez boyunları keser)
+    # pick="closest" → merkeze en yakın bileşen = boyun (omuz değil)
+    "neck_circ_cm":      measure_segment_circumference_cm(
+                             "CC_Base_NeckTwist01", "CC_Base_NeckTwist02",
+                             cut_at="mid", radius_factor=None, margin_factor=0.8,
+                             pick="closest"),
     "chest_circ_cm":     measure_circumference_cm(z_chest),
     "waist_circ_cm":     measure_circumference_cm(z_waist),
     "hip_circ_cm":       measure_circumference_cm(z_hip),
     "mid_thigh_circ_cm": measure_circumference_cm(z_mid_thigh),
     "calf_circ_cm":      measure_circumference_cm(z_calf),
-    "upper_arm_circ_cm": measure_arm_circumference_cm("CC_Base_L_Upperarm", "CC_Base_L_Forearm"),
-    "forearm_circ_cm":   measure_arm_circumference_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand"),
+    "bicep_circ_cm":    measure_segment_circumference_cm("CC_Base_L_Upperarm", "CC_Base_L_Forearm", cut_at="mid"),
+    "elbow_circ_cm":    measure_segment_circumference_cm("CC_Base_L_Upperarm", "CC_Base_L_Forearm", cut_at="end"),
+    "forearm_circ_cm":  measure_segment_circumference_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand",    cut_at="mid"),
+    "wrist_circ_cm":    measure_segment_circumference_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand",    cut_at="end"),
 
     "upper_arm_length_cm": bone_dist_cm("CC_Base_L_Upperarm", "CC_Base_L_Forearm"),
     "forearm_length_cm":   bone_dist_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand"),

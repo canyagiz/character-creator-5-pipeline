@@ -10,8 +10,10 @@ Renkler:
   hip       — blue
   mid_thigh — orange
   calf      — magenta
-  upper_arm — yellow
+  bicep     — yellow
+  elbow     — lime
   forearm   — purple
+  wrist     — pink
 """
 
 import bpy
@@ -71,28 +73,7 @@ body_candidates = [o for o in mesh_objs
 body_obj = max(body_candidates or mesh_objs, key=lambda o: len(o.data.vertices))
 print(f"Body mesh: {body_obj.name}")
 
-# ── A-pose uygula (kol kesişimini önler) ──────────────────────────────────────
-def apply_a_pose(angle_deg=45):
-    bpy.context.view_layer.objects.active = arm_obj
-    bpy.ops.object.mode_set(mode='POSE')
-    angle = math.radians(angle_deg)
-    for side, sign in [('L', 1), ('R', -1)]:
-        pbone = arm_obj.pose.bones.get(f'CC_Base_{side}_Upperarm')
-        if pbone is None:
-            continue
-        current_world = arm_obj.matrix_world @ pbone.matrix.copy()
-        loc, rot_q, scale = current_world.decompose()
-        delta        = mathutils.Quaternion((0, 1, 0), sign * angle)
-        new_rot      = delta @ rot_q
-        new_world    = (mathutils.Matrix.Translation(loc) @
-                        new_rot.to_matrix().to_4x4() @
-                        mathutils.Matrix.Diagonal((*scale, 1.0)))
-        pbone.matrix = arm_obj.matrix_world.inverted() @ new_world
-        bpy.context.view_layer.update()
-    bpy.ops.object.mode_set(mode='OBJECT')
-    bpy.context.view_layer.update()
 
-apply_a_pose(angle_deg=45)
 depsgraph = bpy.context.evaluated_depsgraph_get()
 
 # ── Silhouette materyal (açık gri karakter, koyu arkaplan) ────────────────────
@@ -128,23 +109,32 @@ def _z_entry(label, z_m, color):
     return (label, mathutils.Vector((0.0, 0.0, z_m)),
             mathutils.Vector((0.0, 0.0, 1.0)), color, None)
 
-def _arm_entry(label, b0, b1, color):
+def _seg_entry(label, b0, b1, color, cut_at="mid", radius_factor=0.65, margin_factor=0.35, pick="largest"):
+    """
+    measure_anthropometry.py::measure_segment_circumference_cm ile senkron.
+    ref_point → (p0, p1, radius_factor, margin_factor, pick, cut_pt)
+    """
     p0  = bone_world(b0); p1 = bone_world(b1)
-    mid = (p0 + p1) * 0.5
     ax  = (p1 - p0).normalized()
-    return (label, mid, ax, color, mid)
+    cut_pt = (p0 + p1) * 0.5 if cut_at == "mid" else p1
+    return (label, cut_pt, ax, color, (p0, p1, radius_factor, margin_factor, pick, cut_pt))
 
 MEASUREMENTS = [
-    _z_entry("neck",      bone_z("CC_Base_NeckTwist01"),  (0.0, 1.0, 1.0)),
-    _z_entry("chest",     bone_z("CC_Base_L_Breast"),     (1.0, 0.2, 0.2)),
-    _z_entry("waist",     bone_z("CC_Base_Waist"),        (0.2, 1.0, 0.2)),
-    _z_entry("hip",       bone_z("CC_Base_L_Thigh") - (bone_z("CC_Base_L_Thigh") - bone_z("CC_Base_L_Calf")) * 0.15,
-                                                           (0.3, 0.5, 1.0)),
-    _z_entry("mid_thigh", (bone_z("CC_Base_L_Thigh") + bone_z("CC_Base_L_Calf")) / 2,
-                                                           (1.0, 0.55, 0.0)),
-    _z_entry("calf",      bone_z("CC_Base_L_CalfTwist02"),(1.0, 0.0, 1.0)),
-    _arm_entry("upper_arm", "CC_Base_L_Upperarm", "CC_Base_L_Forearm", (1.0, 1.0, 0.0)),
-    _arm_entry("forearm",   "CC_Base_L_Forearm",  "CC_Base_L_Hand",    (0.7, 0.0, 1.0)),
+    # Boyun — yarıçap filtresi yok, merkeze en yakın bileşen seçilir
+    _seg_entry("neck",      "CC_Base_NeckTwist01", "CC_Base_NeckTwist02",
+                            (0.0, 1.0, 1.0), cut_at="mid", radius_factor=None, margin_factor=0.8, pick="closest"),
+    _z_entry("chest",       bone_z("CC_Base_L_Breast"),     (1.0, 0.2, 0.2)),
+    _z_entry("waist",       bone_z("CC_Base_Waist"),        (0.2, 1.0, 0.2)),
+    _z_entry("hip",         bone_z("CC_Base_L_Thigh") - (bone_z("CC_Base_L_Thigh") - bone_z("CC_Base_L_Calf")) * 0.15,
+                                                             (0.3, 0.5, 1.0)),
+    _z_entry("mid_thigh",   (bone_z("CC_Base_L_Thigh") + bone_z("CC_Base_L_Calf")) / 2,
+                                                             (1.0, 0.55, 0.0)),
+    _z_entry("calf",        bone_z("CC_Base_L_CalfTwist02"),(1.0, 0.0, 1.0)),
+    # Kol ölçümleri
+    _seg_entry("bicep",   "CC_Base_L_Upperarm", "CC_Base_L_Forearm", (1.0, 1.0, 0.0), cut_at="mid"),
+    _seg_entry("elbow",   "CC_Base_L_Upperarm", "CC_Base_L_Forearm", (0.5, 1.0, 0.0), cut_at="end"),
+    _seg_entry("forearm", "CC_Base_L_Forearm",  "CC_Base_L_Hand",    (0.7, 0.0, 1.0), cut_at="mid"),
+    _seg_entry("wrist",   "CC_Base_L_Forearm",  "CC_Base_L_Hand",    (1.0, 0.4, 0.8), cut_at="end"),
 ]
 
 # ── Edge loop sıralama ────────────────────────────────────────────────────────
@@ -186,6 +176,26 @@ for label, plane_co, plane_no, color, ref_point in MEASUREMENTS:
     bm.from_mesh(eval_mesh)
     bm.transform(eval_obj.matrix_world)
     eval_obj.to_mesh_clear()
+
+    # Segment ölçümlerinde çevre geometriyi filtrele
+    pick_strategy = "largest"
+    seg_cut_pt    = None
+    if ref_point is not None:
+        p0_seg, p1_seg, r_factor, m_factor, pick_strategy, seg_cut_pt = ref_point
+        seg_axis = (p1_seg - p0_seg).normalized()
+        bone_len = (p1_seg - p0_seg).length
+        margin   = bone_len * m_factor
+        remove = []
+        for v in bm.verts:
+            to_v = v.co - p0_seg
+            proj = to_v.dot(seg_axis)
+            if proj < -margin or proj > bone_len + margin:
+                remove.append(v); continue
+            if r_factor is not None:
+                if (to_v - seg_axis * proj).length > bone_len * r_factor:
+                    remove.append(v)
+        bmesh.ops.delete(bm, geom=remove, context='VERTS')
+
     bm.faces.ensure_lookup_table()
 
     geom = bm.verts[:] + bm.edges[:] + bm.faces[:]
@@ -217,14 +227,17 @@ for label, plane_co, plane_no, color, ref_point in MEASUREMENTS:
         components.append(comp)
 
     if ref_point is not None:
-        # Kol: bone orta noktasına en yakın bileşen
-        def dist_to_ref(comp):
-            vecs = [v.co for e in comp for v in e.verts]
-            cx = sum(v.x for v in vecs) / len(vecs)
-            cy = sum(v.y for v in vecs) / len(vecs)
-            cz = sum(v.z for v in vecs) / len(vecs)
-            return (mathutils.Vector((cx, cy, cz)) - ref_point).length
-        largest = min(components, key=dist_to_ref)
+        if pick_strategy == "closest":
+            def _centroid_dist(comp):
+                vecs = [v.co for e in comp for v in e.verts]
+                n = len(vecs)
+                c = mathutils.Vector((sum(v.x for v in vecs)/n,
+                                      sum(v.y for v in vecs)/n,
+                                      sum(v.z for v in vecs)/n))
+                return (c - seg_cut_pt).length
+            largest = min(components, key=_centroid_dist)
+        else:
+            largest = max(components, key=lambda c: sum(e.calc_length() for e in c))
         circ_cm = sum(e.calc_length() for e in largest) * 100
     else:
         ranked  = sorted(components, key=lambda c: sum(e.calc_length() for e in c), reverse=True)

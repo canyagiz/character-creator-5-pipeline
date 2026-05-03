@@ -1,130 +1,94 @@
 """
-batch_normal.py — Raw renderlardan DSINE ile normal map üretir.
+batch_normal.py — Raw renderlardan StableNormal-turbo ile normal map uretir.
 
-Kullanım:
-  python batch_normal.py                    # renders/raw/ altındaki tümü
+Kullanim:
+  python batch_normal.py                    # renders/raw/ altindaki tumu
   python batch_normal.py --id char_00037    # tek karakter
-  python batch_normal.py --overwrite        # mevcut normal'ları yeniden üret
+  python batch_normal.py --overwrite        # mevcut normal'lari yeniden uret
   python batch_normal.py --device cpu       # GPU yoksa
+  python batch_normal.py --resolution 768   # isleme cozunurlugu (default 1024)
 
-Çıktı:
-  renders/normals/<char_id>/  — 8 PNG, RGB'de kodlanmış view-space normal
-                                 (R=X, G=Y, B=Z; 128 → 0.0, 0 → -1.0, 255 → +1.0)
+Cikti:
+  renders/normal_maps/<char_id>/  -- 8 PNG, RGB'de kodlanmis normal
+                                     (R=X, G=Y, B=Z; 128->0.0, 0->-1.0, 255->+1.0)
 """
 
-import os
 import sys
 import argparse
-import types
 from pathlib import Path
 
 import numpy as np
 import torch
-import torch.nn.functional as F
 from PIL import Image
-from torchvision import transforms
+
+# diffusers>=0.30 moved ControlNet modules; patch old import path for StableNormal
+try:
+    import diffusers.models.controlnet  # noqa: F401
+except ImportError:
+    import diffusers.models.controlnets.controlnet as _cn
+    sys.modules["diffusers.models.controlnet"] = _cn
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 BASE_DIR    = Path(__file__).resolve().parent.parent
 RAW_ROOT    = BASE_DIR / "renders" / "raw"
 NORMAL_ROOT = BASE_DIR / "renders" / "normal_maps"
 
+STABLENORMAL_REPO = BASE_DIR.parent / "StableNormal"
+if STABLENORMAL_REPO.exists() and str(STABLENORMAL_REPO) not in sys.path:
+    sys.path.insert(0, str(STABLENORMAL_REPO))
+
 VIEWS = [
     "front", "front_right", "right", "back_right",
     "back",  "back_left",   "left",  "front_left",
 ]
 
-# Blender kamera ayarlarıyla eşleşen intrinsics (85mm lens, 36mm sensor, 512px)
-_FOCAL_PX = (85.0 / 36.0) * 512  # ≈ 1208
-_CX = _CY = 256.0
-
 # ── Args ──────────────────────────────────────────────────────────────────────
 parser = argparse.ArgumentParser()
-parser.add_argument("--id",        default=None,  help="Tek char_id (char_00037)")
-parser.add_argument("--overwrite", action="store_true")
-parser.add_argument("--device",    default="cuda" if torch.cuda.is_available() else "cpu")
+parser.add_argument("--id",         default=None,  help="Tek char_id (char_00037)")
+parser.add_argument("--overwrite",  action="store_true")
+parser.add_argument("--device",     default="cuda" if torch.cuda.is_available() else "cpu")
+parser.add_argument("--resolution", type=int, default=1024)
+parser.add_argument("--yoso-version", default="yoso-normal-v0-3")
 args = parser.parse_args()
 
-device = torch.device(args.device)
-print(f"Device: {device}")
+print(f"Device      : {args.device}")
+print(f"Resolution  : {args.resolution}")
+print(f"YOSO version: {args.yoso_version}\n")
 
 # ── Model ─────────────────────────────────────────────────────────────────────
-print("DSINE yükleniyor (ilk çalıştırmada ağırlıklar indirilir)...")
+print("Loading StableNormal_turbo...")
+from stablenormal.pipeline_yoso_normal import YOSONormalsPipeline
+from hubconf import Predictor
 
-# torch.hub'ın hubconf'u bozuk — modeli doğrudan cached repo'dan yükle
-_HUB_DIR = Path(torch.hub.get_dir()) / "baegwangbin_DSINE_main"
-if not _HUB_DIR.exists():
-    # Henüz indirilmemişse bir kez hub ile sadece repo'yu çek
-    torch.hub.load("baegwangbin/DSINE", "DSINE", trust_repo=True, force_reload=False)
-
-sys.path.insert(0, str(_HUB_DIR))
-from models.dsine.v02 import DSINE_v02
-
-# DSINE_v02'nin beklediği argümanlar (checkpoint ile eşleşen defaults)
-_args = types.SimpleNamespace(
-    NNET_encoder_B=5,
-    NNET_decoder_NF=2048,
-    NNET_decoder_BN=False,
-    NNET_decoder_down=8,
-    NNET_output_dim=3,
-    NNET_feature_dim=64,
-    NNET_hidden_dim=64,
-    NNET_learned_upsampling=True,
-    NRN_prop_ps=5,
-    NRN_num_iter_train=5,
-    NRN_num_iter_test=5,
-    NRN_ray_relu=True,
-)
-
-model = DSINE_v02(_args)
-
-_CKPT = Path(torch.hub.get_dir()) / "checkpoints" / "dsine.pt"
-if not _CKPT.exists():
-    print("  Ağırlıklar indiriliyor...")
-    state_dict = torch.hub.load_state_dict_from_url(
-        "https://huggingface.co/camenduru/DSINE/resolve/main/dsine.pt",
-        file_name="dsine.pt", map_location="cpu"
-    )["model"]
-else:
-    state_dict = torch.load(_CKPT, map_location="cpu")["model"]
-
-model.load_state_dict(state_dict, strict=True)
-model = model.to(device).eval()
-model.pixel_coords = model.pixel_coords.to(device)
-print("Model hazır.\n")
+pipe = YOSONormalsPipeline.from_pretrained(
+    f"Stable-X/{args.yoso_version}",
+    trust_remote_code=True,
+    variant="fp16",
+    torch_dtype=torch.float16,
+    t_start=0,
+    safety_checker=None,
+).to(args.device)
+predictor = Predictor(pipe, yoso_version=args.yoso_version)
+print("Model ready.\n")
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
-_normalize = transforms.Normalize(
-    mean=[0.485, 0.456, 0.406],
-    std =[0.229, 0.224, 0.225],
-)
+def extract_mask(src_img: Image.Image) -> np.ndarray | None:
+    """Return bool mask (True=subject) or None if no clear background found."""
+    if src_img.mode == "RGBA":
+        return np.array(src_img.split()[3]) > 10
+    # Gray background fallback: detect near-neutral pixels
+    rgb = np.array(src_img.convert("RGB")).astype(np.int16)
+    diff = rgb.max(axis=2) - rgb.min(axis=2)          # low saturation = background
+    brightness = rgb.mean(axis=2)
+    return ~((diff < 15) & (brightness > 100) & (brightness < 220))
 
-def load_tensor(path: Path) -> torch.Tensor:
-    img = Image.open(path).convert("RGB")
-    x = transforms.ToTensor()(img)        # [3, H, W], float32 [0,1]
-    return _normalize(x).unsqueeze(0)     # [1, 3, H, W]
-
-def intrinsics_tensor(h: int, w: int) -> torch.Tensor:
-    # DSINE_v02 forward() beklediği format: [B, 3, 3] — 3x3 K matrisi
-    fx = _FOCAL_PX * (w / 512)
-    fy = _FOCAL_PX * (h / 512)
-    cx = w / 2.0
-    cy = h / 2.0
-    K = torch.tensor([[
-        [fx,  0., cx],
-        [0.,  fy, cy],
-        [0.,  0.,  1.],
-    ]], dtype=torch.float32)  # [1, 3, 3]
-    return K
-
-def save_normal(pred: torch.Tensor, path: Path) -> None:
-    # pred beklenen şekil: [1, 3, H, W] veya [1, H, W, 3]
-    n = pred.squeeze(0)
-    if n.shape[0] == 3:          # [3, H, W] → [H, W, 3]
-        n = n.permute(1, 2, 0)
-    n = n.cpu().numpy()          # float32, değerler [-1, 1]
-    rgb = ((n + 1.0) / 2.0 * 255.0).clip(0, 255).astype(np.uint8)
-    Image.fromarray(rgb).save(path)
+def apply_mask(normal_map: Image.Image, mask: np.ndarray | None) -> Image.Image:
+    """Set background pixels to black in the normal map."""
+    if mask is None:
+        return normal_map
+    arr = np.array(normal_map)
+    arr[~mask] = 0
+    return Image.fromarray(arr)
 
 # ── Char listesi ──────────────────────────────────────────────────────────────
 if args.id:
@@ -135,13 +99,13 @@ else:
 total = len(char_dirs)
 done = skip = fail = 0
 
-print(f"Toplam: {total} karakter")
-print(f"  normal  : {NORMAL_ROOT}\n")
+print(f"Total: {total} characters")
+print(f"  normals -> {NORMAL_ROOT}\n")
 
 for i, char_dir in enumerate(char_dirs):
-    char_id  = char_dir.name
-    out_dir  = NORMAL_ROOT / char_id
-    prefix   = f"[{i+1}/{total}] {char_id}"
+    char_id = char_dir.name
+    out_dir = NORMAL_ROOT / char_id
+    prefix  = f"[{i+1}/{total}] {char_id}"
 
     if not args.overwrite and (out_dir / f"{char_id}_front.png").exists():
         skip += 1
@@ -156,30 +120,23 @@ for i, char_dir in enumerate(char_dirs):
             if not src.exists():
                 continue
 
-            x      = load_tensor(src).to(device)           # [1, 3, H, W]
-            _, _, h, w = x.shape
-
-            # Padding: H ve W 32'nin katı olmalı (DSINE gereksinimi)
-            pad_h = (32 - h % 32) % 32
-            pad_w = (32 - w % 32) % 32
-            x_pad = F.pad(x, (0, pad_w, 0, pad_h), mode="constant", value=0.0)
-
-            intrin = intrinsics_tensor(h, w).to(device)    # [1, 3, 3]
-
-            with torch.no_grad():
-                preds = model(x_pad, intrin, mode='test')
-                # DSINE çoklu ölçek döner; son eleman en ince
-                pred = preds[-1] if isinstance(preds, (list, tuple)) else preds
-                pred = pred[:, :, :h, :w]                  # padding'i kırp
-
-            save_normal(pred, out_dir / f"{char_id}_{view}.png")
+            raw = Image.open(src)
+            mask = extract_mask(raw)
+            img = raw.convert("RGB")
+            normal_map = predictor(
+                img,
+                resolution=args.resolution,
+                match_input_resolution=True,
+                data_type="indoor",
+            )
+            normal_map = apply_mask(normal_map, mask)
+            normal_map.save(out_dir / f"{char_id}_{view}.png")
 
         done += 1
         print(f"{prefix} | OK")
 
     except Exception as e:
         fail += 1
-        print(f"{prefix} | HATA: {e}")
+        print(f"{prefix} | ERR: {e}")
 
-# ── Özet ──────────────────────────────────────────────────────────────────────
-print(f"\n-- Normal: {done} OK, {skip} atlandi, {fail} hata")
+print(f"\n-- Normals: {done} OK, {skip} skipped, {fail} errors")
