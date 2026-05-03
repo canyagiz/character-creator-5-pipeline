@@ -149,7 +149,7 @@ def measure_circumference_cm(z_m):
 # ── Referans yükseklikleri ────────────────────────────────────────────────────
 z_chest     = bone_z("CC_Base_L_Breast")
 z_waist     = bone_z("CC_Base_Waist")
-z_hip       = bone_z("CC_Base_L_Thigh") - (bone_z("CC_Base_L_Thigh") - bone_z("CC_Base_L_Calf")) * 0.15
+z_hip       = bone_z("CC_Base_L_Thigh") + (bone_z("CC_Base_Waist") - bone_z("CC_Base_L_Thigh")) * 0.15
 z_mid_thigh = (bone_z("CC_Base_L_Thigh") + bone_z("CC_Base_L_Calf")) / 2
 z_calf      = bone_z("CC_Base_L_CalfTwist02")
 

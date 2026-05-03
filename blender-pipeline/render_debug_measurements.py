@@ -125,7 +125,7 @@ MEASUREMENTS = [
                             (0.0, 1.0, 1.0), cut_at="mid", radius_factor=None, margin_factor=0.8, pick="closest"),
     _z_entry("chest",       bone_z("CC_Base_L_Breast"),     (1.0, 0.2, 0.2)),
     _z_entry("waist",       bone_z("CC_Base_Waist"),        (0.2, 1.0, 0.2)),
-    _z_entry("hip",         bone_z("CC_Base_L_Thigh") - (bone_z("CC_Base_L_Thigh") - bone_z("CC_Base_L_Calf")) * 0.15,
+    _z_entry("hip",         bone_z("CC_Base_L_Thigh") + (bone_z("CC_Base_Waist") - bone_z("CC_Base_L_Thigh")) * 0.15,
                                                              (0.3, 0.5, 1.0)),
     _z_entry("mid_thigh",   (bone_z("CC_Base_L_Thigh") + bone_z("CC_Base_L_Calf")) / 2,
                                                              (1.0, 0.55, 0.0)),
