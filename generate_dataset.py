@@ -166,8 +166,9 @@ for group, g_cfg in GROUPS.items():
 
 df = pd.concat(chunks, ignore_index=True)
 
-# Karıştır ve char_id ata
+# Karıştır, gender'a göre grupla (CC5 LoadFile sayısını minimize eder), char_id ata
 df = df.sample(frac=1, random_state=SEED).reset_index(drop=True)
+df = df.sort_values("gender", kind="stable").reset_index(drop=True)
 df.insert(0, "char_id", [f"char_{i+1:05d}" for i in range(len(df))])
 
 df.to_csv(OUTPUT, index=False)
