@@ -235,17 +235,8 @@ def measure_segment_circumference_cm(bone_start_name, bone_end_name,
     bm.free()
     return round(circ_cm, 2)
 
-# ── Genişlikler ───────────────────────────────────────────────────────────────
-shoulder_width_cm = round(
-    abs(bone_world("CC_Base_L_Upperarm").x - bone_world("CC_Base_R_Upperarm").x) * 100, 2)
-hip_width_cm = round(
-    abs(bone_world("CC_Base_L_Thigh").x - bone_world("CC_Base_R_Thigh").x) * 100, 2)
-
 # ── Ölçümler ──────────────────────────────────────────────────────────────────
 measurements = {
-    "char_id":   char_name,
-    "height_cm": height_cm,
-
     # Boyun: NeckTwist01–NeckTwist02 ortası, yarıçap filtresi yok (obez boyunları keser)
     # pick="closest" → merkeze en yakın bileşen = boyun (omuz değil)
     "neck_circ_cm":      measure_segment_circumference_cm(
@@ -269,17 +260,19 @@ measurements = {
     "lower_leg_length_cm": bone_dist_cm("CC_Base_L_Calf",     "CC_Base_L_Foot"),
     "total_leg_length_cm": bone_dist_cm("CC_Base_L_Thigh",    "CC_Base_L_Foot"),
 
-    "shoulder_width_cm": shoulder_width_cm,
-    "hip_width_cm":      hip_width_cm,
 }
 
-# ── Kaydet ────────────────────────────────────────────────────────────────────
-out_path = os.path.join(out_dir, f"{char_name}_measurements.json")
+# ── Kaydet (meta JSON'a merge et) ─────────────────────────────────────────────
+out_path = os.path.join(out_dir, f"{char_name}_meta.json")
+meta = {}
+if os.path.exists(out_path):
+    with open(out_path) as f:
+        meta = json.load(f)
+meta.update(measurements)
 with open(out_path, "w") as f:
-    json.dump(measurements, f, indent=2)
+    json.dump(meta, f, indent=2)
 
 print(f"\n{char_name}:")
 for k, v in measurements.items():
-    if k != "char_id":
-        print(f"  {k:<28} {v}")
+    print(f"  {k:<28} {v}")
 print(f"\n-> {out_path}")

@@ -38,7 +38,8 @@
       "Bash(python blender-pipeline/batch_debug.py --id char_00003 --overwrite)",
       "Bash(dir c:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\debug\\\\char_00003 *)",
       "Bash(dir c:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\debug\\\\ *)",
-      "Bash(git *)"
+      "Bash(git *)",
+      "Bash(python *)"
     ]
   }
 }

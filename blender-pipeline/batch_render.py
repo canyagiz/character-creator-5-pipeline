@@ -32,7 +32,6 @@ FBX_ROOT       = os.path.join(os.path.dirname(__file__), "..", "fbx_export")
 RAW_ROOT       = os.path.join(os.path.dirname(__file__), "..", "renders", "raw")
 SIL_ROOT       = os.path.join(os.path.dirname(__file__), "..", "renders", "silhouettes")
 META_ROOT      = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "renders", "meta"))
-MEASURE_ROOT   = os.path.join(os.path.dirname(__file__), "..", "renders", "measurements")
 DEBUG_ROOT     = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "renders", "debug"))
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
@@ -72,8 +71,7 @@ print(f"Toplam: {total} FBX")
 print(f"  raw       : {RAW_ROOT}")
 print(f"  siluet    : {SIL_ROOT}")
 print(f"  meta      : {META_ROOT}")
-if not args.no_measure:
-    print(f"  olcum     : {MEASURE_ROOT}")
+
 if args.debug:
     print(f"  debug     : {DEBUG_ROOT}")
 print()
@@ -82,7 +80,7 @@ for i, fbx_path in enumerate(fbx_files):
     char_name    = os.path.splitext(os.path.basename(fbx_path))[0]
     raw_dir      = os.path.join(RAW_ROOT,  char_name)
     sil_dir      = os.path.join(SIL_ROOT,  char_name)
-    measure_path = os.path.join(MEASURE_ROOT, f"{char_name}_measurements.json")
+    meta_path    = os.path.join(META_ROOT, f"{char_name}_meta.json")
 
     prefix = f"[{i+1}/{total}] {char_name}"
 
@@ -114,13 +112,20 @@ for i, fbx_path in enumerate(fbx_files):
         print(f"{prefix} | {render_tag}")
         continue
 
-    if not args.overwrite and os.path.exists(measure_path):
+    def _has_measurements(path):
+        try:
+            with open(path) as f:
+                return "chest_circ_cm" in json.load(f)
+        except Exception:
+            return False
+
+    if not args.overwrite and _has_measurements(meta_path):
         measure_skip += 1
         measure_tag = "olcum:SKIP"
     else:
         result = subprocess.run(
             [BLENDER_EXE, "--background", "--python", MEASURE_SCRIPT,
-             "--", fbx_path, MEASURE_ROOT],
+             "--", fbx_path, META_ROOT],
             capture_output=True, text=True
         )
         if result.returncode != 0:
@@ -129,27 +134,11 @@ for i, fbx_path in enumerate(fbx_files):
             print(result.stderr[-400:])
         else:
             measure_done += 1
-            # chest ve waist satırlarını özetle
             summary = []
             for line in result.stdout.splitlines():
                 if any(k in line for k in ("chest_circ", "waist_circ", "WARN")):
                     summary.append(line.strip())
             measure_tag = "olcum:OK" + (f"  [{' | '.join(summary)}]" if summary else "")
-
-            # Ölçümleri meta JSON'a birleştir
-            meta_path = os.path.join(META_ROOT, f"{char_name}_meta.json")
-            try:
-                with open(measure_path) as f:
-                    m = json.load(f)
-                meta = {}
-                if os.path.exists(meta_path):
-                    with open(meta_path) as f:
-                        meta = json.load(f)
-                meta.update(m)
-                with open(meta_path, "w") as f:
-                    json.dump(meta, f, indent=2)
-            except Exception as e:
-                print(f"  [WARN] meta birlestirme hatasi: {e}")
 
     # ── Debug görseli ─────────────────────────────────────────────────────────
     if args.debug:
