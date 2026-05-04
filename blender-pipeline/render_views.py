@@ -132,9 +132,9 @@ def add_light(name, offset, energy, color=(1, 1, 1), size_mult=2.5):
     l.rotation_euler = (cam_target - loc).to_track_quat('-Z', 'Y').to_euler()
 
 r = height_m
-add_light("Key",  ( r*0.8, -r*0.8,  r*0.6), 160)               # 350 → 160
-add_light("Fill", (-r*0.6, -r*0.5,  r*0.2), 100, (0.9, 0.95, 1.0))  # 280 → 100
-add_light("Rim",  ( 0,      r*1.2,  r*0.4),  70)                # 180 → 70
+add_light("Key",  ( r*0.8, -r*0.8,  r*0.6), 130)
+add_light("Fill", (-r*0.6, -r*0.5,  r*0.2),  80, (0.9, 0.95, 1.0))
+add_light("Rim",  ( 0,      r*1.2,  r*0.4),  35)
 
 render_pass(raw_dir, "raw")
 
