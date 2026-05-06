@@ -30,13 +30,13 @@ for i, fbx_path in enumerate(fbx_files):
     char_name = os.path.splitext(os.path.basename(fbx_path))[0]
     meta_path = os.path.join(META_DIR, f"{char_name}_meta.json")
 
-    # Zaten shoulder_width_cm varsa atla
+    # shoulder_width_cm zaten doğru ölçülmüşse atla (0 ise yeniden ölç)
     if os.path.exists(meta_path):
         import json
         with open(meta_path) as f:
             existing = json.load(f)
-        if "shoulder_width_cm" in existing:
-            print(f"[{i+1}/{total}] {char_name} SKIP (zaten var)")
+        if existing.get("shoulder_width_cm", 0) > 0:
+            print(f"[{i+1}/{total}] {char_name} SKIP")
             done += 1
             continue
 

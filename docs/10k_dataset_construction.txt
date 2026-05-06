@@ -1,0 +1,314 @@
+================================================================================
+10K DATASET CONSTRUCTION PLANI
+cc5-scripts projesi — vücut tipi çeşitliliği olan karakter veri seti
+================================================================================
+
+HEDEF
+-----
+10.000 satırdan oluşan, her satırın hangi vücut ölçümlerini ve hangi somatotype
+etiketini taşıyacağını render öncesinde kesin olarak bildiğimiz bir karakter
+veri seti üretmek.
+
+Neden "render öncesi bilmek" önemli:
+  CC5 morph sistemi nonlineer ve çok boyutlu. Fat=0.4, muscle=0.3 gibi üst
+  düzey skorlar compute_all_weights() içindeki formüllerle 50+ alt morph'a
+  dönüşüyor. Bu alt morphların her biri farklı beden bölgelerini farklı
+  miktarlarda etkiliyor. Dolayısıyla bir satırı export edip render etmeden,
+  o satırın "hourglass mı, apple mı?" sorusunu cevaplayamıyoruz.
+  Bunu çözmeden üretilen 10K satırın etiketleri ya rastgele olur ya da
+  sistematik olarak yanlış — her ikisi de modeli bozar.
+
+================================================================================
+AŞAMA 1 — Kalibrasyon: Sensitivity Matrix
+================================================================================
+
+Dosyalar:
+  generate_sensitivity_probe.py   → logs/sensitivity_probe.csv
+  props/sensitivity_export.py     → fbx_export_sensitivity/  (CC5'te çalıştır)
+  blender-pipeline/batch_measure_sensitivity.py  → logs/sensitivity_measurements.csv
+
+Ne yapılıyor:
+  CC5'teki 53 morph tek tek test ediliyor. Her testte tüm morphlar 0'da tutulup
+  sadece test edilen morph kendi aralığında (min→max) 11 adımda değiştiriliyor.
+  Her adımda FBX export edilip Blender ile ölçüm alınıyor.
+
+  Test edilen ölçümler: height_cm, shoulder_width_cm, hip_width_cm, chest_circ_cm,
+  waist_circ_cm, hip_circ_cm, neck_circ_cm, bicep_circ_cm, mid_thigh_circ_cm,
+  calf_circ_cm
+
+  Toplam: 53 morph × 11 adım × 2 cinsiyet = 1.168 karakter
+  Cinsiyet başına + 1 baseline = toplam 1.170 satır
+
+Neden OFAT (One Factor At A Time):
+  Morph katkılarının birbirinden bağımsız olduğunu doğrulamamız gerekiyor.
+  Önce her morphun tek başına ne kadar etki yarattığını ölçmeliyiz ki sonra
+  kombinasyonlarda bu katkıları toplayabilelim.
+
+Çıktı:
+  Her satırda: morph_key, morph_id, morph_value + 10 ölçüm
+  Bu tablo "bir morph birimlik artış → kaç cm değişim" sorusunu cevaplayacak.
+
+Çalıştırma sırası:
+  1. python generate_sensitivity_probe.py
+  2. CC5 Script Editor → props/sensitivity_export.py  (CC5 çalışırken)
+  3. python blender-pipeline/batch_measure_sensitivity.py --watch  (paralel çalışır)
+
+================================================================================
+AŞAMA 2 — Kalibrasyon: Score → Morph Ağırlık Haritası
+================================================================================
+
+Dosya:
+  generate_score_morph_map.py  → logs/score_to_morph_map.csv
+
+Ne yapılıyor:
+  Üst düzey input skorları (fat, muscle, hip_score, waist_def_score, height_score
+  ve 7 uzuv uzunluk skoru) tek tek 0→1 arasında 11 adımda taranıyor.
+  Her kombinasyon için compute_all_weights() çağrılıp 53 morph ağırlığı kaydediliyor.
+
+  Toplam: 12 skor × 11 adım × 2 cinsiyet + 2 baseline ≈ 266 satır
+
+Neden gerekli:
+  compute_all_weights() bir kara kutu değil; formülleri biz yazdık. Ama zaman içinde
+  değişecek ve her sorgu için "fat=0.4 girince M_HIP_SCALE ne olur?" sorusunu
+  tekrar hesaplamak yerine hazır tablodan bakmak daha güvenli. Ayrıca bu harita
+  regresssion modelinin girdi katmanını oluşturuyor.
+
+Çıktı:
+  Sütunlar: char_id, gender, varied_score, score_value, fat, muscle, hip_score,
+  waist_def_score, height_score + 53 morph ağırlığı
+  Bu tablo "şu skorlar girilince hangi morphlar ne kadar aktif olur" sorusunu
+  cevaplayacak.
+
+Çalıştırma:
+  python generate_score_morph_map.py  (CC5 gerekmez, saf Python)
+
+================================================================================
+AŞAMA 3 — Tahmini Ölçüm Modeli (Measurement Predictor)
+================================================================================
+
+Dosya: (henüz yazılmadı)
+  analysis/build_measurement_predictor.py  → models/measurement_predictor.pkl
+
+Ne yapılıyor:
+  Sensitivity matrix'ten her morph için "birim başına etki" çıkarılıyor:
+    sensitivity[morph_id][measurement] = Δcm / Δmorph_value
+
+  Bir dataset satırı için tahmini ölçüm:
+    predicted[measurement] = baseline[measurement]
+                             + Σ(morph_weight[i] × sensitivity[i][measurement])
+
+  Burada:
+    - baseline: tüm morphlar 0 iken ölçüm (sensitivity CSV'deki baseline satırı)
+    - morph_weight[i]: o satır için compute_all_weights() çıktısı
+    - sensitivity[i][measurement]: Aşama 1'den çıkan etki katsayısı
+
+Varsayım ve sınır:
+  Bu model morphların additive davrandığını varsayıyor. CC5'te bu büyük ölçüde
+  doğru, ancak tam değil. İki morph aynı anda aktifken küçük nonlineer etkileşim
+  olabilir. Somatotype sınıflandırması için bu sapma kabul edilebilir seviyede;
+  ama ileride doğrulama aşamasında (Aşama 7) kontrol edilecek.
+
+Çıktı:
+  Herhangi bir (fat, muscle, hip_score, ...) vektörü için 10 tahmini ölçüm döndüren
+  bir fonksiyon ya da kayıtlı model.
+
+================================================================================
+AŞAMA 4 — Somatotype Kuralları (Measurement → Label)
+================================================================================
+
+Dosya: (henüz yazılmadı)
+  cc5_helpers.py içine veya ayrı derive_somatotype.py
+
+Ne yapılıyor:
+  Tahmini ölçümlerden deterministik kural ile somatotype etiketi atanıyor.
+
+  Kurallar (sensitivity matrix tamamlanınca sayısal eşikler netleşecek):
+
+    hourglass:
+      hip_width > shoulder_width + threshold_h
+      waist_circ < hip_circ - threshold_w
+      → Geniş kalça, dar bel, nispeten dar omuz
+
+    pear:
+      hip_width > shoulder_width + threshold_h
+      waist_circ >= hip_circ - threshold_w
+      → Geniş kalça ama belirgin bel tanımı yok
+
+    apple:
+      waist_circ > hip_circ - small_margin
+      fat > fat_threshold
+      → Bel/karın bölgesi kalça kadar geniş, yüksek yağ
+
+    v_shape:
+      shoulder_width > hip_width + threshold_v
+      (genellikle erkek + muscle yüksek)
+      → Geniş omuz, dar kalça
+
+    rectangle:
+      Yukarıdaki koşulların hiçbiri sağlanmıyor
+      → Omuz ≈ kalça ≈ bel, dengeli
+
+Neden sensitivity matrix bitmeden eşikler yazılmıyor:
+  Örneğin "shoulder_width + 3cm" eşiği, shoulder_scale morphunun gerçekte
+  ne kadar etki yarattığına bağlı. Eğer shoulder_scale 0→1 sadece 2cm değişim
+  yapıyorsa threshold 3cm ise hiç v_shape çıkmaz. Gerçek cm değerleri
+  sensitivity CSV'den okunacak.
+
+================================================================================
+AŞAMA 5 — 10K Satır Örnekleme
+================================================================================
+
+Dosya: (mevcut generate_dataset.py güncellenerek)
+  generate_dataset.py  → logs/dataset_10k.csv
+
+Input parametreleri ve aralıkları:
+
+  fat                    [0.0, 1.0]   — vücut yağ oranı
+  muscle                 [0.0, 1.0]   — kas gelişimi
+  hip_score              [0.0, 1.0]   — kalça/glute kemik yapısı (fat'tan bağımsız)
+  waist_def_score        [0.0, 1.0]   — bel tanımı (yüksek = dar bel)
+  height_score           [0.0, 1.0]   — boy
+  chest_height_score     [0.0, 1.0]   — göğüs yüksekliği
+  hip_length_score       [0.0, 1.0]   — kalça uzunluğu
+  thigh_length_score     [0.0, 1.0]   — uyluk uzunluğu
+  lower_leg_length_score [0.0, 1.0]   — alt bacak uzunluğu
+  upper_arm_length_score [0.0, 1.0]   — üst kol uzunluğu
+  forearm_length_score   [0.0, 1.0]   — ön kol uzunluğu
+  neck_length_score      [0.0, 1.0]   — boyun uzunluğu
+
+  gender: female / male  (5K + 5K ya da dengeli dağılım)
+
+Örnekleme yöntemi — Latin Hypercube Sampling (LHS):
+  Neden rastgele değil: Saf rastgele örneklemede bazı köşeler boş kalabilir.
+  LHS her boyutu eşit aralıklara böler ve her aralıktan tam birer örnek alır.
+  12 boyutlu uzayda 10.000 nokta ile her bölgeyi temsil etmek için ideal.
+
+  Not: fat + muscle birlikte yüksek biyolojik olarak nadirdir. Örnekleme
+  sonrası fat + muscle > 1.4 olan satırlar filtrelenebilir.
+
+Neden 12 boyut:
+  Somatotype kararı sadece fat/muscle'a bağlı değil. hip_score ve
+  waist_def_score doğrudan hourglass/pear/apple ayrımını belirliyor.
+  Uzuv skorları ise boy-kilo oranını ve vücut proposyonlarını etkiliyor.
+  Bunlar dahil edilmezse dataset yeterince çeşitli olmaz.
+
+================================================================================
+AŞAMA 6 — Etiket Atama ve Dataset Doğrulama
+================================================================================
+
+Dosya: (generate_dataset.py içinde)
+
+Ne yapılıyor:
+  Her satır için:
+    1. compute_all_weights(fat, muscle, hip_score, ...) → 53 morph ağırlığı
+    2. Measurement predictor → 10 tahmini ölçüm
+    3. derive_somatotype(ölçümler) → somatotype etiketi
+
+  Kontroller:
+    - Somatotype dağılımı: her etiket makul oranda temsil ediliyor mu?
+    - Measurement dağılımı: height_cm, waist_circ_cm vs. gerçekçi aralıkta mı?
+    - fat + muscle korelasyonu: aşırı kombinasyonlar var mı?
+
+  Eğer bir somatotype eksik veya az temsil ediliyorsa:
+    LHS sampling'e o somatotyp'a yönlendiren bölgeleri bilinçli
+    olarak daha yoğun örneklemek için rejection sampling eklenir.
+
+Çıktı kolonları:
+  char_id, gender, fat, muscle, hip_score, waist_def_score, height_score,
+  chest_height_score, hip_length_score, thigh_length_score,
+  lower_leg_length_score, upper_arm_length_score, forearm_length_score,
+  neck_length_score,
+  pred_height_cm, pred_shoulder_width_cm, pred_hip_width_cm,
+  pred_chest_circ_cm, pred_waist_circ_cm, pred_hip_circ_cm,
+  pred_bicep_circ_cm, pred_thigh_circ_cm, pred_calf_circ_cm,
+  somatotype
+
+================================================================================
+AŞAMA 7 — CC5 Export ve Render
+================================================================================
+
+Dosyalar:
+  props/batch_export.py       → fbx_export/ (CC5'te çalıştır)
+  blender-pipeline/pipeline.py → renders/
+
+Ne yapılıyor:
+  dataset_10k.csv her satırı için:
+    1. CC5'te ilgili morphlar set ediliyor
+    2. FBX export ediliyor
+    3. Blender pipeline ile 3-4 açıdan render alınıyor
+    4. measure_anthropometry.py ile gerçek ölçümler alınıyor → actual_*.csv
+
+Neden export + ölçüm tekrar yapılıyor:
+  Tahmini ölçümler additivity varsayımına dayanıyor. Gerçek ölçümlerle
+  karşılaştırarak tahminin ne kadar saptığını görmemiz gerekiyor. Bu sapma
+  küçükse tahmin modeli güvenilir demektir; büyükse Aşama 3'e dönüp
+  interaksiyon terimleri eklemek gerekebilir.
+
+================================================================================
+AŞAMA 8 — Doğrulama (Predicted vs Actual)
+================================================================================
+
+Dosya: (henüz yazılmadı)
+  analysis/validate_predictions.py
+
+Ne yapılıyor:
+  Her karakter için: pred_shoulder_width_cm vs actual_shoulder_width_cm
+  Hata metriği: MAE (Mean Absolute Error), R²
+  Eğer MAE < 1cm → tahmin yeterince iyi
+  Eğer MAE > 2cm → morph interaksiyonları modele dahil edilmeli
+
+  Somatotype doğruluğu:
+    Tahmini etiket ile ölçüm bazlı gerçek etiket karşılaştırması
+    Confusion matrix: hourglass tahmin edilen kaçı gerçekten hourglass?
+
+Çıktı:
+  Güncellenen dataset_10k.csv — actual_* kolonları eklenmiş, validated=True/False
+
+================================================================================
+ÖZET: ÇALIŞITIRMA SIRASI
+================================================================================
+
+[ ] 1. python generate_sensitivity_probe.py
+[ ] 2. CC5 Script Editor → props/sensitivity_export.py   (1.168 FBX export)
+[ ] 3. python blender-pipeline/batch_measure_sensitivity.py --watch
+         → logs/sensitivity_measurements.csv  (~9 saat)
+[ ] 4. python generate_score_morph_map.py
+         → logs/score_to_morph_map.csv  (birkaç dakika)
+[ ] 5. python analysis/sensitivity_matrix.py
+         → Heatmap + shoulder diagnosis + sayısal eşikler
+[ ] 6. analysis/build_measurement_predictor.py  YAZ
+         → models/measurement_predictor.pkl
+[ ] 7. derive_somatotype() fonksiyonu — eşikler sensitivity_matrix'ten  YAZ
+[ ] 8. generate_dataset.py güncelle — LHS 12 boyut, etiket atama  GÜNCELLE
+         → logs/dataset_10k.csv
+[ ] 9. CC5 Script Editor → props/batch_export.py  (10K FBX export)
+[ ] 10. python blender-pipeline/pipeline.py  (render + ölçüm)
+[ ] 11. python analysis/validate_predictions.py
+          → MAE raporu, confusion matrix
+
+================================================================================
+BAĞIMLILIK ŞEMASI
+================================================================================
+
+sensitivity_probe.csv
+       ↓
+  [CC5 export]
+       ↓
+sensitivity_measurements.csv ─────────────────────┐
+                                                    ↓
+score_to_morph_map.csv ──────────► build_measurement_predictor.py
+                                                    ↓
+                                   sensitivity_matrix.py → eşikler
+                                                    ↓
+                               derive_somatotype() fonksiyonu
+                                                    ↓
+                               generate_dataset.py (10K LHS)
+                                                    ↓
+                                    dataset_10k.csv (pred_* + somatotype)
+                                                    ↓
+                                          [CC5 export → render]
+                                                    ↓
+                                    actual_measurements.csv
+                                                    ↓
+                                    validate_predictions.py
+================================================================================

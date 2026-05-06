@@ -253,9 +253,26 @@ def measure_width_cm(z_m, window_m=0.06):
         return 0.0
     return round((max(x_vals) - min(x_vals)) * 100, 2)
 
-# Referans yükseklikleri — omuz için üst kol kemiği, kalça genişliği için uyluk kemiği
+# Referans yükseklikleri
 z_shoulder_bone = bone_z("CC_Base_L_Upperarm")
 z_hip_bone      = bone_z("CC_Base_L_Thigh")
+
+# ── Omuz genişliği: omuz eklemi X'i + 7 cm deltoid marjı ──────────────────────
+# T-pose'da kollar yatay olduğundan Z filtresi kolu yakalar.
+# Çözüm: omuz kemiği X pozisyonunu sınır al, ötesini dışla.
+_p_sh_L   = arm_obj.matrix_world @ arm_obj.pose.bones["CC_Base_L_Upperarm"].head
+_p_sh_R   = arm_obj.matrix_world @ arm_obj.pose.bones["CC_Base_R_Upperarm"].head
+_DELT_M   = 0.07
+_x_sh_lo  = min(_p_sh_L.x, _p_sh_R.x) - _DELT_M
+_x_sh_hi  = max(_p_sh_L.x, _p_sh_R.x) + _DELT_M
+_sh_xs    = []
+for _obj in mesh_objs:
+    _mat = _obj.matrix_world
+    for _v in _obj.data.vertices:
+        _wv = _mat @ _v.co
+        if abs(_wv.z - z_shoulder_bone) <= 0.06 and _x_sh_lo <= _wv.x <= _x_sh_hi:
+            _sh_xs.append(_wv.x)
+shoulder_width_cm = round((max(_sh_xs) - min(_sh_xs)) * 100, 2) if len(_sh_xs) >= 2 else 0.0
 
 # ── Ölçümler ──────────────────────────────────────────────────────────────────
 measurements = {
@@ -275,9 +292,8 @@ measurements = {
     "forearm_circ_cm":  measure_segment_circumference_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand",    cut_at="mid"),
     "wrist_circ_cm":    measure_segment_circumference_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand",    cut_at="end"),
 
-    # Lateral genişlikler (T-pose, en baştan en sona)
-    "shoulder_width_cm":  measure_width_cm(z_shoulder_bone, window_m=0.06),
-    "hip_width_cm":       measure_width_cm(z_hip_bone,      window_m=0.05),
+    "shoulder_width_cm":  shoulder_width_cm,
+    "hip_width_cm":       measure_width_cm(z_hip_bone, window_m=0.05),
 
     "upper_arm_length_cm": bone_dist_cm("CC_Base_L_Upperarm", "CC_Base_L_Forearm"),
     "forearm_length_cm":   bone_dist_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand"),

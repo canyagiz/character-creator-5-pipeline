@@ -40,7 +40,9 @@
       "Bash(dir c:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\debug\\\\ *)",
       "Bash(git *)",
       "Bash(python *)",
-      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\calib\\\\renders_calib\" -Directory | ForEach-Object { Write-Output $_.Name })"
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\calib\\\\renders_calib\" -Directory | ForEach-Object { Write-Output $_.Name })",
+      "Bash(Measure-Object)",
+      "Bash(Select-Object -ExpandProperty Count)"
     ]
   }
 }

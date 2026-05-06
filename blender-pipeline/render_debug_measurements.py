@@ -383,7 +383,7 @@ z_hip_bone  = bone_z("CC_Base_L_Thigh")
 # X filtresi: eklem X'i ± DELTOID_M — deltoid dahil, kol hariç.
 p_sh_L     = bone_world("CC_Base_L_Upperarm")
 p_sh_R     = bone_world("CC_Base_R_Upperarm")
-DELTOID_M  = 0.05   # 5 cm deltoid marjı
+DELTOID_M  = 0.07   # 7 cm deltoid marjı
 
 # L/R kemik X yönü karakterin bakış tarafına göre değişebilir; min/max ile sıraya al.
 x_sh_lo = min(p_sh_L.x, p_sh_R.x) - DELTOID_M
