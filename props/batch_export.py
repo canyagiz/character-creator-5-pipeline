@@ -108,6 +108,8 @@ for i, row in enumerate(rows):
             neck_length_score      = float(row["neck_length_score"]),
             pattern                = row.get("training_pattern", "balanced"),
             gender                 = gender,
+            hip_score              = float(row.get("hip_score") or 0.5),
+            waist_def_score        = float(row.get("waist_def_score") or 0.5),
         )
 
         for mid in ALL_MORPHS:

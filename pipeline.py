@@ -41,7 +41,12 @@ parser.add_argument("--no-normal",  action="store_true")
 parser.add_argument("--no-measure", action="store_true")
 parser.add_argument("--debug",      action="store_true")
 parser.add_argument("--poll",       type=int, default=15)
+parser.add_argument("--fbx-dir",    type=str, default=None,
+                    help="FBX klasoru (default: fbx_export/)")
 args = parser.parse_args()
+
+if args.fbx_dir:
+    FBX_DIR = Path(args.fbx_dir).resolve()
 
 # ── Durum kontrolleri ──────────────────────────────────────────────────────────
 def render_done(char_id: str) -> bool:
@@ -112,6 +117,7 @@ def render_worker(render_q: queue.Queue, normal_q: queue.Queue,
                   overwrite_normal: set):
     measure_extra = ("--no-measure",) if args.no_measure else ()
     debug_extra   = ("--debug",)      if args.debug      else ()
+    dir_extra     = ("--dir", str(FBX_DIR))
 
     while True:
         item = render_q.get()
@@ -122,7 +128,7 @@ def render_worker(render_q: queue.Queue, normal_q: queue.Queue,
         if not overwrite and render_done(char_id):
             print(f"[render]  {char_id} | SKIP")
         else:
-            extra = (("--overwrite",) if overwrite else ()) + measure_extra + debug_extra
+            extra = (("--overwrite",) if overwrite else ()) + measure_extra + debug_extra + dir_extra
             print(f"[render]  {char_id} | {'overwrite ' if overwrite else ''}başlıyor...")
             ok = run(RENDER_SCRIPT, char_id, extra)
             print(f"[render]  {char_id} | {'OK' if ok else 'HATA'}")

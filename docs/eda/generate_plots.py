@@ -326,4 +326,109 @@ plt.savefig(os.path.join(OUT, '10_segment_by_group.png'), dpi=130, bbox_inches='
 plt.close()
 print('10 done')
 
+SOMA_ORDER_F  = ['hourglass', 'pear', 'rectangle', 'apple']
+SOMA_ORDER_M  = ['v_shape', 'rectangle', 'apple']
+SOMA_ORDER    = ['hourglass', 'pear', 'rectangle', 'apple', 'v_shape']
+SOMA_COLORS   = {
+    'hourglass': '#E8687A', 'pear': '#F4A261', 'rectangle': '#6BB5D6',
+    'apple': '#74C69D',     'v_shape': '#9B59B6',
+}
+
+# ── 11. Somatotip dağılımı ────────────────────────────────────────────────────
+fig, axes = plt.subplots(1, 3, figsize=(16, 5))
+
+# Genel dağılım bar
+soma_counts = df['somatotype'].value_counts().reindex(SOMA_ORDER, fill_value=0)
+axes[0].bar(
+    SOMA_ORDER, soma_counts.values,
+    color=[SOMA_COLORS[s] for s in SOMA_ORDER], edgecolor='white',
+)
+axes[0].set_title('Somatotip Dagilimi (Toplam)')
+axes[0].set_ylabel('Satir sayisi')
+axes[0].tick_params(axis='x', rotation=20)
+for i, v in enumerate(soma_counts.values):
+    axes[0].text(i, v + 80, f'{v:,}\n({v/len(df)*100:.0f}%)', ha='center', fontsize=8)
+
+# Kadın pie
+female_soma = df[df.gender == 'female']['somatotype'].value_counts().reindex(SOMA_ORDER_F, fill_value=0)
+axes[1].pie(
+    female_soma.values, labels=SOMA_ORDER_F, autopct='%1.0f%%',
+    colors=[SOMA_COLORS[s] for s in SOMA_ORDER_F],
+    startangle=90, wedgeprops={'edgecolor': 'white', 'linewidth': 2},
+)
+axes[1].set_title('Kadin Somatotip Orani')
+
+# Erkek pie
+male_soma = df[df.gender == 'male']['somatotype'].value_counts().reindex(SOMA_ORDER_M, fill_value=0)
+axes[2].pie(
+    male_soma.values, labels=SOMA_ORDER_M, autopct='%1.0f%%',
+    colors=[SOMA_COLORS[s] for s in SOMA_ORDER_M],
+    startangle=90, wedgeprops={'edgecolor': 'white', 'linewidth': 2},
+)
+axes[2].set_title('Erkek Somatotip Orani')
+
+plt.tight_layout()
+plt.savefig(os.path.join(OUT, '11_somatotype_dist.png'), dpi=130, bbox_inches='tight')
+plt.close()
+print('11 done')
+
+# ── 12. Shape score dağılımı ──────────────────────────────────────────────────
+fig, axes = plt.subplots(1, 2, figsize=(14, 5))
+
+# Violin: shape_score per somatotype
+violin_data = [df[df.somatotype == s]['shape_score'].values for s in SOMA_ORDER]
+vp = axes[0].violinplot(violin_data, positions=range(len(SOMA_ORDER)), showmedians=True)
+for i, (body, s) in enumerate(zip(vp['bodies'], SOMA_ORDER)):
+    body.set_facecolor(SOMA_COLORS[s])
+    body.set_alpha(0.7)
+vp['cmedians'].set_color('black')
+vp['cmedians'].set_linewidth(2)
+axes[0].set_xticks(range(len(SOMA_ORDER)))
+axes[0].set_xticklabels(SOMA_ORDER, rotation=20)
+axes[0].set_title('Shape Score Dagilimi — Somatotipe Gore')
+axes[0].set_ylabel('shape_score')
+axes[0].set_ylim(0, 1.05)
+
+# Scatter: fat x muscle, somatotype renkli (subsample)
+sub = df.sample(n=min(4000, len(df)), random_state=42)
+for s in SOMA_ORDER:
+    d = sub[sub.somatotype == s]
+    axes[1].scatter(d['fat_score'], d['muscle_score'],
+                    alpha=0.25, s=5, color=SOMA_COLORS[s], label=s)
+axes[1].set_title('Fat x Muscle — Somatotip Renkleri')
+axes[1].set_xlabel('fat_score')
+axes[1].set_ylabel('muscle_score')
+axes[1].legend(markerscale=3, fontsize=8, title='Somatotip')
+
+plt.tight_layout()
+plt.savefig(os.path.join(OUT, '12_shape_score.png'), dpi=130, bbox_inches='tight')
+plt.close()
+print('12 done')
+
+# ── 13. Fat x Muscle per somatotype ──────────────────────────────────────────
+fig, axes = plt.subplots(1, 5, figsize=(18, 4), sharey=True)
+
+for ax, s in zip(axes, SOMA_ORDER):
+    sub = df[df.somatotype == s]
+    ax.scatter(
+        sub['fat_score'], sub['muscle_score'],
+        alpha=0.15, s=4, c=sub['gender'].map(PALETTE),
+    )
+    ax.set_title(f'{s}\n(n={len(sub):,})', fontsize=9)
+    ax.set_xlabel('fat_score', fontsize=8)
+    ax.set_xlim(-0.05, 1.05)
+    ax.set_ylim(-0.05, 1.05)
+axes[0].set_ylabel('muscle_score')
+
+handles = [
+    Line2D([0], [0], marker='o', color='w', markerfacecolor=c, markersize=7, label=g)
+    for g, c in PALETTE.items()
+]
+fig.legend(handles=handles, loc='lower right', title='Cinsiyet')
+plt.suptitle('Fat x Muscle — Somatotip Bazli', y=1.02, fontsize=13)
+plt.tight_layout()
+plt.savefig(os.path.join(OUT, '13_somatotype_fatmuscle.png'), dpi=130, bbox_inches='tight')
+plt.close()
+print('13 done')
+
 print('\nTum plotlar docs/eda/ klasorune kaydedildi.')

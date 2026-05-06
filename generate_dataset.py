@@ -50,6 +50,69 @@ TRAINING_ALLOC    = [0.45,       0.20,             0.15,             0.12,      
 
 ATHLETIC_GROUPS = {"athletic_lean", "athletic_hyper"}
 
+# Somatotip olasılıkları fat band'a göre değişir.
+# hourglass / v_shape yüksek yağda görsel olarak kaybolur → obese'de sıfır.
+# apple yüksek yağda baskın olur.
+
+def _body_proxies(fat, muscle, hip_score, waist_def_score):
+    """
+    Göğüs, kalça ve bel için orantısal proxy hesapla.
+    Literatür kurallarını (çevre oranları) parametre uzayında uygulamak için.
+
+    hip_score = 0.5 → kalça = göğüs (nötr)
+    hip_score > 0.5 → kalça > göğüs (pear/hourglass yönü)
+    hip_score < 0.5 → kalça < göğüs (v_shape yönü)
+    waist_def_score yüksek → dar bel (hourglass/pear)
+    waist_def_score düşük  → geniş bel (apple/rectangle)
+    """
+    base = fat * 0.50 + muscle * 0.45
+    chest_c = 1.0 + base
+    hip_c   = 1.0 + base + (hip_score - 0.5) * 0.80
+    waist_c = 1.0 + fat * 0.90 + muscle * 0.15 - waist_def_score * 0.45
+    return chest_c, hip_c, waist_c
+
+
+def derive_somatotype(hip_scores, waist_def_scores, fat_arr, muscle_arr, gender):
+    """
+    Literatür metrik kurallarına göre somatotip türet.
+
+    Hourglass : |chest - hip| < 5% × max(chest, hip)
+                waist < chest × 0.75  AND  waist < hip × 0.75
+    Pear      : hip > chest × 1.05  AND  waist < hip
+    V-Shape   : chest > hip × 1.05
+    Apple     : waist >= chest  OR  waist >= hip
+    Rectangle : geri kalan (bel oyuntusu zayıf, oranlar dengeli)
+    """
+    result = []
+    for hip_s, wst_s, fat, muscle in zip(hip_scores, waist_def_scores, fat_arr, muscle_arr):
+        chest_c, hip_c, waist_c = _body_proxies(fat, muscle, hip_s, wst_s)
+
+        chest_hip_diff_pct = abs(chest_c - hip_c) / max(chest_c, hip_c)
+
+        # Apple: bel göğüs veya kalçanın %95'ine eşit veya daha geniş
+        if waist_c >= chest_c * 0.95 or waist_c >= hip_c * 0.95:
+            result.append("apple")
+
+        # V-Shape: göğüs kalçadan %8+ geniş
+        elif chest_c > hip_c * 1.08:
+            result.append("v_shape")
+
+        # Hourglass: göğüs ≈ kalça (<%3 fark) + dar bel (her ikisinin %70'inden az)
+        elif (chest_hip_diff_pct < 0.03
+              and waist_c < chest_c * 0.70
+              and waist_c < hip_c * 0.70):
+            result.append("hourglass")
+
+        # Pear: kalça göğüsten %8+ geniş + bel kalçanın %88'inden dar
+        elif hip_c > chest_c * 1.08 and waist_c < hip_c * 0.88:
+            result.append("pear")
+
+        # Rectangle: geri kalan
+        else:
+            result.append("rectangle")
+
+    return np.array(result)
+
 # ── Yardımcı fonksiyonlar ─────────────────────────────────────────────────────
 
 def distribute(total, weights):
@@ -83,8 +146,8 @@ def sample_ages(group, n):
 def generate_cell(group, gender, n):
     g = GROUPS[group]
 
-    # LHS: fat_score, muscle_score, height_score + 7 segment score
-    lhs = qmc.LatinHypercube(d=10, seed=int(rng.integers(1_000_000))).random(n)
+    # LHS: fat, muscle, height + 7 segment + hip_score + waist_def_score
+    lhs = qmc.LatinHypercube(d=12, seed=int(rng.integers(1_000_000))).random(n)
     fat_lo, fat_hi = g["fat"]
     mus_lo, mus_hi = g["muscle"]
     fat               = fat_lo + beta_dist.ppf(lhs[:, 0], 2, 2) * (fat_hi - fat_lo)
@@ -97,6 +160,13 @@ def generate_cell(group, gender, n):
     upper_arm_hs      = lhs[:, 7].copy()
     forearm_hs        = lhs[:, 8].copy()
     neck_hs           = lhs[:, 9].copy()
+
+    # lhs[:, 10] → hip_score:      beta(2,2) → [0.2, 0.9]
+    # lhs[:, 11] → waist_def_score: beta(2,2) → [0.2, 0.9]
+    hip_scores       = 0.2 + beta_dist.ppf(lhs[:, 10], 2, 2) * 0.7
+    waist_def_scores = 0.2 + beta_dist.ppf(lhs[:, 11], 2, 2) * 0.7
+
+    somatotypes = derive_somatotype(hip_scores, waist_def_scores, fat, muscle, gender)
 
     ages = sample_ages(group, n)
 
@@ -149,7 +219,10 @@ def generate_cell(group, gender, n):
         "forearm_length_score":    forearm_hs.round(4),
         "neck_length_score":       neck_hs.round(4),
         "height_cm":               "",
-        "training_pattern":       patterns,
+        "training_pattern":        patterns,
+        "hip_score":               hip_scores.round(4),
+        "waist_def_score":         waist_def_scores.round(4),
+        "somatotype":              somatotypes,
     })
 
 

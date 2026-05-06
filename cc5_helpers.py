@@ -117,6 +117,7 @@ PATTERN_MULTIPLIERS = {
     "pull_dominant":  {"upper": 1.10, "lower": 0.90, "chest": 0.65, "back": 1.40, "abs": 1.10},
 }
 
+
 MORPH_CLIP = {
     M_SHOULDER_SCALE:   (-0.5,  1.0),
     M_UPPER_ARM_SCALE:  (-1.0,  1.0),
@@ -151,7 +152,8 @@ def compute_all_weights(fat, muscle, height_score, chest_height_score,
                         hip_length_score, thigh_length_score, lower_leg_length_score,
                         upper_arm_length_score, forearm_length_score,
                         neck_length_score,
-                        pattern, gender):
+                        pattern, gender,
+                        hip_score=0.5, waist_def_score=0.5):
 
     hd = 1.0 if gender == "male" else FEMALE_HD_SCALE
     m  = PATTERN_MULTIPLIERS.get(pattern, PATTERN_MULTIPLIERS["balanced"])
@@ -202,7 +204,7 @@ def compute_all_weights(fat, muscle, height_score, chest_height_score,
     w_chest = musc_hd("chest")
     w_abs   = musc_hd("abs")
 
-    return {
+    weights = {
         # ── Layer 1: Full body ────────────────────────────────────────────────
         M_BODY_FAT:      body_fat,
         M_BODY_THIN:     body_thin,
@@ -216,11 +218,11 @@ def compute_all_weights(fat, muscle, height_score, chest_height_score,
         M_CHEST_SCALE:      dev_scale(M_CHEST_SCALE,      chest_height_score),
         M_CHEST_WIDTH:      dev_scale(M_CHEST_WIDTH,      chest_height_score),
         M_CHEST_DEPTH:      dev_scale(M_CHEST_DEPTH,      chest_height_score),
-        M_ABDOMEN_SCALE:    dev_scale(M_ABDOMEN_SCALE,    hip_length_score),
-        M_ABDOMEN_DEPTH:    max(0.0, dev_scale(M_ABDOMEN_DEPTH,    hip_length_score)),
+        M_ABDOMEN_SCALE:    max(-1.0, min(1.0, fat * 0.90 + muscle * 0.20 * m["abs"] - waist_def_score * 0.40)),
+        M_ABDOMEN_DEPTH:    max( 0.0, min(1.0, fat * 1.00                            - waist_def_score * 0.50)),
         M_HIP_LOVE_HANDLES: max(0.0, dev_scale(M_HIP_LOVE_HANDLES, hip_length_score)),
-        M_HIP_SCALE:        dev_scale(M_HIP_SCALE,        hip_length_score),
-        M_GLUTE_SCALE:      dev_scale(M_GLUTE_SCALE,      hip_length_score),
+        M_HIP_SCALE:        max(-0.3, min(1.0, fat * 0.35 + hip_score * 0.50)),
+        M_GLUTE_SCALE:      max(-1.0, min(1.0, fat * 0.40 + muscle * 0.40 * m["lower"] + hip_score * 0.30)),
         M_THIGH_SCALE:      dev_scale(M_THIGH_SCALE,      thigh_length_score),
         M_LOWER_LEG_SCALE:  dev_scale(M_LOWER_LEG_SCALE,  lower_leg_length_score),
 
@@ -270,3 +272,5 @@ def compute_all_weights(fat, muscle, height_score, chest_height_score,
         M_NECK_SCALE:       min(muscle * m["upper"] * 0.6, 1.0),
         M_NECK_LENGTH:      max(0.0, segment_weight(height_score, neck_length_score)),
     }
+
+    return weights

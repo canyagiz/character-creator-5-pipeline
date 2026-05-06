@@ -235,6 +235,28 @@ def measure_segment_circumference_cm(bone_start_name, bone_end_name,
     bm.free()
     return round(circ_cm, 2)
 
+# ── Lateral genişlik ölçümü (T-pose rest vertices) ───────────────────────────
+def measure_width_cm(z_m, window_m=0.06):
+    """
+    T-pose'da z_m yüksekliğinde ±window_m penceresi içindeki tüm mesh
+    vertex'lerinin max_x - min_x genişliğini cm cinsinden döndürür.
+    Rest pose (T-pose) vertex'leri kullanır — evaluated depsgraph değil.
+    """
+    x_vals = []
+    for obj in mesh_objs:
+        mat = obj.matrix_world
+        for v in obj.data.vertices:
+            wv = mat @ v.co
+            if abs(wv.z - z_m) <= window_m:
+                x_vals.append(wv.x)
+    if len(x_vals) < 2:
+        return 0.0
+    return round((max(x_vals) - min(x_vals)) * 100, 2)
+
+# Referans yükseklikleri — omuz için üst kol kemiği, kalça genişliği için uyluk kemiği
+z_shoulder_bone = bone_z("CC_Base_L_Upperarm")
+z_hip_bone      = bone_z("CC_Base_L_Thigh")
+
 # ── Ölçümler ──────────────────────────────────────────────────────────────────
 measurements = {
     # Boyun: NeckTwist01–NeckTwist02 ortası, yarıçap filtresi yok (obez boyunları keser)
@@ -252,6 +274,10 @@ measurements = {
     "elbow_circ_cm":    measure_segment_circumference_cm("CC_Base_L_Upperarm", "CC_Base_L_Forearm", cut_at="end"),
     "forearm_circ_cm":  measure_segment_circumference_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand",    cut_at="mid"),
     "wrist_circ_cm":    measure_segment_circumference_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand",    cut_at="end"),
+
+    # Lateral genişlikler (T-pose, en baştan en sona)
+    "shoulder_width_cm":  measure_width_cm(z_shoulder_bone, window_m=0.06),
+    "hip_width_cm":       measure_width_cm(z_hip_bone,      window_m=0.05),
 
     "upper_arm_length_cm": bone_dist_cm("CC_Base_L_Upperarm", "CC_Base_L_Forearm"),
     "forearm_length_cm":   bone_dist_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand"),

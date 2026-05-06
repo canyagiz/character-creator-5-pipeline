@@ -39,7 +39,8 @@
       "Bash(dir c:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\debug\\\\char_00003 *)",
       "Bash(dir c:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\debug\\\\ *)",
       "Bash(git *)",
-      "Bash(python *)"
+      "Bash(python *)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\calib\\\\renders_calib\" -Directory | ForEach-Object { Write-Output $_.Name })"
     ]
   }
 }

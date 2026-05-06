@@ -1,0 +1,244 @@
+
+============================================================
+GENDER: MALE  (n=370)
+============================================================
+
+  chest_circ_cm  (R2=0.765)
+    fat_score^2                               +203.17 cm
+    fat_score                                 -25.50 cm
+    muscle_score^2                            +19.72 cm
+    muscle_score                              +19.47 cm
+    hip_score waist_def_score                 +12.97 cm
+    fat_score muscle_score                    +11.98 cm
+    muscle_score waist_def_score              +11.89 cm
+    hip_score                                 -11.56 cm
+    fat_score height_score                    -11.46 cm
+    muscle_score height_score                 +9.03 cm
+    hip_score^2                               +8.35 cm
+    hip_score height_score                    -8.10 cm
+    waist_def_score^2                         -5.46 cm
+    fat_score waist_def_score                 -3.59 cm
+    fat_score hip_score                       -2.17 cm
+    waist_def_score                           +1.31 cm
+    height_score                              -0.63 cm
+
+  waist_circ_cm  (R2=0.993)
+    fat_score                                 +62.09 cm
+    fat_score height_score                    +25.49 cm
+    fat_score hip_score                       +20.94 cm
+    fat_score^2                               +17.45 cm
+    fat_score waist_def_score                 +14.67 cm
+    fat_score muscle_score                    +13.20 cm
+    muscle_score hip_score                    +5.19 cm
+    hip_score waist_def_score                 -4.97 cm
+    waist_def_score                           -4.42 cm
+    muscle_score waist_def_score              +3.96 cm
+    muscle_score                              +3.29 cm
+    waist_def_score^2                         -2.57 cm
+    muscle_score height_score                 +2.02 cm
+    waist_def_score height_score              -1.81 cm
+    muscle_score^2                            +0.92 cm
+    hip_score^2                               -0.65 cm
+
+  hip_circ_cm  (R2=0.992)
+    fat_score                                 +60.05 cm
+    fat_score height_score                    +24.31 cm
+    fat_score hip_score                       +21.51 cm
+    fat_score^2                               +21.22 cm
+    fat_score waist_def_score                 +14.91 cm
+    fat_score muscle_score                    +12.96 cm
+    muscle_score hip_score                    +5.68 cm
+    muscle_score^2                            +4.32 cm
+    muscle_score waist_def_score              +4.06 cm
+    hip_score waist_def_score                 -3.90 cm
+    muscle_score                              +3.33 cm
+    waist_def_score                           -3.18 cm
+    hip_score                                 +2.55 cm
+    waist_def_score^2                         -2.43 cm
+    muscle_score height_score                 +2.18 cm
+    hip_score^2                               +1.71 cm
+    waist_def_score height_score              -1.22 cm
+    hip_score height_score                    +0.87 cm
+
+  mid_thigh_circ_cm  (R2=0.982)
+    fat_score                                 +31.90 cm
+    fat_score hip_score                       +12.68 cm
+    fat_score height_score                    +12.41 cm
+    fat_score^2                               +9.19 cm
+    fat_score waist_def_score                 +8.76 cm
+    fat_score muscle_score                    +6.61 cm
+    muscle_score                              +5.83 cm
+    muscle_score^2                            +4.77 cm
+    muscle_score hip_score                    +4.51 cm
+    muscle_score waist_def_score              +3.72 cm
+    muscle_score height_score                 +3.01 cm
+    hip_score waist_def_score                 -2.90 cm
+    waist_def_score                           -1.34 cm
+    waist_def_score^2                         -1.30 cm
+    hip_score                                 +0.70 cm
+    waist_def_score height_score              -0.54 cm
+
+  bicep_circ_cm  (R2=0.895)
+    fat_score                                 +14.40 cm
+    muscle_score                              +7.38 cm
+    muscle_score^2                            +5.53 cm
+    fat_score height_score                    +5.35 cm
+    fat_score waist_def_score                 +5.35 cm
+    fat_score muscle_score                    +4.22 cm
+    muscle_score height_score                 +3.92 cm
+    fat_score hip_score                       +3.81 cm
+    muscle_score waist_def_score              +2.54 cm
+    muscle_score hip_score                    +2.27 cm
+    waist_def_score                           -2.06 cm
+    hip_score waist_def_score                 -1.19 cm
+    hip_score^2                               -0.99 cm
+    fat_score^2                               +0.67 cm
+    waist_def_score height_score              -0.65 cm
+
+  neck_circ_cm  (R2=0.986)
+    fat_score                                 +13.99 cm
+    fat_score^2                               +7.66 cm
+    fat_score height_score                    +5.79 cm
+    fat_score muscle_score                    +4.58 cm
+    muscle_score                              +4.10 cm
+    fat_score hip_score                       +3.72 cm
+    fat_score waist_def_score                 +2.95 cm
+    muscle_score waist_def_score              +2.53 cm
+    muscle_score hip_score                    +2.10 cm
+    muscle_score height_score                 +1.92 cm
+    muscle_score^2                            +1.55 cm
+    hip_score waist_def_score                 -0.99 cm
+    hip_score^2                               -0.95 cm
+    waist_def_score                           -0.81 cm
+    hip_score                                 -0.70 cm
+
+  -- Gercek olcum dagilimi (male) --
+    hourglass    n= 13 | hip/chest=0.946±0.112  waist/chest=0.794±0.094  waist/hip=0.840±0.023
+    pear         n= 85 | hip/chest=1.107±0.153  waist/chest=0.945±0.150  waist/hip=0.852±0.033
+    apple        n=146 | hip/chest=1.071±0.295  waist/chest=0.965±0.263  waist/hip=0.902±0.014
+    v_shape      n= 28 | hip/chest=1.044±0.123  waist/chest=0.898±0.127  waist/hip=0.859±0.026
+    rectangle    n= 98 | hip/chest=1.102±0.158  waist/chest=0.960±0.152  waist/hip=0.870±0.027
+
+============================================================
+GENDER: FEMALE  (n=509)
+============================================================
+
+  chest_circ_cm  (R2=0.586)
+    fat_score^2                               +126.37 cm
+    fat_score waist_def_score                 -20.69 cm
+    fat_score hip_score                       -13.36 cm
+    waist_def_score                           +12.77 cm
+    hip_score waist_def_score                 +8.80 cm
+    waist_def_score^2                         -8.51 cm
+    fat_score                                 +7.31 cm
+    hip_score height_score                    -6.40 cm
+    muscle_score^2                            +5.11 cm
+    muscle_score hip_score                    +4.76 cm
+    muscle_score                              +4.75 cm
+    fat_score muscle_score                    +3.87 cm
+    waist_def_score height_score              -2.40 cm
+    hip_score                                 +2.26 cm
+    height_score                              -2.25 cm
+    fat_score height_score                    -2.24 cm
+    muscle_score waist_def_score              -2.01 cm
+    height_score^2                            -1.46 cm
+    muscle_score height_score                 +1.03 cm
+
+  waist_circ_cm  (R2=0.996)
+    fat_score                                 +66.37 cm
+    fat_score^2                               +19.82 cm
+    fat_score hip_score                       +19.07 cm
+    fat_score height_score                    +18.73 cm
+    fat_score muscle_score                    +13.80 cm
+    fat_score waist_def_score                 +12.78 cm
+    waist_def_score                           -5.10 cm
+    muscle_score hip_score                    +3.32 cm
+    hip_score waist_def_score                 -3.27 cm
+    height_score                              -2.66 cm
+    muscle_score waist_def_score              +2.14 cm
+    height_score^2                            -2.00 cm
+    waist_def_score height_score              -1.94 cm
+    muscle_score^2                            -1.63 cm
+    waist_def_score^2                         -1.53 cm
+    muscle_score                              +1.44 cm
+    hip_score height_score                    -0.69 cm
+
+  hip_circ_cm  (R2=0.995)
+    fat_score                                 +64.88 cm
+    fat_score^2                               +22.87 cm
+    fat_score hip_score                       +20.35 cm
+    fat_score height_score                    +17.87 cm
+    fat_score muscle_score                    +13.14 cm
+    fat_score waist_def_score                 +12.75 cm
+    muscle_score hip_score                    +4.35 cm
+    waist_def_score                           -3.92 cm
+    hip_score                                 +3.44 cm
+    hip_score waist_def_score                 -2.92 cm
+    muscle_score                              +2.80 cm
+    height_score                              -2.64 cm
+    height_score^2                            -2.11 cm
+    muscle_score waist_def_score              +1.74 cm
+    hip_score^2                               +1.70 cm
+    waist_def_score height_score              -1.69 cm
+    muscle_score height_score                 +1.18 cm
+    waist_def_score^2                         -0.69 cm
+    muscle_score^2                            +0.51 cm
+
+  mid_thigh_circ_cm  (R2=0.988)
+    fat_score                                 +32.32 cm
+    fat_score^2                               +13.49 cm
+    fat_score hip_score                       +11.65 cm
+    fat_score height_score                    +8.33 cm
+    fat_score waist_def_score                 +7.12 cm
+    fat_score muscle_score                    +6.44 cm
+    muscle_score                              +4.00 cm
+    muscle_score hip_score                    +2.59 cm
+    hip_score waist_def_score                 -2.19 cm
+    height_score                              -2.16 cm
+    height_score^2                            -1.66 cm
+    hip_score                                 +1.59 cm
+    waist_def_score                           -1.56 cm
+    muscle_score height_score                 +1.32 cm
+    muscle_score^2                            +1.20 cm
+    waist_def_score height_score              -1.10 cm
+    muscle_score waist_def_score              +0.97 cm
+
+  bicep_circ_cm  (R2=0.905)
+    fat_score                                 +16.44 cm
+    fat_score height_score                    +5.22 cm
+    fat_score muscle_score                    +3.88 cm
+    muscle_score                              +3.59 cm
+    fat_score^2                               +2.13 cm
+    fat_score hip_score                       +1.95 cm
+    fat_score waist_def_score                 +1.94 cm
+    muscle_score hip_score                    +1.48 cm
+    waist_def_score                           -1.43 cm
+    muscle_score^2                            +1.37 cm
+    muscle_score height_score                 +1.05 cm
+    height_score^2                            -0.69 cm
+    height_score                              -0.66 cm
+    waist_def_score^2                         +0.56 cm
+    hip_score height_score                    +0.54 cm
+
+  neck_circ_cm  (R2=0.991)
+    fat_score                                 +14.78 cm
+    fat_score^2                               +7.49 cm
+    fat_score height_score                    +4.23 cm
+    fat_score muscle_score                    +3.63 cm
+    fat_score hip_score                       +2.80 cm
+    fat_score waist_def_score                 +2.58 cm
+    muscle_score                              +2.27 cm
+    muscle_score hip_score                    +1.35 cm
+    muscle_score waist_def_score              +1.07 cm
+    hip_score                                 -0.69 cm
+    height_score                              -0.68 cm
+    muscle_score height_score                 +0.57 cm
+    muscle_score^2                            +0.54 cm
+    hip_score waist_def_score                 -0.53 cm
+
+  -- Gercek olcum dagilimi (female) --
+    hourglass    n= 17 | hip/chest=1.061±0.077  waist/chest=0.888±0.066  waist/hip=0.836±0.014
+    pear         n=118 | hip/chest=1.129±0.111  waist/chest=0.971±0.117  waist/hip=0.858±0.028
+    apple        n=198 | hip/chest=1.154±0.240  waist/chest=1.044±0.218  waist/hip=0.905±0.014
+    v_shape      n= 45 | hip/chest=1.057±0.087  waist/chest=0.917±0.091  waist/hip=0.867±0.023
+    rectangle    n=131 | hip/chest=1.122±0.112  waist/chest=0.978±0.117  waist/hip=0.871±0.027

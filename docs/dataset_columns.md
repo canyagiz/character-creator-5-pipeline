@@ -99,6 +99,48 @@ segment_weight = clip(score_to_weight(height_score) + (seg_score - 0.5) × 2 × 
 
 ---
 
+## Vücut Şekli Parametreleri
+
+Fat ve muscle'dan bağımsız iki sürekli eksen. Somatotip etiketi bu eksenlerden + fat'tan deterministik olarak türetilir.
+
+| Kolon | Aralık | Açıklama |
+|---|---|---|
+| `hip_score` | 0.2–0.9 | Kalça/glute genişliği — kemik yapısı, yağdan bağımsız. 0.5 = nötr (kalça ≈ göğüs), >0.5 = geniş kalça, <0.5 = dar kalça |
+| `waist_def_score` | 0.2–0.9 | Bel tanımı — yüksek = dar bel (hourglass yönü), düşük = geniş bel (apple yönü) |
+
+Her ikisi de beta(2,2) dağılımıyla LHS'ten örneklenir.
+
+### Somatotip Türetme Kuralları
+
+Somatotip kolonu üretim değil **türetilmiş etikettir** — proxy çevre oranı modeline göre:
+
+```
+chest_c = 1 + fat×0.50 + muscle×0.45
+hip_c   = chest_c + (hip_score − 0.5) × 0.80
+waist_c = 1 + fat×0.90 + muscle×0.15 − waist_def_score×0.45
+
+Apple     : waist_c ≥ chest_c×0.95  VEYA  waist_c ≥ hip_c×0.95
+V-Shape   : chest_c > hip_c×1.08
+Hourglass : |chest_c − hip_c| / max < 3%  VE  waist_c < chest_c×0.70  VE  waist_c < hip_c×0.70
+Pear      : hip_c > chest_c×1.08  VE  waist_c < hip_c×0.88
+Rectangle : geri kalan
+```
+
+### Somatotip Dağılımı
+
+| Somatotip | Toplam | Kadın | Erkek | % |
+|---|---|---|---|---|
+| rectangle | 10,732 | 5,352 | 5,380 | %35.8 |
+| pear      | 8,245  | 4,110 | 4,135 | %27.5 |
+| apple     | 7,647  | 3,825 | 3,822 | %25.5 |
+| v_shape   | 2,540  | 1,288 | 1,252 | %8.5  |
+| hourglass | 836    | 425   | 411   | %2.8  |
+| **Toplam**| **30,000** | **15,000** | **15,000** | %100 |
+
+Hourglass nadir çünkü eş zamanlı üç koşul gerektirir: göğüs ≈ kalça (<%3 fark), bel her ikisinden %70'ten dar.
+
+---
+
 ## Çıktı
 
 | Kolon | Tip | Açıklama |

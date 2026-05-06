@@ -62,6 +62,7 @@ height_m = z_top - z_floor
 xs = [v.x for v in all_verts]; ys = [v.y for v in all_verts]
 center_x = (max(xs) + min(xs)) / 2
 center_y = (max(ys) + min(ys)) / 2
+y_front  = min(ys) - 0.01   # mesh ön yüzeyinin 1 cm önü — genişlik çizgileri buraya çizilir
 
 def mesh_z_span(obj):
     zs = [(obj.matrix_world @ mathutils.Vector(c)).z for c in obj.bound_box]
@@ -318,6 +319,106 @@ for label, plane_co, plane_no, color, ref_point in MEASUREMENTS:
 
     z_data[label] = {"plane_co": list(plane_co), "circ_cm": round(circ_cm, 2), "color": list(color)}
     print(f"  {label:12s} co={list(round(v,3) for v in plane_co)}  circ={circ_cm:.1f} cm")
+
+# ── Omuz + kalça genişlik çizgileri ──────────────────────────────────────────
+def add_width_line(label, z_m, window_m, color, use_apose=False):
+    """
+    z_m yüksekliğinde max_x - min_x genişliğini çizer.
+    use_apose=True: evaluated mesh (A-pose, kollar aşağı) — omuz için kolları dışlar.
+    use_apose=False: rest pose vertex'leri — kalça için (kol girişimi yok).
+    """
+    x_vals = []
+    if use_apose:
+        eval_obj  = body_obj.evaluated_get(depsgraph)
+        eval_mesh = eval_obj.to_mesh()
+        bm = bmesh.new()
+        bm.from_mesh(eval_mesh)
+        bm.transform(eval_obj.matrix_world)
+        eval_obj.to_mesh_clear()
+        for v in bm.verts:
+            if abs(v.co.z - z_m) <= window_m:
+                x_vals.append(v.co.x)
+        bm.free()
+    else:
+        for obj in mesh_objs:
+            mat = obj.matrix_world
+            for v in obj.data.vertices:
+                wv = mat @ v.co
+                if abs(wv.z - z_m) <= window_m:
+                    x_vals.append(wv.x)
+
+    if len(x_vals) < 2:
+        return None
+
+    x_min, x_max = min(x_vals), max(x_vals)
+    width_cm = round((x_max - x_min) * 100, 2)
+
+    cd = bpy.data.curves.new(f"c_{label}", 'CURVE')
+    cd.dimensions  = '3D'
+    cd.bevel_depth = height_m * 0.005
+
+    sp = cd.splines.new('POLY')
+    sp.points.add(1)
+    sp.points[0].co = (x_min, y_front, z_m, 1.0)
+    sp.points[1].co = (x_max, y_front, z_m, 1.0)
+    sp.use_cyclic_u = False
+
+    co = bpy.data.objects.new(f"c_{label}", cd)
+    scene.collection.objects.link(co)
+    co.data.materials.append(make_emit_mat(f"m_{label}", color, strength=6.0))
+
+    z_data[label] = {
+        "plane_co": [0.0, 0.0, z_m],
+        "circ_cm":  width_cm,
+        "color":    list(color),
+    }
+    print(f"  {label:12s} z={z_m:.3f}  width={width_cm:.1f} cm  [{x_min*100:.1f}, {x_max*100:.1f}]")
+    return width_cm
+
+z_shoulder = bone_z("CC_Base_L_Upperarm")
+z_hip_bone  = bone_z("CC_Base_L_Thigh")
+
+# Omuz genişliği: omuz eklemi (CC_Base_L/R_Upperarm) X konumunu sınır olarak kullan.
+# Deltoid eklemi 3-5 cm aşar; kol ise çok daha uzağa gider.
+# X filtresi: eklem X'i ± DELTOID_M — deltoid dahil, kol hariç.
+p_sh_L     = bone_world("CC_Base_L_Upperarm")
+p_sh_R     = bone_world("CC_Base_R_Upperarm")
+DELTOID_M  = 0.05   # 5 cm deltoid marjı
+
+# L/R kemik X yönü karakterin bakış tarafına göre değişebilir; min/max ile sıraya al.
+x_sh_lo = min(p_sh_L.x, p_sh_R.x) - DELTOID_M
+x_sh_hi = max(p_sh_L.x, p_sh_R.x) + DELTOID_M
+
+x_vals_sh = []
+for obj in mesh_objs:
+    mat = obj.matrix_world
+    for v in obj.data.vertices:
+        wv = mat @ v.co
+        if abs(wv.z - z_shoulder) <= 0.06:
+            if x_sh_lo <= wv.x <= x_sh_hi:
+                x_vals_sh.append(wv.x)
+
+if x_vals_sh:
+    sh_x_min  = min(x_vals_sh)
+    sh_x_max  = max(x_vals_sh)
+    sh_w_cm   = round((sh_x_max - sh_x_min) * 100, 2)
+    sh_z      = z_shoulder
+    cd_sh = bpy.data.curves.new("c_shoulder_w", 'CURVE')
+    cd_sh.dimensions  = '3D'
+    cd_sh.bevel_depth = height_m * 0.005
+    sp = cd_sh.splines.new('POLY')
+    sp.points.add(1)
+    sp.points[0].co = (sh_x_min, y_front, sh_z, 1.0)
+    sp.points[1].co = (sh_x_max, y_front, sh_z, 1.0)
+    sp.use_cyclic_u = False
+    co_sh = bpy.data.objects.new("c_shoulder_w", cd_sh)
+    scene.collection.objects.link(co_sh)
+    co_sh.data.materials.append(make_emit_mat("m_shoulder_w", (1.0, 1.0, 1.0), strength=6.0))
+    z_data["shoulder_w"] = {"plane_co": [0.0, 0.0, sh_z], "circ_cm": sh_w_cm, "color": [1.0, 1.0, 1.0]}
+    print(f"  shoulder_w    z={sh_z:.3f}  width={sh_w_cm:.1f} cm  (deltoid+{DELTOID_M*100:.0f}cm)")
+
+# Kalça: mesh vertex genişliği, bu yükseklikte kol yok.
+add_width_line("hip_w", z_hip_bone, window_m=0.05, color=(0.8, 0.8, 0.0), use_apose=False)
 
 # Debug JSON (PIL annotation için)
 with open(os.path.join(out_dir, f"{char_name}_debug.json"), "w") as f:

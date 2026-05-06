@@ -199,6 +199,31 @@ height_score ve ethnicity delta CSV'de etiket olarak kalır, export'ta kullanıl
 
 
 ================================================================================
+8. somatotype + shape_score → SHAPE DELTA FORMÜLÜ
+================================================================================
+
+Somatotip, fat/muscle üstüne additive delta uygular. shape_score=[0.0, 1.0] şiddet.
+
+  W_final = clip(W_fat_muscle + delta[somatotype][morph] × shape_score,  clip_min, clip_max)
+
+Cinsiyet dağılımı:
+  Kadın: hourglass 30% / pear 25% / rectangle 25% / apple 20%
+  Erkek: v_shape 35%   / rectangle 40%            / apple 25%
+
+shape_score örnekleme: beta(2,2) scaled to [0.3, 1.0]
+rectangle için delta'lar sıfır — shape_score etki etmez.
+
+Somatotip delta tablosu (shape_score=1.0 için):
+
+  Morph            | hourglass | pear  | apple | v_shape | rectangle
+  -----------------|-----------|-------|-------|---------|----------
+  Hip Scale        |   +0.40   | +0.45 | -0.15 |  -0.25  |    0
+  Glute Scale      |   +0.30   | +0.35 | -0.15 |  -0.20  |    0
+  Abdomen Scale    |   -0.35   | -0.10 | +0.45 |  -0.10  |    0
+  Shoulder Scale   |   -0.20   | -0.30 | -0.10 |  +0.45  |    0
+  Thigh Scale      |   +0.10   | +0.30 | -0.10 |   0     |    0
+
+================================================================================
 7. UYGULAMA SIRASI
 ================================================================================
 
@@ -207,5 +232,6 @@ height_score ve ethnicity delta CSV'de etiket olarak kalır, export'ta kullanıl
   3. muscle + pattern       → HD Male Muscular morph'ları set et  (§3)
   4. fat + pattern          → HD Male Skinny morph'ları set et    (§4)
   5. height + ethnicity     → Hip Length A, Thigh Length, Lower Leg Length (§6)
+  6. somatotype + shape_score → shape delta'larını uygula         (§8)
 
 ================================================================================
