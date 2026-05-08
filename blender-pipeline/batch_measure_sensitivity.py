@@ -23,8 +23,10 @@ os.makedirs(META_TMP_DIR, exist_ok=True)
 os.makedirs(FBX_DIR, exist_ok=True)
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--watch", action="store_true",
+parser.add_argument("--watch",     action="store_true",
                     help="CC5 export biterken paralel izle")
+parser.add_argument("--overwrite", action="store_true",
+                    help="Mevcut olcumleri yeniden hesapla")
 args = parser.parse_args()
 
 # Probe CSV: char_id -> row
@@ -35,11 +37,13 @@ with open(PROBE_CSV, encoding="utf-8") as f:
 
 # Mevcut sonuclari oku (resume destegi)
 existing_results = {}
-if os.path.exists(OUT_CSV):
+if os.path.exists(OUT_CSV) and not args.overwrite:
     with open(OUT_CSV, encoding="utf-8") as f:
         for row in csv.DictReader(f):
             existing_results[row["char_id"]] = row
     print(f"Resume: {len(existing_results)} onceki olcum bulundu")
+elif args.overwrite:
+    print("--overwrite: tum olcumler yeniden hesaplanacak")
 
 def measure_fbx(fbx_path, char_id):
     meta_path = os.path.join(META_TMP_DIR, f"{char_id}_meta.json")
@@ -56,28 +60,35 @@ def measure_fbx(fbx_path, char_id):
 def build_row(char_id, meta):
     probe = probe_rows[char_id]
     return {
-        "char_id":           char_id,
-        "gender":            probe["gender"],
-        "morph_key":         probe["morph_key"],
-        "morph_id":          probe["morph_id"],
-        "morph_value":       float(probe["morph_value"]),
-        "height_cm":         meta.get("height_cm"),
-        "shoulder_width_cm": meta.get("shoulder_width_cm"),
-        "hip_width_cm":      meta.get("hip_width_cm"),
-        "chest_circ_cm":     meta.get("chest_circ_cm"),
-        "waist_circ_cm":     meta.get("waist_circ_cm"),
-        "hip_circ_cm":       meta.get("hip_circ_cm"),
-        "neck_circ_cm":      meta.get("neck_circ_cm"),
-        "bicep_circ_cm":     meta.get("bicep_circ_cm"),
-        "mid_thigh_circ_cm": meta.get("mid_thigh_circ_cm"),
-        "calf_circ_cm":      meta.get("calf_circ_cm"),
+        "char_id":              char_id,
+        "gender":               probe["gender"],
+        "morph_key":            probe["morph_key"],
+        "morph_id":             probe["morph_id"],
+        "morph_value":          float(probe["morph_value"]),
+        "height_cm":            meta.get("height_cm"),
+        "shoulder_width_cm":    meta.get("shoulder_width_cm"),
+        "hip_width_cm":         meta.get("hip_width_cm"),
+        "chest_circ_cm":        meta.get("chest_circ_cm"),
+        "waist_circ_cm":        meta.get("waist_circ_cm"),
+        "hip_circ_cm":          meta.get("hip_circ_cm"),
+        "neck_circ_cm":         meta.get("neck_circ_cm"),
+        "bicep_circ_cm":        meta.get("bicep_circ_cm"),
+        "forearm_circ_cm":      meta.get("forearm_circ_cm"),
+        "mid_thigh_circ_cm":    meta.get("mid_thigh_circ_cm"),
+        "calf_circ_cm":         meta.get("calf_circ_cm"),
+        "upper_arm_length_cm":  meta.get("upper_arm_length_cm"),
+        "forearm_length_cm":    meta.get("forearm_length_cm"),
+        "upper_leg_length_cm":  meta.get("upper_leg_length_cm"),
+        "lower_leg_length_cm":  meta.get("lower_leg_length_cm"),
     }
 
 FIELDNAMES = [
     "char_id", "gender", "morph_key", "morph_id", "morph_value",
     "height_cm", "shoulder_width_cm", "hip_width_cm",
     "chest_circ_cm", "waist_circ_cm", "hip_circ_cm",
-    "neck_circ_cm", "bicep_circ_cm", "mid_thigh_circ_cm", "calf_circ_cm",
+    "neck_circ_cm", "bicep_circ_cm", "forearm_circ_cm", "mid_thigh_circ_cm", "calf_circ_cm",
+    "upper_arm_length_cm", "forearm_length_cm",
+    "upper_leg_length_cm", "lower_leg_length_cm",
 ]
 
 def save_results(results):

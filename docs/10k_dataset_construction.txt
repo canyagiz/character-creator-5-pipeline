@@ -265,6 +265,177 @@ Ne yapılıyor:
   Güncellenen dataset_10k.csv — actual_* kolonları eklenmiş, validated=True/False
 
 ================================================================================
+ALTERNATİF MİMARİ — ÖLÇÜM UZAYINDA ÖRNEKLEME
+(Neden Score Sistemi Yetersiz Kalıyor ve Daha Temiz Bir Yol)
+================================================================================
+
+SORUN: SCORE SİSTEMİNİN TEMEL KISITI
+--------------------------------------
+compute_all_weights() formülleri elle yazıldı — gerçek insan antropometri
+verilerinden türetilmedi. Yani "fat=0.4 girince gerçek hayatta %40 vücut yağına
+sahip bir insan çıkar" garantisi yok. Aynı şekilde "hip_score=0.8 girince
+gerçekten geniş kalçalı biri çıkıyor mu?" sorusunun cevabı ancak render
+yapıldıktan sonra görülebilir.
+
+Bu yüzden şimdiye kadar üretilen modeller beklenen görsel sonuçlara ulaşmıyor.
+Formül kalibre edilmemiş.
+
+Ayrıca "bu satır nasıl bir insanı temsil ediyor?" sorusunun cevabı
+fat_score=0.4 ile verilemez — ama height=172cm, waist=74cm, hip=96cm ile
+verilebilir. Ölçüm uzayı gerçek dünya ile doğrudan karşılaştırılabilir.
+
+
+ÜÇ PARAMETERİZASYON SEÇENEĞİ
+------------------------------
+
+Seçenek A — Şu an kullanılan (Score Uzayı):
+  fat, muscle, hip_score, ... → compute_all_weights() → morphlar → render
+  Yorumlanabilir ama formül kalibrasyonsuz.
+  Dağılımın gerçek insanlara ne kadar yakın olduğu bilinmiyor.
+  Render öncesi "nasıl bir model?" sorusu cevaplanamıyor.
+
+Seçenek B — Morph Uzayında Doğrudan Örnekleme:
+  53 morphu LHS ile doğrudan örnekle → ölçüm al → etiket ata
+  Ground truth ölçümler garantili. Ama 53 boyutlu uzayı kısıtsız örneklemek
+  gerçekçi olmayan kombinasyonlar üretir (fat=1 + body_builder=1 gibi).
+  Biyolojik kısıtları encode etmek için ayrı constraint katmanı gerekir.
+
+Seçenek C — Ölçüm Uzayında Örnekleme (En Temiz Yol):
+  Hedef ölçümleri doğrudan örnekle → sensitivity matrix'i tersine çevirerek
+  morph ağırlıklarını bul → CC5'e gönder → render et.
+
+  Neden en temiz:
+    - "Bu satır nasıl bir insanı temsil ediyor?" sorusu veri üretilirken
+      zaten cevaplı: height=168cm, waist=71cm, hip=97cm gibi.
+    - ANSUR, SizeUSA, WHO gibi gerçek antropometri veritabanlarındaki
+      dağılımlar doğrudan örnekleme dağılımı olarak kullanılabilir.
+    - Somatotype etiketi ölçümlerden deterministik türetilir, formüle gerek yok.
+    - Score sistemine tamamen gerek kalmaz.
+
+
+ÖLÇÜM UZAYINDA ÖRNEKLEME — DETAYLI AKIM
+------------------------------------------
+
+ADIM 1 — Örneklenecek Ölçümlerin Seçimi
+  Hangi ölçümler örneklenecek:
+    height_cm            [150, 195]  — boy (cinsiyet başına farklı dağılım)
+    waist_circ_cm        [60,  120]  — bel çevresi
+    hip_circ_cm          [80,  130]  — kalça çevresi
+    shoulder_width_cm    [35,  55]   — omuz genişliği
+    hip_width_cm         [28,  48]   — kalça kemik genişliği
+    chest_circ_cm        [75,  130]  — göğüs çevresi
+    bicep_circ_cm        [25,  45]   — bicep çevresi
+    mid_thigh_circ_cm    [45,  75]   — uyluk çevresi
+    calf_circ_cm         [30,  50]   — baldır çevresi
+
+  Biyolojik kısıtlar (filtrelenecek):
+    waist_circ < hip_circ            — bel her zaman kalçadan ince
+    waist_circ < chest_circ + 20cm   — bel göğüsten çok fazla geniş olamaz
+    shoulder_width < chest_circ / 2  — omuz genişliği göğüs çevresiyle tutarlı
+    height ile uzuv çevreleri arasında makul oran
+
+  Örnekleme yöntemi: LHS (Latin Hypercube Sampling), 9 boyut
+  Her kombinasyon biyolojik filtreden geçiriliyor; geçemeyenler yeniden örnekleniyor.
+
+  Neden bu 9 ölçüm:
+    Bunlar hem sensitivity matrix'ten elde edebileceğimiz ölçümler
+    hem de gerçek antropometri verilerinde standart olan ölçümler.
+    Bu 9 ölçüm bir insanı vücut tipi açısından yeterince tanımlıyor.
+
+ADIM 2 — Somatotype Etiketinin Atanması
+  Ölçüm vektörü elimde olduğu için etiket anında türetilebilir:
+
+    WHR = waist_circ / hip_circ
+    SHR = shoulder_width / hip_width
+
+    hourglass:   SHR yakın 1.0   AND WHR < 0.75 (kadın) / 0.85 (erkek)
+    pear:        hip_circ > shoulder_width × 2.1  AND WHR orta
+    apple:       WHR > 0.85 (kadın) / 0.95 (erkek)
+    v_shape:     SHR > 1.25  AND shoulder_width büyük
+    rectangle:   diğerleri
+
+  Bu kuralların sayısal eşikleri sensitivity matrix tamamlanınca
+  gerçek ölçüm dağılımlarına göre kalibre edilecek.
+
+ADIM 3 — Morph İnversiyonu (Ölçüm → Morph Ağırlıkları)
+  Sensitivity matrix'ten Jacobian matrisi elde ediliyor:
+    J[i][k] = Δölçüm_k / Δmorph_i   (53 morph × 10 ölçüm)
+
+  Hedef ölçüm vektörü m_target için morph ağırlıkları x:
+    J · x ≈ m_target - m_baseline
+
+  Bu bir aşırı belirlenmiş doğrusal sistem (10 denklem, 53 bilinmeyen).
+  Çözüm için: en küçük kareler + kısıt (0 ≤ x_i ≤ morph_max_i)
+    → scipy.optimize.lsq_linear() ile çözülür
+
+  Neden underdetermined değil sorun:
+    10 ölçümden 53 morph bulamayız ama amacımız tam inversiyon değil.
+    Biyolojik olarak anlamlı birden fazla morph kombinasyonu aynı
+    ölçümü üretebilir — bu bir vücut çeşitliliği kaynağı. L2 regularization
+    ile en az sayıda morphu aktive eden çözüm tercih edilir.
+
+  Kısıtlar inversion sırasında uygulanacak:
+    fat morph ile muscle morph aynı anda yüksek olamaz (biyolojik kısıt)
+    HD kas morphları (musc_*) sadece muscle yüksekse aktif olabilir
+    HD deri morphları (skin_*) sadece zayıf modellerde anlamlı
+
+ADIM 4 — CC5 Export ve Render
+  Morph inversion'dan çıkan 53 ağırlık CC5'e gönderilir:
+    props/batch_export.py → her satır için SetShapingMorphWeight() × 53
+  FBX export → Blender pipeline → render + gerçek ölçüm ölçümü
+
+ADIM 5 — Doğrulama
+  Hedef ölçüm vs gerçek ölçüm karşılaştırması:
+    MAE < 1cm → inversion yeterince iyi
+    MAE > 2cm → Jacobian nonlineer; interaksiyon terimleri ekle ya da
+                iteratif inversion uygula (hedef ölçüme yaklaşana kadar
+                morph ağırlıklarını güncelle)
+
+
+ÖLÇÜM UZAYI MİMARİSİ — BAĞIMLILIK ŞEMASI
+-------------------------------------------
+
+sensitivity_measurements.csv (Aşama 1'den)
+           ↓
+   Jacobian J inşa et  (53 morph × 10 ölçüm)
+           ↓
+Gerçek antropometri dağılımından ölçüm örnekle  (LHS, 9 boyut)
+  + biyolojik filtre  + somatotype kuralı uygulanır
+           ↓
+         dataset_10k.csv
+  (target_height, target_waist, ... , somatotype — render öncesi biliniyor)
+           ↓
+  morph inversion: lsq_linear(J, target - baseline)
+           ↓
+     53 morph ağırlığı bulundu
+           ↓
+  CC5 Script Editor → batch_export.py  (her satır için morph set + FBX)
+           ↓
+  blender-pipeline/pipeline.py  →  render + actual_measurements
+           ↓
+  validate: actual vs target  →  MAE raporu
+
+
+MEVCUT YAKLAŞIMLA KARŞILAŞTIRMA
+---------------------------------
+
+                    Score Uzayı (A)      Ölçüm Uzayı (C)
+                    ─────────────────    ─────────────────
+Input               fat=0.4, ...         waist=74cm, ...
+Gerçek dünya bağı   dolaylı              doğrudan
+Etiket güveni       tahmin (formula)     deterministik
+Kalibre mi?         hayır                evet (Jacobian)
+Render öncesi bilgi ölçüm tahmini        ölçüm kesin
+Anlaşılabilirlik    yüksek               yüksek (cm cinsinden)
+Implementasyon      mevcut               Aşama 1 bittikten sonra
+
+ÖNERİ: Sensitivity matrix tamamlandıktan sonra (Aşama 1 → 5 arası pipeline),
+Jacobian elimizde olunca ölçüm uzayı yaklaşımına geçilmesi tavsiye edilir.
+Score sistemi bu noktada bir kalibrasyon aracı olarak arşivlenir, üretim
+pipeline'ından çıkarılır.
+
+
+================================================================================
 ÖZET: ÇALIŞITIRMA SIRASI
 ================================================================================
 

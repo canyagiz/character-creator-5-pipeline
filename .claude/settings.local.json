@@ -42,7 +42,24 @@
       "Bash(python *)",
       "PowerShell(Get-ChildItem \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\calib\\\\renders_calib\" -Directory | ForEach-Object { Write-Output $_.Name })",
       "Bash(Measure-Object)",
-      "Bash(Select-Object -ExpandProperty Count)"
+      "Bash(Select-Object -ExpandProperty Count)",
+      "Bash(not exist *)",
+      "Bash(dir \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\fbx_export_sensitivity\")",
+      "Bash(findstr \"waist\")",
+      "Bash(findstr \"body_fat\")",
+      "Bash(dir \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\measurements\")",
+      "Bash(Start-Sleep -Seconds 15)",
+      "Bash(Get-Content \"C:\\\\Users\\\\aliya\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-aliya-workspace-cc5-scripts\\\\568a5bd9-6d8e-447e-b6df-b6333ac72f90\\\\tasks\\\\bbefnf34d.output\")",
+      "Bash(Select-Object -Last 30)",
+      "PowerShell(Get-Process *)",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/measure_anthropometry.py -- fbx_export/ansur_00000.fbx renders/measurements)",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/measure_anthropometry.py -- fbx_export/ansur_00001.fbx renders/measurements)",
+      "Bash(python3 *)",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/measure_anthropometry.py -- fbx_export/ansur_00001.fbx logs/test_hip_fix)",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/render_segmentation_masks.py -- fbx_export/ansur_0000.fbx renders/segmentation/ansur_0000)",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/render_segmentation_masks.py -- \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\fbx_export\\\\ansur_0000.fbx\" \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\segmentation\\\\ansur_0000\")",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/render_segmentation_masks.py -- \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\fbx_export\\\\ansur_00000.fbx\" \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\segmentation\\\\ansur_00000\")",
+      "Bash(Select-String -Pattern \"class|seg|ERROR|Saved|Traceback|Error\")"
     ]
   }
 }

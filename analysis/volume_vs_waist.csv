@@ -1,0 +1,12 @@
+char_id,morph_value,waist_circ_cm,volume_L
+sens_musc_waist_00_f,0.0,75.46,58.33631550362163
+sens_musc_waist_01_f,0.1,75.48,58.33969712720643
+sens_musc_waist_02_f,0.2,75.51,58.34330760027039
+sens_musc_waist_03_f,0.3,75.55,58.347112215157914
+sens_musc_waist_04_f,0.4,75.6,58.35115806982439
+sens_musc_waist_05_f,0.5,75.66,58.35539548589875
+sens_musc_waist_06_f,0.6,75.73,58.35987757761028
+sens_musc_waist_07_f,0.7,75.81,58.36456767981123
+sens_musc_waist_08_f,0.8,75.89,58.369468959740644
+sens_musc_waist_09_f,0.9,75.98,58.37459713136028
+sens_musc_waist_10_f,1.0,76.08,58.37993340598694

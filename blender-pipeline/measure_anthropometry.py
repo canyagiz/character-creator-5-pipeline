@@ -15,9 +15,10 @@ import json
 import mathutils
 
 # ── Args ──────────────────────────────────────────────────────────────────────
-argv     = sys.argv[sys.argv.index("--") + 1:]
-fbx_path = argv[0]
-out_dir  = argv[1]
+argv      = sys.argv[sys.argv.index("--") + 1:]
+fbx_path  = argv[0]
+out_dir   = argv[1]
+weight_kg = float(argv[2]) if len(argv) > 2 else None   # opsiyonel: Siri BF% icin
 os.makedirs(out_dir, exist_ok=True)
 
 char_name = os.path.splitext(os.path.basename(fbx_path))[0]
@@ -258,7 +259,7 @@ z_shoulder_bone = bone_z("CC_Base_L_Upperarm")
 z_hip_bone      = bone_z("CC_Base_L_Thigh")
 
 # ── Omuz genişliği: omuz eklemi X'i + 7 cm deltoid marjı ──────────────────────
-# T-pose'da kollar yatay olduğundan Z filtresi kolu yakalar.
+# T/A-pose'da kollar yatay/çapraz olduğundan Z filtresi kolu yakalar.
 # Çözüm: omuz kemiği X pozisyonunu sınır al, ötesini dışla.
 _p_sh_L   = arm_obj.matrix_world @ arm_obj.pose.bones["CC_Base_L_Upperarm"].head
 _p_sh_R   = arm_obj.matrix_world @ arm_obj.pose.bones["CC_Base_R_Upperarm"].head
@@ -274,8 +275,25 @@ for _obj in mesh_objs:
             _sh_xs.append(_wv.x)
 shoulder_width_cm = round((max(_sh_xs) - min(_sh_xs)) * 100, 2) if len(_sh_xs) >= 2 else 0.0
 
+# ── Kalça genişliği: A-pose'da el/ön kol kalça yüksekliğinde olur → kol dışla ─
+# Thigh kemiği X pozisyonu + 10 cm et marjı ile X'i kliple.
+_p_hip_L  = arm_obj.matrix_world @ arm_obj.pose.bones["CC_Base_L_Thigh"].head
+_p_hip_R  = arm_obj.matrix_world @ arm_obj.pose.bones["CC_Base_R_Thigh"].head
+_HIP_M    = 0.10
+_x_hip_lo = min(_p_hip_L.x, _p_hip_R.x) - _HIP_M
+_x_hip_hi = max(_p_hip_L.x, _p_hip_R.x) + _HIP_M
+_hip_xs   = []
+for _obj in mesh_objs:
+    _mat = _obj.matrix_world
+    for _v in _obj.data.vertices:
+        _wv = _mat @ _v.co
+        if abs(_wv.z - z_hip_bone) <= 0.05 and _x_hip_lo <= _wv.x <= _x_hip_hi:
+            _hip_xs.append(_wv.x)
+hip_width_cm = round((max(_hip_xs) - min(_hip_xs)) * 100, 2) if len(_hip_xs) >= 2 else 0.0
+
 # ── Ölçümler ──────────────────────────────────────────────────────────────────
 measurements = {
+    "height_cm":          height_cm,
     # Boyun: NeckTwist01–NeckTwist02 ortası, yarıçap filtresi yok (obez boyunları keser)
     # pick="closest" → merkeze en yakın bileşen = boyun (omuz değil)
     "neck_circ_cm":      measure_segment_circumference_cm(
@@ -293,7 +311,7 @@ measurements = {
     "wrist_circ_cm":    measure_segment_circumference_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand",    cut_at="end"),
 
     "shoulder_width_cm":  shoulder_width_cm,
-    "hip_width_cm":       measure_width_cm(z_hip_bone, window_m=0.05),
+    "hip_width_cm":       hip_width_cm,
 
     "upper_arm_length_cm": bone_dist_cm("CC_Base_L_Upperarm", "CC_Base_L_Forearm"),
     "forearm_length_cm":   bone_dist_cm("CC_Base_L_Forearm",  "CC_Base_L_Hand"),
@@ -303,6 +321,24 @@ measurements = {
     "total_leg_length_cm": bone_dist_cm("CC_Base_L_Thigh",    "CC_Base_L_Foot"),
 
 }
+
+# ── Hacim + Siri body fat ─────────────────────────────────────────────────────
+_eval_obj  = body_obj.evaluated_get(depsgraph)
+_eval_mesh = _eval_obj.to_mesh()
+_bm_vol    = bmesh.new()
+_bm_vol.from_mesh(_eval_mesh)
+_bm_vol.transform(_eval_obj.matrix_world)
+_eval_obj.to_mesh_clear()
+volume_L = round(abs(_bm_vol.calc_volume()) * 1000, 4)
+_bm_vol.free()
+measurements["volume_L"] = volume_L
+
+if weight_kg and weight_kg > 0 and volume_L > 0:
+    density = weight_kg / volume_L          # kg/L = g/mL
+    siri_bfp = round((495 / density) - 450, 2)
+    measurements["body_density"]   = round(density, 4)
+    measurements["siri_bfp"]       = siri_bfp
+    measurements["weight_kg"]      = weight_kg
 
 # ── Kaydet (meta JSON'a merge et) ─────────────────────────────────────────────
 out_path = os.path.join(out_dir, f"{char_name}_meta.json")

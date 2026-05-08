@@ -52,7 +52,7 @@ def annotate_char(char_id, debug_dir):
         draw = ImageDraw.Draw(img)
 
         for label, info in meas.items():
-            z_m   = info["z_m"]
+            z_m   = info["plane_co"][2]
             circ  = info["circ_cm"]
             rgb   = tuple(int(c * 255) for c in info["color"])
             color = (*rgb, 230)
