@@ -1,0 +1,96 @@
+=== calibration_export START 2026-05-04 23:25:04 ===
+Toplam: 1009 karakter | OVERWRITE=False
+  [project] female yuklendi
+=== calibration_export START 2026-05-04 23:30:08 ===
+Toplam: 1009 karakter | OVERWRITE=False
+  [project] female yuklendi
+[50/1009] 50 export, 0 atlandi, 0 hata | son: char_01530
+[100/1009] 100 export, 0 atlandi, 0 hata | son: char_03109
+[150/1009] 150 export, 0 atlandi, 0 hata | son: char_04603
+[200/1009] 200 export, 0 atlandi, 0 hata | son: char_06040
+[250/1009] 250 export, 0 atlandi, 0 hata | son: char_07402
+[300/1009] 300 export, 0 atlandi, 0 hata | son: char_09166
+[350/1009] 350 export, 0 atlandi, 0 hata | son: char_10374
+[400/1009] 400 export, 0 atlandi, 0 hata | son: char_11946
+[450/1009] 450 export, 0 atlandi, 0 hata | son: char_13641
+[500/1009] 500 export, 0 atlandi, 0 hata | son: char_14788
+  [project] male yuklendi
+[550/1009] 550 export, 0 atlandi, 0 hata | son: char_16109
+[600/1009] 600 export, 0 atlandi, 0 hata | son: char_18054
+[650/1009] 650 export, 0 atlandi, 0 hata | son: char_19212
+  [HATA] char_20843: FBX cok kucuk (-1 bytes)
+  [HATA] char_20851: FBX cok kucuk (-1 bytes)
+  [HATA] char_20859: FBX cok kucuk (-1 bytes)
+  [HATA] char_20869: FBX cok kucuk (-1 bytes)
+  [HATA] char_20884: FBX cok kucuk (-1 bytes)
+  [HATA] char_20885: FBX cok kucuk (-1 bytes)
+  [HATA] char_20932: FBX cok kucuk (-1 bytes)
+  [HATA] char_20969: FBX cok kucuk (-1 bytes)
+  [HATA] char_20971: FBX cok kucuk (-1 bytes)
+  [HATA] char_20973: FBX cok kucuk (-1 bytes)
+  [HATA] char_21008: FBX cok kucuk (-1 bytes)
+  [HATA] char_21045: FBX cok kucuk (-1 bytes)
+  [HATA] char_21071: FBX cok kucuk (-1 bytes)
+  [HATA] char_21078: FBX cok kucuk (-1 bytes)
+  [HATA] char_21082: FBX cok kucuk (-1 bytes)
+  [HATA] char_21088: FBX cok kucuk (-1 bytes)
+  [HATA] char_21099: FBX cok kucuk (-1 bytes)
+  [HATA] char_21105: FBX cok kucuk (-1 bytes)
+  [HATA] char_21115: FBX cok kucuk (-1 bytes)
+  [HATA] char_21241: FBX cok kucuk (-1 bytes)
+  [HATA] char_21257: FBX cok kucuk (-1 bytes)
+  [HATA] char_21270: FBX cok kucuk (-1 bytes)
+  [HATA] char_21275: FBX cok kucuk (-1 bytes)
+  [HATA] char_21320: FBX cok kucuk (-1 bytes)
+  [HATA] char_21376: FBX cok kucuk (-1 bytes)
+  [HATA] char_21437: FBX cok kucuk (-1 bytes)
+  [HATA] char_21535: FBX cok kucuk (-1 bytes)
+  [HATA] char_21549: FBX cok kucuk (-1 bytes)
+  [HATA] char_21551: FBX cok kucuk (-1 bytes)
+  [HATA] char_21567: FBX cok kucuk (-1 bytes)
+  [HATA] char_21621: FBX cok kucuk (-1 bytes)
+  [HATA] char_21680: FBX cok kucuk (-1 bytes)
+  [HATA] char_21703: FBX cok kucuk (-1 bytes)
+  [HATA] char_21730: FBX cok kucuk (-1 bytes)
+  [HATA] char_21754: FBX cok kucuk (-1 bytes)
+  [HATA] char_21795: FBX cok kucuk (-1 bytes)
+  [HATA] char_21798: FBX cok kucuk (-1 bytes)
+  [HATA] char_21819: FBX cok kucuk (-1 bytes)
+  [HATA] char_21820: FBX cok kucuk (-1 bytes)
+  [HATA] char_21830: FBX cok kucuk (-1 bytes)
+  [HATA] char_21942: FBX cok kucuk (-1 bytes)
+  [HATA] char_21988: FBX cok kucuk (-1 bytes)
+  [HATA] char_22052: FBX cok kucuk (-1 bytes)
+  [HATA] char_22053: FBX cok kucuk (-1 bytes)
+  [HATA] char_22079: FBX cok kucuk (-1 bytes)
+  [HATA] char_22182: FBX cok kucuk (-1 bytes)
+  [HATA] char_22259: FBX cok kucuk (-1 bytes)
+  [HATA] char_22261: FBX cok kucuk (-1 bytes)
+  [HATA] char_22305: FBX cok kucuk (-1 bytes)
+  [HATA] char_22349: FBX cok kucuk (-1 bytes)
+  [HATA] char_22434: FBX cok kucuk (-1 bytes)
+  [HATA] char_22482: FBX cok kucuk (-1 bytes)
+  [HATA] char_22499: FBX cok kucuk (-1 bytes)
+  [HATA] char_22500: FBX cok kucuk (-1 bytes)
+  [HATA] char_22536: FBX cok kucuk (-1 bytes)
+  [HATA] char_22630: FBX cok kucuk (-1 bytes)
+  [HATA] char_22762: FBX cok kucuk (-1 bytes)
+  [HATA] char_22786: FBX cok kucuk (-1 bytes)
+  [HATA] char_22818: FBX cok kucuk (-1 bytes)
+  [HATA] char_22827: FBX cok kucuk (-1 bytes)
+  [HATA] char_22834: FBX cok kucuk (-1 bytes)
+  [HATA] char_22845: FBX cok kucuk (-1 bytes)
+  [HATA] char_22856: FBX cok kucuk (-1 bytes)
+  [HATA] char_22936: FBX cok kucuk (-1 bytes)
+=== calibration_export START 2026-05-05 08:17:55 ===
+Toplam: 1009 karakter | OVERWRITE=False
+  [project] male yuklendi
+[745/1009] 50 export, 695 atlandi, 0 hata | son: char_22349
+[795/1009] 100 export, 695 atlandi, 0 hata | son: char_24012
+[845/1009] 150 export, 695 atlandi, 0 hata | son: char_25724
+=== calibration_export START 2026-05-05 12:03:00 ===
+Toplam: 1009 karakter | OVERWRITE=False
+=== calibration_export START 2026-05-05 13:13:15 ===
+Toplam: 1009 karakter | OVERWRITE=False
+  [project] male yuklendi
+  [HATA] char_27011: FBX cok kucuk (-1 bytes)

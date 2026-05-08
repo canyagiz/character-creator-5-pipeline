@@ -7,12 +7,15 @@ import RLPy
 import csv
 import os
 import sys
-sys.path.insert(0, r"C:\Users\aliya\workspace\cc5-scripts")
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_ROOT))
 from cc5_helpers import compute_all_weights, ALL_MORPHS, PROJECT_FILES
 
-CSV_PATH   = r"C:\Users\aliya\workspace\cc5-scripts\dataset.csv"
-OUTPUT_DIR = r"C:\Users\aliya\workspace\cc5-scripts\fbx_export"
-LOG_PATH   = r"C:\Users\aliya\workspace\cc5-scripts\logs\cc5_export.log"
+CSV_PATH   = str(_ROOT / "dataset.csv")
+OUTPUT_DIR = str(_ROOT / "fbx_export")
+LOG_PATH   = str(_ROOT / "logs" / "cc5_export.log")
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)

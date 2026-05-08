@@ -1,0 +1,10 @@
+Row: {'char_id': 'char_00037', 'gender': 'male', 'age': '40', 'group': 'athletic_hyper', 'fat_score': '0.0821', 'muscle_score': '0.669', 'height_score': '0.2', 'chest_height_score': '0.4128', 'hip_length_score': '0.2727', 'thigh_length_score': '0.1944', 'lower_leg_length_score': '0.3473', 'upper_arm_length_score': '0.385', 'forearm_length_score': '0.1128', 'neck_length_score': '0.3489', 'height_cm': '', 'training_pattern': 'pull_dominant'}
+LoadFile başlıyor (male)...
+LoadFile döndü.
+Avatar: HD Aaron
+Morphlar uygulandı: 53 adet
+Export ayarları: ResetBoneScale, texture yok
+ExportFbxFile başlıyor...
+ExportFbxFile döndü.
+Dosya var mı: True
+Dosya boyutu: 40,151,184 bytes

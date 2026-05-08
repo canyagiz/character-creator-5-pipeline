@@ -1,9 +1,12 @@
 import RLPy
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parent
 
 avatar = RLPy.RScene.GetAvatars()[0]
 shaping_comp = avatar.GetAvatarShapingComponent()
 
-output_path = r"C:\Users\aliya\workspace\cc5-scripts\Detailed_Morph_Dictionary.txt"
+output_path = str(_ROOT / "Detailed_Morph_Dictionary.txt")
 
 with open(output_path, "w", encoding="utf-8") as file:
     categories = shaping_comp.GetShapingMorphCatergoryNames()

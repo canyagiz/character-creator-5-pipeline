@@ -11,11 +11,14 @@ import os
 import numpy as np
 import pandas as pd
 from PIL import Image
+from pathlib import Path
 
-SIL_DIR   = r"C:\Users\aliya\workspace\cc5-scripts\calib\renders_calib\silhouettes"
-META_DIR  = r"C:\Users\aliya\workspace\cc5-scripts\calib\renders_calib\meta"
-PROBE_CSV = r"C:\Users\aliya\workspace\cc5-scripts\analysis\calibration_probe.csv"
-OUT_CSV   = r"C:\Users\aliya\workspace\cc5-scripts\analysis\silhouette_analysis.csv"
+_ROOT = Path(__file__).resolve().parent.parent
+
+SIL_DIR   = str(_ROOT / "calib" / "renders_calib" / "silhouettes")
+META_DIR  = str(_ROOT / "calib" / "renders_calib" / "meta")
+PROBE_CSV = str(_ROOT / "analysis" / "calibration_probe.csv")
+OUT_CSV   = str(_ROOT / "analysis" / "silhouette_analysis.csv")
 
 probe = pd.read_csv(PROBE_CSV)
 probe_dict = {r["char_id"]: r for _, r in probe.iterrows()}

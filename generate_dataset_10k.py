@@ -17,9 +17,12 @@ from scipy.stats import qmc, truncnorm
 from sklearn.linear_model import Ridge
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline
+from pathlib import Path
 
-CALIB_CSV = r"C:\Users\aliya\workspace\cc5-scripts\analysis\calib_merged.csv"
-OUTPUT    = r"C:\Users\aliya\workspace\cc5-scripts\dataset_10k.csv"
+_ROOT = Path(__file__).resolve().parent
+
+CALIB_CSV = str(_ROOT / "analysis" / "calib_merged.csv")
+OUTPUT    = str(_ROOT / "dataset_10k.csv")
 
 N_PER_SOMA = 2_000   # her somatotipten
 SEED       = 42

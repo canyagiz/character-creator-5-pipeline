@@ -16,11 +16,14 @@ from sklearn.linear_model import Ridge
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline
 from sklearn.metrics import r2_score
+from pathlib import Path
 
-PROBE_CSV  = r"C:\Users\aliya\workspace\cc5-scripts\analysis\calibration_probe.csv"
-META_DIR   = r"C:\Users\aliya\workspace\cc5-scripts\renders\meta"
-OUT_CSV    = r"C:\Users\aliya\workspace\cc5-scripts\analysis\calib_merged.csv"
-OUT_REPORT = r"C:\Users\aliya\workspace\cc5-scripts\analysis\calib_report.txt"
+_ROOT = Path(__file__).resolve().parent.parent
+
+PROBE_CSV  = str(_ROOT / "analysis" / "calibration_probe.csv")
+META_DIR   = str(_ROOT / "renders" / "meta")
+OUT_CSV    = str(_ROOT / "analysis" / "calib_merged.csv")
+OUT_REPORT = str(_ROOT / "analysis" / "calib_report.txt")
 
 # ── Meta JSON'lari yukle ───────────────────────────────────────────────────────
 probe = pd.read_csv(PROBE_CSV)

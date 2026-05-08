@@ -13,13 +13,15 @@ import csv
 import os
 import sys
 import time
+from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\aliya\workspace\cc5-scripts")
+_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_ROOT))
 from cc5_helpers import ALL_MORPHS, PROJECT_FILES
 
-PROBE_CSV  = r"C:\Users\aliya\workspace\cc5-scripts\logs\height_sensitivity_probe.csv"
-OUTPUT_DIR = r"C:\Users\aliya\workspace\cc5-scripts\fbx_export_height_sensitivity"
-LOG_PATH   = r"C:\Users\aliya\workspace\cc5-scripts\logs\height_sensitivity_export.log"
+PROBE_CSV  = str(_ROOT / "logs" / "height_sensitivity_probe.csv")
+OUTPUT_DIR = str(_ROOT / "fbx_export_height_sensitivity")
+LOG_PATH   = str(_ROOT / "logs" / "height_sensitivity_export.log")
 OVERWRITE  = False
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)

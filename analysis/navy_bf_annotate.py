@@ -8,9 +8,12 @@ import numpy as np
 import math
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+from pathlib import Path
 
-CSV_IN  = r"C:\Users\aliya\workspace\cc5-scripts\logs\ansur_samples_10k.csv"
-CSV_OUT = r"C:\Users\aliya\workspace\cc5-scripts\logs\ansur_samples_10k.csv"
+_ROOT = Path(__file__).resolve().parent.parent
+
+CSV_IN  = str(_ROOT / "logs" / "ansur_samples_10k.csv")
+CSV_OUT = str(_ROOT / "logs" / "ansur_samples_10k.csv")
 
 # ── US Navy BF% ──────────────────────────────────────────────────────────────
 CM_TO_IN = 1 / 2.54
@@ -115,7 +118,7 @@ for ax, g, color in zip(axes, ["female", "male"], ["#e07b9e", "#6baed6"]):
     ax.legend(handles=patches, fontsize=8, loc="upper left")
 
 plt.tight_layout()
-plt.savefig(r"C:\Users\aliya\workspace\cc5-scripts\analysis\navy_bf_distribution.png",
+plt.savefig(str(_ROOT / "analysis" / "navy_bf_distribution.png"),
             dpi=150, bbox_inches="tight")
 print("\nPlot kaydedildi: analysis/navy_bf_distribution.png")
 plt.show()

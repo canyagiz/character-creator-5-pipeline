@@ -11,13 +11,16 @@ import os
 import numpy as np
 import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
+from pathlib import Path
 
-SIL_DIR  = r"C:\Users\aliya\workspace\cc5-scripts\calib\renders_calib\silhouettes"
-OUT_DIR  = r"C:\Users\aliya\workspace\cc5-scripts\analysis\debug_widths"
+_ROOT = Path(__file__).resolve().parent.parent
+
+SIL_DIR  = str(_ROOT / "calib" / "renders_calib" / "silhouettes")
+OUT_DIR  = str(_ROOT / "analysis" / "debug_widths")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 # Silüet analiz sonuçları
-df = pd.read_csv(r"C:\Users\aliya\workspace\cc5-scripts\analysis\silhouette_analysis.csv")
+df = pd.read_csv(str(_ROOT / "analysis" / "silhouette_analysis.csv"))
 
 def visual_label(row):
     wh  = row["waist_over_hip"]

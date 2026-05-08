@@ -15,10 +15,13 @@ from sklearn.linear_model import Ridge
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.pipeline import make_pipeline
 from sklearn.metrics import r2_score
+from pathlib import Path
 
-CALIB_CSV   = r"C:\Users\aliya\workspace\cc5-scripts\analysis\calib_merged.csv"
-DATASET_CSV = r"C:\Users\aliya\workspace\cc5-scripts\dataset.csv"
-OUT_PREDS   = r"C:\Users\aliya\workspace\cc5-scripts\analysis\dataset_with_preds.csv"
+_ROOT = Path(__file__).resolve().parent.parent
+
+CALIB_CSV   = str(_ROOT / "analysis" / "calib_merged.csv")
+DATASET_CSV = str(_ROOT / "dataset.csv")
+OUT_PREDS   = str(_ROOT / "analysis" / "dataset_with_preds.csv")
 
 FEATURES = ["fat_score", "muscle_score", "hip_score", "waist_def_score", "height_score"]
 TARGETS  = ["chest_circ_cm", "waist_circ_cm", "hip_circ_cm"]

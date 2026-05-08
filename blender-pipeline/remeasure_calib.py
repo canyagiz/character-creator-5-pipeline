@@ -8,11 +8,13 @@ Calistir: python blender-pipeline/remeasure_calib.py
 import subprocess
 import sys
 import os
+from pathlib import Path
 
+_ROOT = Path(__file__).resolve().parent.parent
 BLENDER_EXE = r"C:\Program Files\Blender Foundation\Blender 4.5\blender.exe"
 SCRIPT      = os.path.join(os.path.dirname(__file__), "measure_anthropometry.py")
-FBX_DIR     = r"C:\Users\aliya\workspace\cc5-scripts\calib\fbx_export_calib\calib"
-META_DIR    = r"C:\Users\aliya\workspace\cc5-scripts\calib\renders_calib\meta"
+FBX_DIR     = str(_ROOT / "calib" / "fbx_export_calib" / "calib")
+META_DIR    = str(_ROOT / "calib" / "renders_calib" / "meta")
 
 fbx_files = sorted([
     os.path.join(FBX_DIR, f)

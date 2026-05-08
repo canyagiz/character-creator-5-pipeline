@@ -12,7 +12,10 @@ Tüm diğer morphlar 0'da tutulur.
 import csv
 import os
 import sys
-sys.path.insert(0, r"C:\Users\aliya\workspace\cc5-scripts")
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(_ROOT))
 from cc5_helpers import (
     M_BODY_FAT, M_BODY_THIN, M_BODY_MUSCULAR, M_BODY_BUILDER,
     M_SHOULDER_SCALE, M_UPPER_ARM_SCALE, M_UPPER_ARM_LENGTH,
@@ -36,7 +39,7 @@ from cc5_helpers import (
     ALL_MORPHS,
 )
 
-OUT_PATH = r"C:\Users\aliya\workspace\cc5-scripts\logs\sensitivity_probe.csv"
+OUT_PATH = str(_ROOT / "logs" / "sensitivity_probe.csv")
 os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
 
 # ── Her morph için kısa isim ve test aralığı ──────────────────────────────────

@@ -1,0 +1,1169 @@
+char_id,gender,morph_key,morph_id,morph_value
+sens_baseline_f,female,baseline,,0.0
+sens_body_fat_00_f,female,body_fat,cc embed morphs/embed_full_body3,0.0
+sens_body_fat_01_f,female,body_fat,cc embed morphs/embed_full_body3,0.1
+sens_body_fat_02_f,female,body_fat,cc embed morphs/embed_full_body3,0.2
+sens_body_fat_03_f,female,body_fat,cc embed morphs/embed_full_body3,0.3
+sens_body_fat_04_f,female,body_fat,cc embed morphs/embed_full_body3,0.4
+sens_body_fat_05_f,female,body_fat,cc embed morphs/embed_full_body3,0.5
+sens_body_fat_06_f,female,body_fat,cc embed morphs/embed_full_body3,0.6
+sens_body_fat_07_f,female,body_fat,cc embed morphs/embed_full_body3,0.7
+sens_body_fat_08_f,female,body_fat,cc embed morphs/embed_full_body3,0.8
+sens_body_fat_09_f,female,body_fat,cc embed morphs/embed_full_body3,0.9
+sens_body_fat_10_f,female,body_fat,cc embed morphs/embed_full_body3,1.0
+sens_body_thin_00_f,female,body_thin,cc embed morphs/embed_full_body5,0.0
+sens_body_thin_01_f,female,body_thin,cc embed morphs/embed_full_body5,0.1
+sens_body_thin_02_f,female,body_thin,cc embed morphs/embed_full_body5,0.2
+sens_body_thin_03_f,female,body_thin,cc embed morphs/embed_full_body5,0.3
+sens_body_thin_04_f,female,body_thin,cc embed morphs/embed_full_body5,0.4
+sens_body_thin_05_f,female,body_thin,cc embed morphs/embed_full_body5,0.5
+sens_body_thin_06_f,female,body_thin,cc embed morphs/embed_full_body5,0.6
+sens_body_thin_07_f,female,body_thin,cc embed morphs/embed_full_body5,0.7
+sens_body_thin_08_f,female,body_thin,cc embed morphs/embed_full_body5,0.8
+sens_body_thin_09_f,female,body_thin,cc embed morphs/embed_full_body5,0.9
+sens_body_thin_10_f,female,body_thin,cc embed morphs/embed_full_body5,1.0
+sens_body_muscular_00_f,female,body_muscular,cc embed morphs/embed_full_body6,0.0
+sens_body_muscular_01_f,female,body_muscular,cc embed morphs/embed_full_body6,0.1
+sens_body_muscular_02_f,female,body_muscular,cc embed morphs/embed_full_body6,0.2
+sens_body_muscular_03_f,female,body_muscular,cc embed morphs/embed_full_body6,0.3
+sens_body_muscular_04_f,female,body_muscular,cc embed morphs/embed_full_body6,0.4
+sens_body_muscular_05_f,female,body_muscular,cc embed morphs/embed_full_body6,0.5
+sens_body_muscular_06_f,female,body_muscular,cc embed morphs/embed_full_body6,0.6
+sens_body_muscular_07_f,female,body_muscular,cc embed morphs/embed_full_body6,0.7
+sens_body_muscular_08_f,female,body_muscular,cc embed morphs/embed_full_body6,0.8
+sens_body_muscular_09_f,female,body_muscular,cc embed morphs/embed_full_body6,0.9
+sens_body_muscular_10_f,female,body_muscular,cc embed morphs/embed_full_body6,1.0
+sens_body_builder_00_f,female,body_builder,cc embed morphs/embed_full_body1,0.0
+sens_body_builder_01_f,female,body_builder,cc embed morphs/embed_full_body1,0.1
+sens_body_builder_02_f,female,body_builder,cc embed morphs/embed_full_body1,0.2
+sens_body_builder_03_f,female,body_builder,cc embed morphs/embed_full_body1,0.3
+sens_body_builder_04_f,female,body_builder,cc embed morphs/embed_full_body1,0.4
+sens_body_builder_05_f,female,body_builder,cc embed morphs/embed_full_body1,0.5
+sens_body_builder_06_f,female,body_builder,cc embed morphs/embed_full_body1,0.6
+sens_body_builder_07_f,female,body_builder,cc embed morphs/embed_full_body1,0.7
+sens_body_builder_08_f,female,body_builder,cc embed morphs/embed_full_body1,0.8
+sens_body_builder_09_f,female,body_builder,cc embed morphs/embed_full_body1,0.9
+sens_body_builder_10_f,female,body_builder,cc embed morphs/embed_full_body1,1.0
+sens_shoulder_scale_00_f,female,shoulder_scale,cc embed morphs/embed_arm101,-0.5
+sens_shoulder_scale_01_f,female,shoulder_scale,cc embed morphs/embed_arm101,-0.35
+sens_shoulder_scale_02_f,female,shoulder_scale,cc embed morphs/embed_arm101,-0.2
+sens_shoulder_scale_03_f,female,shoulder_scale,cc embed morphs/embed_arm101,-0.05
+sens_shoulder_scale_04_f,female,shoulder_scale,cc embed morphs/embed_arm101,0.1
+sens_shoulder_scale_05_f,female,shoulder_scale,cc embed morphs/embed_arm101,0.25
+sens_shoulder_scale_06_f,female,shoulder_scale,cc embed morphs/embed_arm101,0.4
+sens_shoulder_scale_07_f,female,shoulder_scale,cc embed morphs/embed_arm101,0.55
+sens_shoulder_scale_08_f,female,shoulder_scale,cc embed morphs/embed_arm101,0.7
+sens_shoulder_scale_09_f,female,shoulder_scale,cc embed morphs/embed_arm101,0.85
+sens_shoulder_scale_10_f,female,shoulder_scale,cc embed morphs/embed_arm101,1.0
+sens_upperarm_scale_00_f,female,upperarm_scale,cc embed morphs/embed_arm3,-1.0
+sens_upperarm_scale_01_f,female,upperarm_scale,cc embed morphs/embed_arm3,-0.8
+sens_upperarm_scale_02_f,female,upperarm_scale,cc embed morphs/embed_arm3,-0.6
+sens_upperarm_scale_03_f,female,upperarm_scale,cc embed morphs/embed_arm3,-0.4
+sens_upperarm_scale_04_f,female,upperarm_scale,cc embed morphs/embed_arm3,-0.2
+sens_upperarm_scale_05_f,female,upperarm_scale,cc embed morphs/embed_arm3,0.0
+sens_upperarm_scale_06_f,female,upperarm_scale,cc embed morphs/embed_arm3,0.2
+sens_upperarm_scale_07_f,female,upperarm_scale,cc embed morphs/embed_arm3,0.4
+sens_upperarm_scale_08_f,female,upperarm_scale,cc embed morphs/embed_arm3,0.6
+sens_upperarm_scale_09_f,female,upperarm_scale,cc embed morphs/embed_arm3,0.8
+sens_upperarm_scale_10_f,female,upperarm_scale,cc embed morphs/embed_arm3,1.0
+sens_upperarm_len_00_f,female,upperarm_len,cc embed morphs/embed_arm4,-1.0
+sens_upperarm_len_01_f,female,upperarm_len,cc embed morphs/embed_arm4,-0.8
+sens_upperarm_len_02_f,female,upperarm_len,cc embed morphs/embed_arm4,-0.6
+sens_upperarm_len_03_f,female,upperarm_len,cc embed morphs/embed_arm4,-0.4
+sens_upperarm_len_04_f,female,upperarm_len,cc embed morphs/embed_arm4,-0.2
+sens_upperarm_len_05_f,female,upperarm_len,cc embed morphs/embed_arm4,0.0
+sens_upperarm_len_06_f,female,upperarm_len,cc embed morphs/embed_arm4,0.2
+sens_upperarm_len_07_f,female,upperarm_len,cc embed morphs/embed_arm4,0.4
+sens_upperarm_len_08_f,female,upperarm_len,cc embed morphs/embed_arm4,0.6
+sens_upperarm_len_09_f,female,upperarm_len,cc embed morphs/embed_arm4,0.8
+sens_upperarm_len_10_f,female,upperarm_len,cc embed morphs/embed_arm4,1.0
+sens_forearm_scale_00_f,female,forearm_scale,cc embed morphs/embed_arm2,-1.0
+sens_forearm_scale_01_f,female,forearm_scale,cc embed morphs/embed_arm2,-0.8
+sens_forearm_scale_02_f,female,forearm_scale,cc embed morphs/embed_arm2,-0.6
+sens_forearm_scale_03_f,female,forearm_scale,cc embed morphs/embed_arm2,-0.4
+sens_forearm_scale_04_f,female,forearm_scale,cc embed morphs/embed_arm2,-0.2
+sens_forearm_scale_05_f,female,forearm_scale,cc embed morphs/embed_arm2,0.0
+sens_forearm_scale_06_f,female,forearm_scale,cc embed morphs/embed_arm2,0.2
+sens_forearm_scale_07_f,female,forearm_scale,cc embed morphs/embed_arm2,0.4
+sens_forearm_scale_08_f,female,forearm_scale,cc embed morphs/embed_arm2,0.6
+sens_forearm_scale_09_f,female,forearm_scale,cc embed morphs/embed_arm2,0.8
+sens_forearm_scale_10_f,female,forearm_scale,cc embed morphs/embed_arm2,1.0
+sens_forearm_len_00_f,female,forearm_len,cc embed morphs/embed_arm5,-1.0
+sens_forearm_len_01_f,female,forearm_len,cc embed morphs/embed_arm5,-0.8
+sens_forearm_len_02_f,female,forearm_len,cc embed morphs/embed_arm5,-0.6
+sens_forearm_len_03_f,female,forearm_len,cc embed morphs/embed_arm5,-0.4
+sens_forearm_len_04_f,female,forearm_len,cc embed morphs/embed_arm5,-0.2
+sens_forearm_len_05_f,female,forearm_len,cc embed morphs/embed_arm5,0.0
+sens_forearm_len_06_f,female,forearm_len,cc embed morphs/embed_arm5,0.2
+sens_forearm_len_07_f,female,forearm_len,cc embed morphs/embed_arm5,0.4
+sens_forearm_len_08_f,female,forearm_len,cc embed morphs/embed_arm5,0.6
+sens_forearm_len_09_f,female,forearm_len,cc embed morphs/embed_arm5,0.8
+sens_forearm_len_10_f,female,forearm_len,cc embed morphs/embed_arm5,1.0
+sens_chest_scale_00_f,female,chest_scale,cc embed morphs/embed_torso104,-0.5
+sens_chest_scale_01_f,female,chest_scale,cc embed morphs/embed_torso104,-0.35
+sens_chest_scale_02_f,female,chest_scale,cc embed morphs/embed_torso104,-0.2
+sens_chest_scale_03_f,female,chest_scale,cc embed morphs/embed_torso104,-0.05
+sens_chest_scale_04_f,female,chest_scale,cc embed morphs/embed_torso104,0.1
+sens_chest_scale_05_f,female,chest_scale,cc embed morphs/embed_torso104,0.25
+sens_chest_scale_06_f,female,chest_scale,cc embed morphs/embed_torso104,0.4
+sens_chest_scale_07_f,female,chest_scale,cc embed morphs/embed_torso104,0.55
+sens_chest_scale_08_f,female,chest_scale,cc embed morphs/embed_torso104,0.7
+sens_chest_scale_09_f,female,chest_scale,cc embed morphs/embed_torso104,0.85
+sens_chest_scale_10_f,female,chest_scale,cc embed morphs/embed_torso104,1.0
+sens_chest_width_00_f,female,chest_width,cc embed morphs/embed_torso105,-0.5
+sens_chest_width_01_f,female,chest_width,cc embed morphs/embed_torso105,-0.35
+sens_chest_width_02_f,female,chest_width,cc embed morphs/embed_torso105,-0.2
+sens_chest_width_03_f,female,chest_width,cc embed morphs/embed_torso105,-0.05
+sens_chest_width_04_f,female,chest_width,cc embed morphs/embed_torso105,0.1
+sens_chest_width_05_f,female,chest_width,cc embed morphs/embed_torso105,0.25
+sens_chest_width_06_f,female,chest_width,cc embed morphs/embed_torso105,0.4
+sens_chest_width_07_f,female,chest_width,cc embed morphs/embed_torso105,0.55
+sens_chest_width_08_f,female,chest_width,cc embed morphs/embed_torso105,0.7
+sens_chest_width_09_f,female,chest_width,cc embed morphs/embed_torso105,0.85
+sens_chest_width_10_f,female,chest_width,cc embed morphs/embed_torso105,1.0
+sens_chest_depth_00_f,female,chest_depth,cc embed morphs/embed_torso103,-0.5
+sens_chest_depth_01_f,female,chest_depth,cc embed morphs/embed_torso103,-0.35
+sens_chest_depth_02_f,female,chest_depth,cc embed morphs/embed_torso103,-0.2
+sens_chest_depth_03_f,female,chest_depth,cc embed morphs/embed_torso103,-0.05
+sens_chest_depth_04_f,female,chest_depth,cc embed morphs/embed_torso103,0.1
+sens_chest_depth_05_f,female,chest_depth,cc embed morphs/embed_torso103,0.25
+sens_chest_depth_06_f,female,chest_depth,cc embed morphs/embed_torso103,0.4
+sens_chest_depth_07_f,female,chest_depth,cc embed morphs/embed_torso103,0.55
+sens_chest_depth_08_f,female,chest_depth,cc embed morphs/embed_torso103,0.7
+sens_chest_depth_09_f,female,chest_depth,cc embed morphs/embed_torso103,0.85
+sens_chest_depth_10_f,female,chest_depth,cc embed morphs/embed_torso103,1.0
+sens_chest_height_00_f,female,chest_height,cc embed morphs/embed_torso112,-1.0
+sens_chest_height_01_f,female,chest_height,cc embed morphs/embed_torso112,-0.8
+sens_chest_height_02_f,female,chest_height,cc embed morphs/embed_torso112,-0.6
+sens_chest_height_03_f,female,chest_height,cc embed morphs/embed_torso112,-0.4
+sens_chest_height_04_f,female,chest_height,cc embed morphs/embed_torso112,-0.2
+sens_chest_height_05_f,female,chest_height,cc embed morphs/embed_torso112,0.0
+sens_chest_height_06_f,female,chest_height,cc embed morphs/embed_torso112,0.2
+sens_chest_height_07_f,female,chest_height,cc embed morphs/embed_torso112,0.4
+sens_chest_height_08_f,female,chest_height,cc embed morphs/embed_torso112,0.6
+sens_chest_height_09_f,female,chest_height,cc embed morphs/embed_torso112,0.8
+sens_chest_height_10_f,female,chest_height,cc embed morphs/embed_torso112,1.0
+sens_breast_scale_00_f,female,breast_scale,cc embed morphs/embed_torso102,0.0
+sens_breast_scale_01_f,female,breast_scale,cc embed morphs/embed_torso102,0.1
+sens_breast_scale_02_f,female,breast_scale,cc embed morphs/embed_torso102,0.2
+sens_breast_scale_03_f,female,breast_scale,cc embed morphs/embed_torso102,0.3
+sens_breast_scale_04_f,female,breast_scale,cc embed morphs/embed_torso102,0.4
+sens_breast_scale_05_f,female,breast_scale,cc embed morphs/embed_torso102,0.5
+sens_breast_scale_06_f,female,breast_scale,cc embed morphs/embed_torso102,0.6
+sens_breast_scale_07_f,female,breast_scale,cc embed morphs/embed_torso102,0.7
+sens_breast_scale_08_f,female,breast_scale,cc embed morphs/embed_torso102,0.8
+sens_breast_scale_09_f,female,breast_scale,cc embed morphs/embed_torso102,0.9
+sens_breast_scale_10_f,female,breast_scale,cc embed morphs/embed_torso102,1.0
+sens_breast_prox_00_f,female,breast_prox,cc embed morphs/embed_torso101,0.0
+sens_breast_prox_01_f,female,breast_prox,cc embed morphs/embed_torso101,0.1
+sens_breast_prox_02_f,female,breast_prox,cc embed morphs/embed_torso101,0.2
+sens_breast_prox_03_f,female,breast_prox,cc embed morphs/embed_torso101,0.3
+sens_breast_prox_04_f,female,breast_prox,cc embed morphs/embed_torso101,0.4
+sens_breast_prox_05_f,female,breast_prox,cc embed morphs/embed_torso101,0.5
+sens_breast_prox_06_f,female,breast_prox,cc embed morphs/embed_torso101,0.6
+sens_breast_prox_07_f,female,breast_prox,cc embed morphs/embed_torso101,0.7
+sens_breast_prox_08_f,female,breast_prox,cc embed morphs/embed_torso101,0.8
+sens_breast_prox_09_f,female,breast_prox,cc embed morphs/embed_torso101,0.9
+sens_breast_prox_10_f,female,breast_prox,cc embed morphs/embed_torso101,1.0
+sens_pectoral_scale_00_f,female,pectoral_scale,cc embed morphs/embed_torso114,0.0
+sens_pectoral_scale_01_f,female,pectoral_scale,cc embed morphs/embed_torso114,0.1
+sens_pectoral_scale_02_f,female,pectoral_scale,cc embed morphs/embed_torso114,0.2
+sens_pectoral_scale_03_f,female,pectoral_scale,cc embed morphs/embed_torso114,0.3
+sens_pectoral_scale_04_f,female,pectoral_scale,cc embed morphs/embed_torso114,0.4
+sens_pectoral_scale_05_f,female,pectoral_scale,cc embed morphs/embed_torso114,0.5
+sens_pectoral_scale_06_f,female,pectoral_scale,cc embed morphs/embed_torso114,0.6
+sens_pectoral_scale_07_f,female,pectoral_scale,cc embed morphs/embed_torso114,0.7
+sens_pectoral_scale_08_f,female,pectoral_scale,cc embed morphs/embed_torso114,0.8
+sens_pectoral_scale_09_f,female,pectoral_scale,cc embed morphs/embed_torso114,0.9
+sens_pectoral_scale_10_f,female,pectoral_scale,cc embed morphs/embed_torso114,1.0
+sens_pectoral_height_00_f,female,pectoral_height,cc embed morphs/embed_torso115,0.0
+sens_pectoral_height_01_f,female,pectoral_height,cc embed morphs/embed_torso115,0.1
+sens_pectoral_height_02_f,female,pectoral_height,cc embed morphs/embed_torso115,0.2
+sens_pectoral_height_03_f,female,pectoral_height,cc embed morphs/embed_torso115,0.3
+sens_pectoral_height_04_f,female,pectoral_height,cc embed morphs/embed_torso115,0.4
+sens_pectoral_height_05_f,female,pectoral_height,cc embed morphs/embed_torso115,0.5
+sens_pectoral_height_06_f,female,pectoral_height,cc embed morphs/embed_torso115,0.6
+sens_pectoral_height_07_f,female,pectoral_height,cc embed morphs/embed_torso115,0.7
+sens_pectoral_height_08_f,female,pectoral_height,cc embed morphs/embed_torso115,0.8
+sens_pectoral_height_09_f,female,pectoral_height,cc embed morphs/embed_torso115,0.9
+sens_pectoral_height_10_f,female,pectoral_height,cc embed morphs/embed_torso115,1.0
+sens_neck_scale_00_f,female,neck_scale,cc embed morphs/embed_torso110,0.0
+sens_neck_scale_01_f,female,neck_scale,cc embed morphs/embed_torso110,0.1
+sens_neck_scale_02_f,female,neck_scale,cc embed morphs/embed_torso110,0.2
+sens_neck_scale_03_f,female,neck_scale,cc embed morphs/embed_torso110,0.3
+sens_neck_scale_04_f,female,neck_scale,cc embed morphs/embed_torso110,0.4
+sens_neck_scale_05_f,female,neck_scale,cc embed morphs/embed_torso110,0.5
+sens_neck_scale_06_f,female,neck_scale,cc embed morphs/embed_torso110,0.6
+sens_neck_scale_07_f,female,neck_scale,cc embed morphs/embed_torso110,0.7
+sens_neck_scale_08_f,female,neck_scale,cc embed morphs/embed_torso110,0.8
+sens_neck_scale_09_f,female,neck_scale,cc embed morphs/embed_torso110,0.9
+sens_neck_scale_10_f,female,neck_scale,cc embed morphs/embed_torso110,1.0
+sens_neck_len_00_f,female,neck_len,cc embed morphs/embed_torso109,-1.0
+sens_neck_len_01_f,female,neck_len,cc embed morphs/embed_torso109,-0.8
+sens_neck_len_02_f,female,neck_len,cc embed morphs/embed_torso109,-0.6
+sens_neck_len_03_f,female,neck_len,cc embed morphs/embed_torso109,-0.4
+sens_neck_len_04_f,female,neck_len,cc embed morphs/embed_torso109,-0.2
+sens_neck_len_05_f,female,neck_len,cc embed morphs/embed_torso109,0.0
+sens_neck_len_06_f,female,neck_len,cc embed morphs/embed_torso109,0.2
+sens_neck_len_07_f,female,neck_len,cc embed morphs/embed_torso109,0.4
+sens_neck_len_08_f,female,neck_len,cc embed morphs/embed_torso109,0.6
+sens_neck_len_09_f,female,neck_len,cc embed morphs/embed_torso109,0.8
+sens_neck_len_10_f,female,neck_len,cc embed morphs/embed_torso109,1.0
+sens_abdomen_scale_00_f,female,abdomen_scale,cc embed morphs/embed_torso113,-1.0
+sens_abdomen_scale_01_f,female,abdomen_scale,cc embed morphs/embed_torso113,-0.8
+sens_abdomen_scale_02_f,female,abdomen_scale,cc embed morphs/embed_torso113,-0.6
+sens_abdomen_scale_03_f,female,abdomen_scale,cc embed morphs/embed_torso113,-0.4
+sens_abdomen_scale_04_f,female,abdomen_scale,cc embed morphs/embed_torso113,-0.2
+sens_abdomen_scale_05_f,female,abdomen_scale,cc embed morphs/embed_torso113,0.0
+sens_abdomen_scale_06_f,female,abdomen_scale,cc embed morphs/embed_torso113,0.2
+sens_abdomen_scale_07_f,female,abdomen_scale,cc embed morphs/embed_torso113,0.4
+sens_abdomen_scale_08_f,female,abdomen_scale,cc embed morphs/embed_torso113,0.6
+sens_abdomen_scale_09_f,female,abdomen_scale,cc embed morphs/embed_torso113,0.8
+sens_abdomen_scale_10_f,female,abdomen_scale,cc embed morphs/embed_torso113,1.0
+sens_abdomen_depth_00_f,female,abdomen_depth,cc embed morphs/embed_torso111,-1.0
+sens_abdomen_depth_01_f,female,abdomen_depth,cc embed morphs/embed_torso111,-0.8
+sens_abdomen_depth_02_f,female,abdomen_depth,cc embed morphs/embed_torso111,-0.6
+sens_abdomen_depth_03_f,female,abdomen_depth,cc embed morphs/embed_torso111,-0.4
+sens_abdomen_depth_04_f,female,abdomen_depth,cc embed morphs/embed_torso111,-0.2
+sens_abdomen_depth_05_f,female,abdomen_depth,cc embed morphs/embed_torso111,0.0
+sens_abdomen_depth_06_f,female,abdomen_depth,cc embed morphs/embed_torso111,0.2
+sens_abdomen_depth_07_f,female,abdomen_depth,cc embed morphs/embed_torso111,0.4
+sens_abdomen_depth_08_f,female,abdomen_depth,cc embed morphs/embed_torso111,0.6
+sens_abdomen_depth_09_f,female,abdomen_depth,cc embed morphs/embed_torso111,0.8
+sens_abdomen_depth_10_f,female,abdomen_depth,cc embed morphs/embed_torso111,1.0
+sens_abs_line_00_f,female,abs_line,cc embed morphs/embed_torso106,0.0
+sens_abs_line_01_f,female,abs_line,cc embed morphs/embed_torso106,0.1
+sens_abs_line_02_f,female,abs_line,cc embed morphs/embed_torso106,0.2
+sens_abs_line_03_f,female,abs_line,cc embed morphs/embed_torso106,0.3
+sens_abs_line_04_f,female,abs_line,cc embed morphs/embed_torso106,0.4
+sens_abs_line_05_f,female,abs_line,cc embed morphs/embed_torso106,0.5
+sens_abs_line_06_f,female,abs_line,cc embed morphs/embed_torso106,0.6
+sens_abs_line_07_f,female,abs_line,cc embed morphs/embed_torso106,0.7
+sens_abs_line_08_f,female,abs_line,cc embed morphs/embed_torso106,0.8
+sens_abs_line_09_f,female,abs_line,cc embed morphs/embed_torso106,0.9
+sens_abs_line_10_f,female,abs_line,cc embed morphs/embed_torso106,1.0
+sens_hip_love_handles_00_f,female,hip_love_handles,cc embed morphs/embed_torso107,0.0
+sens_hip_love_handles_01_f,female,hip_love_handles,cc embed morphs/embed_torso107,0.1
+sens_hip_love_handles_02_f,female,hip_love_handles,cc embed morphs/embed_torso107,0.2
+sens_hip_love_handles_03_f,female,hip_love_handles,cc embed morphs/embed_torso107,0.3
+sens_hip_love_handles_04_f,female,hip_love_handles,cc embed morphs/embed_torso107,0.4
+sens_hip_love_handles_05_f,female,hip_love_handles,cc embed morphs/embed_torso107,0.5
+sens_hip_love_handles_06_f,female,hip_love_handles,cc embed morphs/embed_torso107,0.6
+sens_hip_love_handles_07_f,female,hip_love_handles,cc embed morphs/embed_torso107,0.7
+sens_hip_love_handles_08_f,female,hip_love_handles,cc embed morphs/embed_torso107,0.8
+sens_hip_love_handles_09_f,female,hip_love_handles,cc embed morphs/embed_torso107,0.9
+sens_hip_love_handles_10_f,female,hip_love_handles,cc embed morphs/embed_torso107,1.0
+sens_hip_scale_00_f,female,hip_scale,cc embed morphs/embed_torso2,-0.3
+sens_hip_scale_01_f,female,hip_scale,cc embed morphs/embed_torso2,-0.17
+sens_hip_scale_02_f,female,hip_scale,cc embed morphs/embed_torso2,-0.04
+sens_hip_scale_03_f,female,hip_scale,cc embed morphs/embed_torso2,0.09
+sens_hip_scale_04_f,female,hip_scale,cc embed morphs/embed_torso2,0.22
+sens_hip_scale_05_f,female,hip_scale,cc embed morphs/embed_torso2,0.35
+sens_hip_scale_06_f,female,hip_scale,cc embed morphs/embed_torso2,0.48
+sens_hip_scale_07_f,female,hip_scale,cc embed morphs/embed_torso2,0.61
+sens_hip_scale_08_f,female,hip_scale,cc embed morphs/embed_torso2,0.74
+sens_hip_scale_09_f,female,hip_scale,cc embed morphs/embed_torso2,0.87
+sens_hip_scale_10_f,female,hip_scale,cc embed morphs/embed_torso2,1.0
+sens_hip_len_00_f,female,hip_len,cc embed morphs/embed_torso4,-1.0
+sens_hip_len_01_f,female,hip_len,cc embed morphs/embed_torso4,-0.8
+sens_hip_len_02_f,female,hip_len,cc embed morphs/embed_torso4,-0.6
+sens_hip_len_03_f,female,hip_len,cc embed morphs/embed_torso4,-0.4
+sens_hip_len_04_f,female,hip_len,cc embed morphs/embed_torso4,-0.2
+sens_hip_len_05_f,female,hip_len,cc embed morphs/embed_torso4,0.0
+sens_hip_len_06_f,female,hip_len,cc embed morphs/embed_torso4,0.2
+sens_hip_len_07_f,female,hip_len,cc embed morphs/embed_torso4,0.4
+sens_hip_len_08_f,female,hip_len,cc embed morphs/embed_torso4,0.6
+sens_hip_len_09_f,female,hip_len,cc embed morphs/embed_torso4,0.8
+sens_hip_len_10_f,female,hip_len,cc embed morphs/embed_torso4,1.0
+sens_glute_scale_00_f,female,glute_scale,cc embed morphs/embed_torso1,-1.0
+sens_glute_scale_01_f,female,glute_scale,cc embed morphs/embed_torso1,-0.8
+sens_glute_scale_02_f,female,glute_scale,cc embed morphs/embed_torso1,-0.6
+sens_glute_scale_03_f,female,glute_scale,cc embed morphs/embed_torso1,-0.4
+sens_glute_scale_04_f,female,glute_scale,cc embed morphs/embed_torso1,-0.2
+sens_glute_scale_05_f,female,glute_scale,cc embed morphs/embed_torso1,0.0
+sens_glute_scale_06_f,female,glute_scale,cc embed morphs/embed_torso1,0.2
+sens_glute_scale_07_f,female,glute_scale,cc embed morphs/embed_torso1,0.4
+sens_glute_scale_08_f,female,glute_scale,cc embed morphs/embed_torso1,0.6
+sens_glute_scale_09_f,female,glute_scale,cc embed morphs/embed_torso1,0.8
+sens_glute_scale_10_f,female,glute_scale,cc embed morphs/embed_torso1,1.0
+sens_thigh_scale_00_f,female,thigh_scale,cc embed morphs/embed_leg3,-1.0
+sens_thigh_scale_01_f,female,thigh_scale,cc embed morphs/embed_leg3,-0.8
+sens_thigh_scale_02_f,female,thigh_scale,cc embed morphs/embed_leg3,-0.6
+sens_thigh_scale_03_f,female,thigh_scale,cc embed morphs/embed_leg3,-0.4
+sens_thigh_scale_04_f,female,thigh_scale,cc embed morphs/embed_leg3,-0.2
+sens_thigh_scale_05_f,female,thigh_scale,cc embed morphs/embed_leg3,0.0
+sens_thigh_scale_06_f,female,thigh_scale,cc embed morphs/embed_leg3,0.2
+sens_thigh_scale_07_f,female,thigh_scale,cc embed morphs/embed_leg3,0.4
+sens_thigh_scale_08_f,female,thigh_scale,cc embed morphs/embed_leg3,0.6
+sens_thigh_scale_09_f,female,thigh_scale,cc embed morphs/embed_leg3,0.8
+sens_thigh_scale_10_f,female,thigh_scale,cc embed morphs/embed_leg3,1.0
+sens_thigh_len_00_f,female,thigh_len,cc embed morphs/embed_leg4,-1.0
+sens_thigh_len_01_f,female,thigh_len,cc embed morphs/embed_leg4,-0.8
+sens_thigh_len_02_f,female,thigh_len,cc embed morphs/embed_leg4,-0.6
+sens_thigh_len_03_f,female,thigh_len,cc embed morphs/embed_leg4,-0.4
+sens_thigh_len_04_f,female,thigh_len,cc embed morphs/embed_leg4,-0.2
+sens_thigh_len_05_f,female,thigh_len,cc embed morphs/embed_leg4,0.0
+sens_thigh_len_06_f,female,thigh_len,cc embed morphs/embed_leg4,0.2
+sens_thigh_len_07_f,female,thigh_len,cc embed morphs/embed_leg4,0.4
+sens_thigh_len_08_f,female,thigh_len,cc embed morphs/embed_leg4,0.6
+sens_thigh_len_09_f,female,thigh_len,cc embed morphs/embed_leg4,0.8
+sens_thigh_len_10_f,female,thigh_len,cc embed morphs/embed_leg4,1.0
+sens_lower_leg_scale_00_f,female,lower_leg_scale,cc embed morphs/embed_leg2,-1.0
+sens_lower_leg_scale_01_f,female,lower_leg_scale,cc embed morphs/embed_leg2,-0.8
+sens_lower_leg_scale_02_f,female,lower_leg_scale,cc embed morphs/embed_leg2,-0.6
+sens_lower_leg_scale_03_f,female,lower_leg_scale,cc embed morphs/embed_leg2,-0.4
+sens_lower_leg_scale_04_f,female,lower_leg_scale,cc embed morphs/embed_leg2,-0.2
+sens_lower_leg_scale_05_f,female,lower_leg_scale,cc embed morphs/embed_leg2,0.0
+sens_lower_leg_scale_06_f,female,lower_leg_scale,cc embed morphs/embed_leg2,0.2
+sens_lower_leg_scale_07_f,female,lower_leg_scale,cc embed morphs/embed_leg2,0.4
+sens_lower_leg_scale_08_f,female,lower_leg_scale,cc embed morphs/embed_leg2,0.6
+sens_lower_leg_scale_09_f,female,lower_leg_scale,cc embed morphs/embed_leg2,0.8
+sens_lower_leg_scale_10_f,female,lower_leg_scale,cc embed morphs/embed_leg2,1.0
+sens_lower_leg_len_00_f,female,lower_leg_len,cc embed morphs/embed_leg5,-1.0
+sens_lower_leg_len_01_f,female,lower_leg_len,cc embed morphs/embed_leg5,-0.8
+sens_lower_leg_len_02_f,female,lower_leg_len,cc embed morphs/embed_leg5,-0.6
+sens_lower_leg_len_03_f,female,lower_leg_len,cc embed morphs/embed_leg5,-0.4
+sens_lower_leg_len_04_f,female,lower_leg_len,cc embed morphs/embed_leg5,-0.2
+sens_lower_leg_len_05_f,female,lower_leg_len,cc embed morphs/embed_leg5,0.0
+sens_lower_leg_len_06_f,female,lower_leg_len,cc embed morphs/embed_leg5,0.2
+sens_lower_leg_len_07_f,female,lower_leg_len,cc embed morphs/embed_leg5,0.4
+sens_lower_leg_len_08_f,female,lower_leg_len,cc embed morphs/embed_leg5,0.6
+sens_lower_leg_len_09_f,female,lower_leg_len,cc embed morphs/embed_leg5,0.8
+sens_lower_leg_len_10_f,female,lower_leg_len,cc embed morphs/embed_leg5,1.0
+sens_musc_arm_00_f,female,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.0
+sens_musc_arm_01_f,female,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.1
+sens_musc_arm_02_f,female,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.2
+sens_musc_arm_03_f,female,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.3
+sens_musc_arm_04_f,female,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.4
+sens_musc_arm_05_f,female,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.5
+sens_musc_arm_06_f,female,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.6
+sens_musc_arm_07_f,female,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.7
+sens_musc_arm_08_f,female,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.8
+sens_musc_arm_09_f,female,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.9
+sens_musc_arm_10_f,female,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,1.0
+sens_musc_shoulder_00_f,female,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.0
+sens_musc_shoulder_01_f,female,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.1
+sens_musc_shoulder_02_f,female,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.2
+sens_musc_shoulder_03_f,female,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.3
+sens_musc_shoulder_04_f,female,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.4
+sens_musc_shoulder_05_f,female,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.5
+sens_musc_shoulder_06_f,female,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.6
+sens_musc_shoulder_07_f,female,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.7
+sens_musc_shoulder_08_f,female,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.8
+sens_musc_shoulder_09_f,female,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.9
+sens_musc_shoulder_10_f,female,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,1.0
+sens_musc_back_00_f,female,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.0
+sens_musc_back_01_f,female,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.1
+sens_musc_back_02_f,female,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.2
+sens_musc_back_03_f,female,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.3
+sens_musc_back_04_f,female,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.4
+sens_musc_back_05_f,female,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.5
+sens_musc_back_06_f,female,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.6
+sens_musc_back_07_f,female,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.7
+sens_musc_back_08_f,female,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.8
+sens_musc_back_09_f,female,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.9
+sens_musc_back_10_f,female,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,1.0
+sens_musc_chest_a_00_f,female,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.0
+sens_musc_chest_a_01_f,female,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.1
+sens_musc_chest_a_02_f,female,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.2
+sens_musc_chest_a_03_f,female,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.3
+sens_musc_chest_a_04_f,female,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.4
+sens_musc_chest_a_05_f,female,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.5
+sens_musc_chest_a_06_f,female,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.6
+sens_musc_chest_a_07_f,female,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.7
+sens_musc_chest_a_08_f,female,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.8
+sens_musc_chest_a_09_f,female,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.9
+sens_musc_chest_a_10_f,female,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,1.0
+sens_musc_chest_b_00_f,female,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.0
+sens_musc_chest_b_01_f,female,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.1
+sens_musc_chest_b_02_f,female,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.2
+sens_musc_chest_b_03_f,female,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.3
+sens_musc_chest_b_04_f,female,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.4
+sens_musc_chest_b_05_f,female,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.5
+sens_musc_chest_b_06_f,female,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.6
+sens_musc_chest_b_07_f,female,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.7
+sens_musc_chest_b_08_f,female,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.8
+sens_musc_chest_b_09_f,female,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.9
+sens_musc_chest_b_10_f,female,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,1.0
+sens_musc_chest_c_00_f,female,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.0
+sens_musc_chest_c_01_f,female,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.1
+sens_musc_chest_c_02_f,female,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.2
+sens_musc_chest_c_03_f,female,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.3
+sens_musc_chest_c_04_f,female,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.4
+sens_musc_chest_c_05_f,female,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.5
+sens_musc_chest_c_06_f,female,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.6
+sens_musc_chest_c_07_f,female,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.7
+sens_musc_chest_c_08_f,female,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.8
+sens_musc_chest_c_09_f,female,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.9
+sens_musc_chest_c_10_f,female,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,1.0
+sens_musc_abs_00_f,female,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.0
+sens_musc_abs_01_f,female,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.1
+sens_musc_abs_02_f,female,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.2
+sens_musc_abs_03_f,female,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.3
+sens_musc_abs_04_f,female,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.4
+sens_musc_abs_05_f,female,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.5
+sens_musc_abs_06_f,female,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.6
+sens_musc_abs_07_f,female,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.7
+sens_musc_abs_08_f,female,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.8
+sens_musc_abs_09_f,female,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.9
+sens_musc_abs_10_f,female,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,1.0
+sens_musc_obliques_00_f,female,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.0
+sens_musc_obliques_01_f,female,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.1
+sens_musc_obliques_02_f,female,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.2
+sens_musc_obliques_03_f,female,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.3
+sens_musc_obliques_04_f,female,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.4
+sens_musc_obliques_05_f,female,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.5
+sens_musc_obliques_06_f,female,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.6
+sens_musc_obliques_07_f,female,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.7
+sens_musc_obliques_08_f,female,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.8
+sens_musc_obliques_09_f,female,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.9
+sens_musc_obliques_10_f,female,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,1.0
+sens_musc_thigh_00_f,female,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.0
+sens_musc_thigh_01_f,female,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.1
+sens_musc_thigh_02_f,female,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.2
+sens_musc_thigh_03_f,female,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.3
+sens_musc_thigh_04_f,female,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.4
+sens_musc_thigh_05_f,female,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.5
+sens_musc_thigh_06_f,female,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.6
+sens_musc_thigh_07_f,female,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.7
+sens_musc_thigh_08_f,female,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.8
+sens_musc_thigh_09_f,female,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.9
+sens_musc_thigh_10_f,female,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,1.0
+sens_musc_calf_00_f,female,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.0
+sens_musc_calf_01_f,female,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.1
+sens_musc_calf_02_f,female,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.2
+sens_musc_calf_03_f,female,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.3
+sens_musc_calf_04_f,female,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.4
+sens_musc_calf_05_f,female,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.5
+sens_musc_calf_06_f,female,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.6
+sens_musc_calf_07_f,female,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.7
+sens_musc_calf_08_f,female,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.8
+sens_musc_calf_09_f,female,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.9
+sens_musc_calf_10_f,female,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,1.0
+sens_musc_neck_00_f,female,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.0
+sens_musc_neck_01_f,female,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.1
+sens_musc_neck_02_f,female,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.2
+sens_musc_neck_03_f,female,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.3
+sens_musc_neck_04_f,female,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.4
+sens_musc_neck_05_f,female,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.5
+sens_musc_neck_06_f,female,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.6
+sens_musc_neck_07_f,female,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.7
+sens_musc_neck_08_f,female,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.8
+sens_musc_neck_09_f,female,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.9
+sens_musc_neck_10_f,female,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,1.0
+sens_musc_waist_00_f,female,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.0
+sens_musc_waist_01_f,female,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.1
+sens_musc_waist_02_f,female,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.2
+sens_musc_waist_03_f,female,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.3
+sens_musc_waist_04_f,female,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.4
+sens_musc_waist_05_f,female,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.5
+sens_musc_waist_06_f,female,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.6
+sens_musc_waist_07_f,female,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.7
+sens_musc_waist_08_f,female,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.8
+sens_musc_waist_09_f,female,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.9
+sens_musc_waist_10_f,female,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,1.0
+sens_skin_arm_00_f,female,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.0
+sens_skin_arm_01_f,female,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.1
+sens_skin_arm_02_f,female,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.2
+sens_skin_arm_03_f,female,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.3
+sens_skin_arm_04_f,female,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.4
+sens_skin_arm_05_f,female,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.5
+sens_skin_arm_06_f,female,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.6
+sens_skin_arm_07_f,female,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.7
+sens_skin_arm_08_f,female,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.8
+sens_skin_arm_09_f,female,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.9
+sens_skin_arm_10_f,female,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,1.0
+sens_skin_shoulder_00_f,female,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.0
+sens_skin_shoulder_01_f,female,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.1
+sens_skin_shoulder_02_f,female,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.2
+sens_skin_shoulder_03_f,female,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.3
+sens_skin_shoulder_04_f,female,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.4
+sens_skin_shoulder_05_f,female,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.5
+sens_skin_shoulder_06_f,female,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.6
+sens_skin_shoulder_07_f,female,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.7
+sens_skin_shoulder_08_f,female,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.8
+sens_skin_shoulder_09_f,female,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.9
+sens_skin_shoulder_10_f,female,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,1.0
+sens_skin_back_00_f,female,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.0
+sens_skin_back_01_f,female,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.1
+sens_skin_back_02_f,female,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.2
+sens_skin_back_03_f,female,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.3
+sens_skin_back_04_f,female,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.4
+sens_skin_back_05_f,female,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.5
+sens_skin_back_06_f,female,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.6
+sens_skin_back_07_f,female,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.7
+sens_skin_back_08_f,female,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.8
+sens_skin_back_09_f,female,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.9
+sens_skin_back_10_f,female,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,1.0
+sens_skin_chest_00_f,female,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.0
+sens_skin_chest_01_f,female,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.1
+sens_skin_chest_02_f,female,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.2
+sens_skin_chest_03_f,female,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.3
+sens_skin_chest_04_f,female,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.4
+sens_skin_chest_05_f,female,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.5
+sens_skin_chest_06_f,female,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.6
+sens_skin_chest_07_f,female,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.7
+sens_skin_chest_08_f,female,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.8
+sens_skin_chest_09_f,female,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.9
+sens_skin_chest_10_f,female,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,1.0
+sens_skin_abs_00_f,female,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.0
+sens_skin_abs_01_f,female,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.1
+sens_skin_abs_02_f,female,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.2
+sens_skin_abs_03_f,female,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.3
+sens_skin_abs_04_f,female,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.4
+sens_skin_abs_05_f,female,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.5
+sens_skin_abs_06_f,female,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.6
+sens_skin_abs_07_f,female,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.7
+sens_skin_abs_08_f,female,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.8
+sens_skin_abs_09_f,female,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.9
+sens_skin_abs_10_f,female,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,1.0
+sens_skin_ribcage_00_f,female,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.0
+sens_skin_ribcage_01_f,female,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.1
+sens_skin_ribcage_02_f,female,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.2
+sens_skin_ribcage_03_f,female,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.3
+sens_skin_ribcage_04_f,female,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.4
+sens_skin_ribcage_05_f,female,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.5
+sens_skin_ribcage_06_f,female,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.6
+sens_skin_ribcage_07_f,female,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.7
+sens_skin_ribcage_08_f,female,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.8
+sens_skin_ribcage_09_f,female,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.9
+sens_skin_ribcage_10_f,female,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,1.0
+sens_skin_thigh_00_f,female,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.0
+sens_skin_thigh_01_f,female,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.1
+sens_skin_thigh_02_f,female,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.2
+sens_skin_thigh_03_f,female,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.3
+sens_skin_thigh_04_f,female,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.4
+sens_skin_thigh_05_f,female,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.5
+sens_skin_thigh_06_f,female,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.6
+sens_skin_thigh_07_f,female,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.7
+sens_skin_thigh_08_f,female,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.8
+sens_skin_thigh_09_f,female,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.9
+sens_skin_thigh_10_f,female,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,1.0
+sens_skin_calf_00_f,female,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.0
+sens_skin_calf_01_f,female,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.1
+sens_skin_calf_02_f,female,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.2
+sens_skin_calf_03_f,female,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.3
+sens_skin_calf_04_f,female,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.4
+sens_skin_calf_05_f,female,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.5
+sens_skin_calf_06_f,female,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.6
+sens_skin_calf_07_f,female,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.7
+sens_skin_calf_08_f,female,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.8
+sens_skin_calf_09_f,female,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.9
+sens_skin_calf_10_f,female,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,1.0
+sens_skin_buttocks_00_f,female,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.0
+sens_skin_buttocks_01_f,female,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.1
+sens_skin_buttocks_02_f,female,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.2
+sens_skin_buttocks_03_f,female,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.3
+sens_skin_buttocks_04_f,female,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.4
+sens_skin_buttocks_05_f,female,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.5
+sens_skin_buttocks_06_f,female,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.6
+sens_skin_buttocks_07_f,female,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.7
+sens_skin_buttocks_08_f,female,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.8
+sens_skin_buttocks_09_f,female,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.9
+sens_skin_buttocks_10_f,female,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,1.0
+sens_skin_neck_00_f,female,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.0
+sens_skin_neck_01_f,female,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.1
+sens_skin_neck_02_f,female,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.2
+sens_skin_neck_03_f,female,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.3
+sens_skin_neck_04_f,female,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.4
+sens_skin_neck_05_f,female,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.5
+sens_skin_neck_06_f,female,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.6
+sens_skin_neck_07_f,female,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.7
+sens_skin_neck_08_f,female,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.8
+sens_skin_neck_09_f,female,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.9
+sens_skin_neck_10_f,female,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,1.0
+sens_skin_spine_00_f,female,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.0
+sens_skin_spine_01_f,female,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.1
+sens_skin_spine_02_f,female,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.2
+sens_skin_spine_03_f,female,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.3
+sens_skin_spine_04_f,female,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.4
+sens_skin_spine_05_f,female,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.5
+sens_skin_spine_06_f,female,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.6
+sens_skin_spine_07_f,female,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.7
+sens_skin_spine_08_f,female,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.8
+sens_skin_spine_09_f,female,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.9
+sens_skin_spine_10_f,female,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,1.0
+sens_baseline_m,male,baseline,,0.0
+sens_body_fat_00_m,male,body_fat,cc embed morphs/embed_full_body3,0.0
+sens_body_fat_01_m,male,body_fat,cc embed morphs/embed_full_body3,0.1
+sens_body_fat_02_m,male,body_fat,cc embed morphs/embed_full_body3,0.2
+sens_body_fat_03_m,male,body_fat,cc embed morphs/embed_full_body3,0.3
+sens_body_fat_04_m,male,body_fat,cc embed morphs/embed_full_body3,0.4
+sens_body_fat_05_m,male,body_fat,cc embed morphs/embed_full_body3,0.5
+sens_body_fat_06_m,male,body_fat,cc embed morphs/embed_full_body3,0.6
+sens_body_fat_07_m,male,body_fat,cc embed morphs/embed_full_body3,0.7
+sens_body_fat_08_m,male,body_fat,cc embed morphs/embed_full_body3,0.8
+sens_body_fat_09_m,male,body_fat,cc embed morphs/embed_full_body3,0.9
+sens_body_fat_10_m,male,body_fat,cc embed morphs/embed_full_body3,1.0
+sens_body_thin_00_m,male,body_thin,cc embed morphs/embed_full_body5,0.0
+sens_body_thin_01_m,male,body_thin,cc embed morphs/embed_full_body5,0.1
+sens_body_thin_02_m,male,body_thin,cc embed morphs/embed_full_body5,0.2
+sens_body_thin_03_m,male,body_thin,cc embed morphs/embed_full_body5,0.3
+sens_body_thin_04_m,male,body_thin,cc embed morphs/embed_full_body5,0.4
+sens_body_thin_05_m,male,body_thin,cc embed morphs/embed_full_body5,0.5
+sens_body_thin_06_m,male,body_thin,cc embed morphs/embed_full_body5,0.6
+sens_body_thin_07_m,male,body_thin,cc embed morphs/embed_full_body5,0.7
+sens_body_thin_08_m,male,body_thin,cc embed morphs/embed_full_body5,0.8
+sens_body_thin_09_m,male,body_thin,cc embed morphs/embed_full_body5,0.9
+sens_body_thin_10_m,male,body_thin,cc embed morphs/embed_full_body5,1.0
+sens_body_muscular_00_m,male,body_muscular,cc embed morphs/embed_full_body6,0.0
+sens_body_muscular_01_m,male,body_muscular,cc embed morphs/embed_full_body6,0.1
+sens_body_muscular_02_m,male,body_muscular,cc embed morphs/embed_full_body6,0.2
+sens_body_muscular_03_m,male,body_muscular,cc embed morphs/embed_full_body6,0.3
+sens_body_muscular_04_m,male,body_muscular,cc embed morphs/embed_full_body6,0.4
+sens_body_muscular_05_m,male,body_muscular,cc embed morphs/embed_full_body6,0.5
+sens_body_muscular_06_m,male,body_muscular,cc embed morphs/embed_full_body6,0.6
+sens_body_muscular_07_m,male,body_muscular,cc embed morphs/embed_full_body6,0.7
+sens_body_muscular_08_m,male,body_muscular,cc embed morphs/embed_full_body6,0.8
+sens_body_muscular_09_m,male,body_muscular,cc embed morphs/embed_full_body6,0.9
+sens_body_muscular_10_m,male,body_muscular,cc embed morphs/embed_full_body6,1.0
+sens_body_builder_00_m,male,body_builder,cc embed morphs/embed_full_body1,0.0
+sens_body_builder_01_m,male,body_builder,cc embed morphs/embed_full_body1,0.1
+sens_body_builder_02_m,male,body_builder,cc embed morphs/embed_full_body1,0.2
+sens_body_builder_03_m,male,body_builder,cc embed morphs/embed_full_body1,0.3
+sens_body_builder_04_m,male,body_builder,cc embed morphs/embed_full_body1,0.4
+sens_body_builder_05_m,male,body_builder,cc embed morphs/embed_full_body1,0.5
+sens_body_builder_06_m,male,body_builder,cc embed morphs/embed_full_body1,0.6
+sens_body_builder_07_m,male,body_builder,cc embed morphs/embed_full_body1,0.7
+sens_body_builder_08_m,male,body_builder,cc embed morphs/embed_full_body1,0.8
+sens_body_builder_09_m,male,body_builder,cc embed morphs/embed_full_body1,0.9
+sens_body_builder_10_m,male,body_builder,cc embed morphs/embed_full_body1,1.0
+sens_shoulder_scale_00_m,male,shoulder_scale,cc embed morphs/embed_arm101,-0.5
+sens_shoulder_scale_01_m,male,shoulder_scale,cc embed morphs/embed_arm101,-0.35
+sens_shoulder_scale_02_m,male,shoulder_scale,cc embed morphs/embed_arm101,-0.2
+sens_shoulder_scale_03_m,male,shoulder_scale,cc embed morphs/embed_arm101,-0.05
+sens_shoulder_scale_04_m,male,shoulder_scale,cc embed morphs/embed_arm101,0.1
+sens_shoulder_scale_05_m,male,shoulder_scale,cc embed morphs/embed_arm101,0.25
+sens_shoulder_scale_06_m,male,shoulder_scale,cc embed morphs/embed_arm101,0.4
+sens_shoulder_scale_07_m,male,shoulder_scale,cc embed morphs/embed_arm101,0.55
+sens_shoulder_scale_08_m,male,shoulder_scale,cc embed morphs/embed_arm101,0.7
+sens_shoulder_scale_09_m,male,shoulder_scale,cc embed morphs/embed_arm101,0.85
+sens_shoulder_scale_10_m,male,shoulder_scale,cc embed morphs/embed_arm101,1.0
+sens_upperarm_scale_00_m,male,upperarm_scale,cc embed morphs/embed_arm3,-1.0
+sens_upperarm_scale_01_m,male,upperarm_scale,cc embed morphs/embed_arm3,-0.8
+sens_upperarm_scale_02_m,male,upperarm_scale,cc embed morphs/embed_arm3,-0.6
+sens_upperarm_scale_03_m,male,upperarm_scale,cc embed morphs/embed_arm3,-0.4
+sens_upperarm_scale_04_m,male,upperarm_scale,cc embed morphs/embed_arm3,-0.2
+sens_upperarm_scale_05_m,male,upperarm_scale,cc embed morphs/embed_arm3,0.0
+sens_upperarm_scale_06_m,male,upperarm_scale,cc embed morphs/embed_arm3,0.2
+sens_upperarm_scale_07_m,male,upperarm_scale,cc embed morphs/embed_arm3,0.4
+sens_upperarm_scale_08_m,male,upperarm_scale,cc embed morphs/embed_arm3,0.6
+sens_upperarm_scale_09_m,male,upperarm_scale,cc embed morphs/embed_arm3,0.8
+sens_upperarm_scale_10_m,male,upperarm_scale,cc embed morphs/embed_arm3,1.0
+sens_upperarm_len_00_m,male,upperarm_len,cc embed morphs/embed_arm4,-1.0
+sens_upperarm_len_01_m,male,upperarm_len,cc embed morphs/embed_arm4,-0.8
+sens_upperarm_len_02_m,male,upperarm_len,cc embed morphs/embed_arm4,-0.6
+sens_upperarm_len_03_m,male,upperarm_len,cc embed morphs/embed_arm4,-0.4
+sens_upperarm_len_04_m,male,upperarm_len,cc embed morphs/embed_arm4,-0.2
+sens_upperarm_len_05_m,male,upperarm_len,cc embed morphs/embed_arm4,0.0
+sens_upperarm_len_06_m,male,upperarm_len,cc embed morphs/embed_arm4,0.2
+sens_upperarm_len_07_m,male,upperarm_len,cc embed morphs/embed_arm4,0.4
+sens_upperarm_len_08_m,male,upperarm_len,cc embed morphs/embed_arm4,0.6
+sens_upperarm_len_09_m,male,upperarm_len,cc embed morphs/embed_arm4,0.8
+sens_upperarm_len_10_m,male,upperarm_len,cc embed morphs/embed_arm4,1.0
+sens_forearm_scale_00_m,male,forearm_scale,cc embed morphs/embed_arm2,-1.0
+sens_forearm_scale_01_m,male,forearm_scale,cc embed morphs/embed_arm2,-0.8
+sens_forearm_scale_02_m,male,forearm_scale,cc embed morphs/embed_arm2,-0.6
+sens_forearm_scale_03_m,male,forearm_scale,cc embed morphs/embed_arm2,-0.4
+sens_forearm_scale_04_m,male,forearm_scale,cc embed morphs/embed_arm2,-0.2
+sens_forearm_scale_05_m,male,forearm_scale,cc embed morphs/embed_arm2,0.0
+sens_forearm_scale_06_m,male,forearm_scale,cc embed morphs/embed_arm2,0.2
+sens_forearm_scale_07_m,male,forearm_scale,cc embed morphs/embed_arm2,0.4
+sens_forearm_scale_08_m,male,forearm_scale,cc embed morphs/embed_arm2,0.6
+sens_forearm_scale_09_m,male,forearm_scale,cc embed morphs/embed_arm2,0.8
+sens_forearm_scale_10_m,male,forearm_scale,cc embed morphs/embed_arm2,1.0
+sens_forearm_len_00_m,male,forearm_len,cc embed morphs/embed_arm5,-1.0
+sens_forearm_len_01_m,male,forearm_len,cc embed morphs/embed_arm5,-0.8
+sens_forearm_len_02_m,male,forearm_len,cc embed morphs/embed_arm5,-0.6
+sens_forearm_len_03_m,male,forearm_len,cc embed morphs/embed_arm5,-0.4
+sens_forearm_len_04_m,male,forearm_len,cc embed morphs/embed_arm5,-0.2
+sens_forearm_len_05_m,male,forearm_len,cc embed morphs/embed_arm5,0.0
+sens_forearm_len_06_m,male,forearm_len,cc embed morphs/embed_arm5,0.2
+sens_forearm_len_07_m,male,forearm_len,cc embed morphs/embed_arm5,0.4
+sens_forearm_len_08_m,male,forearm_len,cc embed morphs/embed_arm5,0.6
+sens_forearm_len_09_m,male,forearm_len,cc embed morphs/embed_arm5,0.8
+sens_forearm_len_10_m,male,forearm_len,cc embed morphs/embed_arm5,1.0
+sens_chest_scale_00_m,male,chest_scale,cc embed morphs/embed_torso104,-0.5
+sens_chest_scale_01_m,male,chest_scale,cc embed morphs/embed_torso104,-0.35
+sens_chest_scale_02_m,male,chest_scale,cc embed morphs/embed_torso104,-0.2
+sens_chest_scale_03_m,male,chest_scale,cc embed morphs/embed_torso104,-0.05
+sens_chest_scale_04_m,male,chest_scale,cc embed morphs/embed_torso104,0.1
+sens_chest_scale_05_m,male,chest_scale,cc embed morphs/embed_torso104,0.25
+sens_chest_scale_06_m,male,chest_scale,cc embed morphs/embed_torso104,0.4
+sens_chest_scale_07_m,male,chest_scale,cc embed morphs/embed_torso104,0.55
+sens_chest_scale_08_m,male,chest_scale,cc embed morphs/embed_torso104,0.7
+sens_chest_scale_09_m,male,chest_scale,cc embed morphs/embed_torso104,0.85
+sens_chest_scale_10_m,male,chest_scale,cc embed morphs/embed_torso104,1.0
+sens_chest_width_00_m,male,chest_width,cc embed morphs/embed_torso105,-0.5
+sens_chest_width_01_m,male,chest_width,cc embed morphs/embed_torso105,-0.35
+sens_chest_width_02_m,male,chest_width,cc embed morphs/embed_torso105,-0.2
+sens_chest_width_03_m,male,chest_width,cc embed morphs/embed_torso105,-0.05
+sens_chest_width_04_m,male,chest_width,cc embed morphs/embed_torso105,0.1
+sens_chest_width_05_m,male,chest_width,cc embed morphs/embed_torso105,0.25
+sens_chest_width_06_m,male,chest_width,cc embed morphs/embed_torso105,0.4
+sens_chest_width_07_m,male,chest_width,cc embed morphs/embed_torso105,0.55
+sens_chest_width_08_m,male,chest_width,cc embed morphs/embed_torso105,0.7
+sens_chest_width_09_m,male,chest_width,cc embed morphs/embed_torso105,0.85
+sens_chest_width_10_m,male,chest_width,cc embed morphs/embed_torso105,1.0
+sens_chest_depth_00_m,male,chest_depth,cc embed morphs/embed_torso103,-0.5
+sens_chest_depth_01_m,male,chest_depth,cc embed morphs/embed_torso103,-0.35
+sens_chest_depth_02_m,male,chest_depth,cc embed morphs/embed_torso103,-0.2
+sens_chest_depth_03_m,male,chest_depth,cc embed morphs/embed_torso103,-0.05
+sens_chest_depth_04_m,male,chest_depth,cc embed morphs/embed_torso103,0.1
+sens_chest_depth_05_m,male,chest_depth,cc embed morphs/embed_torso103,0.25
+sens_chest_depth_06_m,male,chest_depth,cc embed morphs/embed_torso103,0.4
+sens_chest_depth_07_m,male,chest_depth,cc embed morphs/embed_torso103,0.55
+sens_chest_depth_08_m,male,chest_depth,cc embed morphs/embed_torso103,0.7
+sens_chest_depth_09_m,male,chest_depth,cc embed morphs/embed_torso103,0.85
+sens_chest_depth_10_m,male,chest_depth,cc embed morphs/embed_torso103,1.0
+sens_chest_height_00_m,male,chest_height,cc embed morphs/embed_torso112,-1.0
+sens_chest_height_01_m,male,chest_height,cc embed morphs/embed_torso112,-0.8
+sens_chest_height_02_m,male,chest_height,cc embed morphs/embed_torso112,-0.6
+sens_chest_height_03_m,male,chest_height,cc embed morphs/embed_torso112,-0.4
+sens_chest_height_04_m,male,chest_height,cc embed morphs/embed_torso112,-0.2
+sens_chest_height_05_m,male,chest_height,cc embed morphs/embed_torso112,0.0
+sens_chest_height_06_m,male,chest_height,cc embed morphs/embed_torso112,0.2
+sens_chest_height_07_m,male,chest_height,cc embed morphs/embed_torso112,0.4
+sens_chest_height_08_m,male,chest_height,cc embed morphs/embed_torso112,0.6
+sens_chest_height_09_m,male,chest_height,cc embed morphs/embed_torso112,0.8
+sens_chest_height_10_m,male,chest_height,cc embed morphs/embed_torso112,1.0
+sens_breast_scale_00_m,male,breast_scale,cc embed morphs/embed_torso102,0.0
+sens_breast_scale_01_m,male,breast_scale,cc embed morphs/embed_torso102,0.1
+sens_breast_scale_02_m,male,breast_scale,cc embed morphs/embed_torso102,0.2
+sens_breast_scale_03_m,male,breast_scale,cc embed morphs/embed_torso102,0.3
+sens_breast_scale_04_m,male,breast_scale,cc embed morphs/embed_torso102,0.4
+sens_breast_scale_05_m,male,breast_scale,cc embed morphs/embed_torso102,0.5
+sens_breast_scale_06_m,male,breast_scale,cc embed morphs/embed_torso102,0.6
+sens_breast_scale_07_m,male,breast_scale,cc embed morphs/embed_torso102,0.7
+sens_breast_scale_08_m,male,breast_scale,cc embed morphs/embed_torso102,0.8
+sens_breast_scale_09_m,male,breast_scale,cc embed morphs/embed_torso102,0.9
+sens_breast_scale_10_m,male,breast_scale,cc embed morphs/embed_torso102,1.0
+sens_breast_prox_00_m,male,breast_prox,cc embed morphs/embed_torso101,0.0
+sens_breast_prox_01_m,male,breast_prox,cc embed morphs/embed_torso101,0.1
+sens_breast_prox_02_m,male,breast_prox,cc embed morphs/embed_torso101,0.2
+sens_breast_prox_03_m,male,breast_prox,cc embed morphs/embed_torso101,0.3
+sens_breast_prox_04_m,male,breast_prox,cc embed morphs/embed_torso101,0.4
+sens_breast_prox_05_m,male,breast_prox,cc embed morphs/embed_torso101,0.5
+sens_breast_prox_06_m,male,breast_prox,cc embed morphs/embed_torso101,0.6
+sens_breast_prox_07_m,male,breast_prox,cc embed morphs/embed_torso101,0.7
+sens_breast_prox_08_m,male,breast_prox,cc embed morphs/embed_torso101,0.8
+sens_breast_prox_09_m,male,breast_prox,cc embed morphs/embed_torso101,0.9
+sens_breast_prox_10_m,male,breast_prox,cc embed morphs/embed_torso101,1.0
+sens_pectoral_scale_00_m,male,pectoral_scale,cc embed morphs/embed_torso114,0.0
+sens_pectoral_scale_01_m,male,pectoral_scale,cc embed morphs/embed_torso114,0.1
+sens_pectoral_scale_02_m,male,pectoral_scale,cc embed morphs/embed_torso114,0.2
+sens_pectoral_scale_03_m,male,pectoral_scale,cc embed morphs/embed_torso114,0.3
+sens_pectoral_scale_04_m,male,pectoral_scale,cc embed morphs/embed_torso114,0.4
+sens_pectoral_scale_05_m,male,pectoral_scale,cc embed morphs/embed_torso114,0.5
+sens_pectoral_scale_06_m,male,pectoral_scale,cc embed morphs/embed_torso114,0.6
+sens_pectoral_scale_07_m,male,pectoral_scale,cc embed morphs/embed_torso114,0.7
+sens_pectoral_scale_08_m,male,pectoral_scale,cc embed morphs/embed_torso114,0.8
+sens_pectoral_scale_09_m,male,pectoral_scale,cc embed morphs/embed_torso114,0.9
+sens_pectoral_scale_10_m,male,pectoral_scale,cc embed morphs/embed_torso114,1.0
+sens_pectoral_height_00_m,male,pectoral_height,cc embed morphs/embed_torso115,0.0
+sens_pectoral_height_01_m,male,pectoral_height,cc embed morphs/embed_torso115,0.1
+sens_pectoral_height_02_m,male,pectoral_height,cc embed morphs/embed_torso115,0.2
+sens_pectoral_height_03_m,male,pectoral_height,cc embed morphs/embed_torso115,0.3
+sens_pectoral_height_04_m,male,pectoral_height,cc embed morphs/embed_torso115,0.4
+sens_pectoral_height_05_m,male,pectoral_height,cc embed morphs/embed_torso115,0.5
+sens_pectoral_height_06_m,male,pectoral_height,cc embed morphs/embed_torso115,0.6
+sens_pectoral_height_07_m,male,pectoral_height,cc embed morphs/embed_torso115,0.7
+sens_pectoral_height_08_m,male,pectoral_height,cc embed morphs/embed_torso115,0.8
+sens_pectoral_height_09_m,male,pectoral_height,cc embed morphs/embed_torso115,0.9
+sens_pectoral_height_10_m,male,pectoral_height,cc embed morphs/embed_torso115,1.0
+sens_neck_scale_00_m,male,neck_scale,cc embed morphs/embed_torso110,0.0
+sens_neck_scale_01_m,male,neck_scale,cc embed morphs/embed_torso110,0.1
+sens_neck_scale_02_m,male,neck_scale,cc embed morphs/embed_torso110,0.2
+sens_neck_scale_03_m,male,neck_scale,cc embed morphs/embed_torso110,0.3
+sens_neck_scale_04_m,male,neck_scale,cc embed morphs/embed_torso110,0.4
+sens_neck_scale_05_m,male,neck_scale,cc embed morphs/embed_torso110,0.5
+sens_neck_scale_06_m,male,neck_scale,cc embed morphs/embed_torso110,0.6
+sens_neck_scale_07_m,male,neck_scale,cc embed morphs/embed_torso110,0.7
+sens_neck_scale_08_m,male,neck_scale,cc embed morphs/embed_torso110,0.8
+sens_neck_scale_09_m,male,neck_scale,cc embed morphs/embed_torso110,0.9
+sens_neck_scale_10_m,male,neck_scale,cc embed morphs/embed_torso110,1.0
+sens_neck_len_00_m,male,neck_len,cc embed morphs/embed_torso109,-1.0
+sens_neck_len_01_m,male,neck_len,cc embed morphs/embed_torso109,-0.8
+sens_neck_len_02_m,male,neck_len,cc embed morphs/embed_torso109,-0.6
+sens_neck_len_03_m,male,neck_len,cc embed morphs/embed_torso109,-0.4
+sens_neck_len_04_m,male,neck_len,cc embed morphs/embed_torso109,-0.2
+sens_neck_len_05_m,male,neck_len,cc embed morphs/embed_torso109,0.0
+sens_neck_len_06_m,male,neck_len,cc embed morphs/embed_torso109,0.2
+sens_neck_len_07_m,male,neck_len,cc embed morphs/embed_torso109,0.4
+sens_neck_len_08_m,male,neck_len,cc embed morphs/embed_torso109,0.6
+sens_neck_len_09_m,male,neck_len,cc embed morphs/embed_torso109,0.8
+sens_neck_len_10_m,male,neck_len,cc embed morphs/embed_torso109,1.0
+sens_abdomen_scale_00_m,male,abdomen_scale,cc embed morphs/embed_torso113,-1.0
+sens_abdomen_scale_01_m,male,abdomen_scale,cc embed morphs/embed_torso113,-0.8
+sens_abdomen_scale_02_m,male,abdomen_scale,cc embed morphs/embed_torso113,-0.6
+sens_abdomen_scale_03_m,male,abdomen_scale,cc embed morphs/embed_torso113,-0.4
+sens_abdomen_scale_04_m,male,abdomen_scale,cc embed morphs/embed_torso113,-0.2
+sens_abdomen_scale_05_m,male,abdomen_scale,cc embed morphs/embed_torso113,0.0
+sens_abdomen_scale_06_m,male,abdomen_scale,cc embed morphs/embed_torso113,0.2
+sens_abdomen_scale_07_m,male,abdomen_scale,cc embed morphs/embed_torso113,0.4
+sens_abdomen_scale_08_m,male,abdomen_scale,cc embed morphs/embed_torso113,0.6
+sens_abdomen_scale_09_m,male,abdomen_scale,cc embed morphs/embed_torso113,0.8
+sens_abdomen_scale_10_m,male,abdomen_scale,cc embed morphs/embed_torso113,1.0
+sens_abdomen_depth_00_m,male,abdomen_depth,cc embed morphs/embed_torso111,-1.0
+sens_abdomen_depth_01_m,male,abdomen_depth,cc embed morphs/embed_torso111,-0.8
+sens_abdomen_depth_02_m,male,abdomen_depth,cc embed morphs/embed_torso111,-0.6
+sens_abdomen_depth_03_m,male,abdomen_depth,cc embed morphs/embed_torso111,-0.4
+sens_abdomen_depth_04_m,male,abdomen_depth,cc embed morphs/embed_torso111,-0.2
+sens_abdomen_depth_05_m,male,abdomen_depth,cc embed morphs/embed_torso111,0.0
+sens_abdomen_depth_06_m,male,abdomen_depth,cc embed morphs/embed_torso111,0.2
+sens_abdomen_depth_07_m,male,abdomen_depth,cc embed morphs/embed_torso111,0.4
+sens_abdomen_depth_08_m,male,abdomen_depth,cc embed morphs/embed_torso111,0.6
+sens_abdomen_depth_09_m,male,abdomen_depth,cc embed morphs/embed_torso111,0.8
+sens_abdomen_depth_10_m,male,abdomen_depth,cc embed morphs/embed_torso111,1.0
+sens_abs_line_00_m,male,abs_line,cc embed morphs/embed_torso106,0.0
+sens_abs_line_01_m,male,abs_line,cc embed morphs/embed_torso106,0.1
+sens_abs_line_02_m,male,abs_line,cc embed morphs/embed_torso106,0.2
+sens_abs_line_03_m,male,abs_line,cc embed morphs/embed_torso106,0.3
+sens_abs_line_04_m,male,abs_line,cc embed morphs/embed_torso106,0.4
+sens_abs_line_05_m,male,abs_line,cc embed morphs/embed_torso106,0.5
+sens_abs_line_06_m,male,abs_line,cc embed morphs/embed_torso106,0.6
+sens_abs_line_07_m,male,abs_line,cc embed morphs/embed_torso106,0.7
+sens_abs_line_08_m,male,abs_line,cc embed morphs/embed_torso106,0.8
+sens_abs_line_09_m,male,abs_line,cc embed morphs/embed_torso106,0.9
+sens_abs_line_10_m,male,abs_line,cc embed morphs/embed_torso106,1.0
+sens_hip_love_handles_00_m,male,hip_love_handles,cc embed morphs/embed_torso107,0.0
+sens_hip_love_handles_01_m,male,hip_love_handles,cc embed morphs/embed_torso107,0.1
+sens_hip_love_handles_02_m,male,hip_love_handles,cc embed morphs/embed_torso107,0.2
+sens_hip_love_handles_03_m,male,hip_love_handles,cc embed morphs/embed_torso107,0.3
+sens_hip_love_handles_04_m,male,hip_love_handles,cc embed morphs/embed_torso107,0.4
+sens_hip_love_handles_05_m,male,hip_love_handles,cc embed morphs/embed_torso107,0.5
+sens_hip_love_handles_06_m,male,hip_love_handles,cc embed morphs/embed_torso107,0.6
+sens_hip_love_handles_07_m,male,hip_love_handles,cc embed morphs/embed_torso107,0.7
+sens_hip_love_handles_08_m,male,hip_love_handles,cc embed morphs/embed_torso107,0.8
+sens_hip_love_handles_09_m,male,hip_love_handles,cc embed morphs/embed_torso107,0.9
+sens_hip_love_handles_10_m,male,hip_love_handles,cc embed morphs/embed_torso107,1.0
+sens_hip_scale_00_m,male,hip_scale,cc embed morphs/embed_torso2,-0.3
+sens_hip_scale_01_m,male,hip_scale,cc embed morphs/embed_torso2,-0.17
+sens_hip_scale_02_m,male,hip_scale,cc embed morphs/embed_torso2,-0.04
+sens_hip_scale_03_m,male,hip_scale,cc embed morphs/embed_torso2,0.09
+sens_hip_scale_04_m,male,hip_scale,cc embed morphs/embed_torso2,0.22
+sens_hip_scale_05_m,male,hip_scale,cc embed morphs/embed_torso2,0.35
+sens_hip_scale_06_m,male,hip_scale,cc embed morphs/embed_torso2,0.48
+sens_hip_scale_07_m,male,hip_scale,cc embed morphs/embed_torso2,0.61
+sens_hip_scale_08_m,male,hip_scale,cc embed morphs/embed_torso2,0.74
+sens_hip_scale_09_m,male,hip_scale,cc embed morphs/embed_torso2,0.87
+sens_hip_scale_10_m,male,hip_scale,cc embed morphs/embed_torso2,1.0
+sens_hip_len_00_m,male,hip_len,cc embed morphs/embed_torso4,-1.0
+sens_hip_len_01_m,male,hip_len,cc embed morphs/embed_torso4,-0.8
+sens_hip_len_02_m,male,hip_len,cc embed morphs/embed_torso4,-0.6
+sens_hip_len_03_m,male,hip_len,cc embed morphs/embed_torso4,-0.4
+sens_hip_len_04_m,male,hip_len,cc embed morphs/embed_torso4,-0.2
+sens_hip_len_05_m,male,hip_len,cc embed morphs/embed_torso4,0.0
+sens_hip_len_06_m,male,hip_len,cc embed morphs/embed_torso4,0.2
+sens_hip_len_07_m,male,hip_len,cc embed morphs/embed_torso4,0.4
+sens_hip_len_08_m,male,hip_len,cc embed morphs/embed_torso4,0.6
+sens_hip_len_09_m,male,hip_len,cc embed morphs/embed_torso4,0.8
+sens_hip_len_10_m,male,hip_len,cc embed morphs/embed_torso4,1.0
+sens_glute_scale_00_m,male,glute_scale,cc embed morphs/embed_torso1,-1.0
+sens_glute_scale_01_m,male,glute_scale,cc embed morphs/embed_torso1,-0.8
+sens_glute_scale_02_m,male,glute_scale,cc embed morphs/embed_torso1,-0.6
+sens_glute_scale_03_m,male,glute_scale,cc embed morphs/embed_torso1,-0.4
+sens_glute_scale_04_m,male,glute_scale,cc embed morphs/embed_torso1,-0.2
+sens_glute_scale_05_m,male,glute_scale,cc embed morphs/embed_torso1,0.0
+sens_glute_scale_06_m,male,glute_scale,cc embed morphs/embed_torso1,0.2
+sens_glute_scale_07_m,male,glute_scale,cc embed morphs/embed_torso1,0.4
+sens_glute_scale_08_m,male,glute_scale,cc embed morphs/embed_torso1,0.6
+sens_glute_scale_09_m,male,glute_scale,cc embed morphs/embed_torso1,0.8
+sens_glute_scale_10_m,male,glute_scale,cc embed morphs/embed_torso1,1.0
+sens_thigh_scale_00_m,male,thigh_scale,cc embed morphs/embed_leg3,-1.0
+sens_thigh_scale_01_m,male,thigh_scale,cc embed morphs/embed_leg3,-0.8
+sens_thigh_scale_02_m,male,thigh_scale,cc embed morphs/embed_leg3,-0.6
+sens_thigh_scale_03_m,male,thigh_scale,cc embed morphs/embed_leg3,-0.4
+sens_thigh_scale_04_m,male,thigh_scale,cc embed morphs/embed_leg3,-0.2
+sens_thigh_scale_05_m,male,thigh_scale,cc embed morphs/embed_leg3,0.0
+sens_thigh_scale_06_m,male,thigh_scale,cc embed morphs/embed_leg3,0.2
+sens_thigh_scale_07_m,male,thigh_scale,cc embed morphs/embed_leg3,0.4
+sens_thigh_scale_08_m,male,thigh_scale,cc embed morphs/embed_leg3,0.6
+sens_thigh_scale_09_m,male,thigh_scale,cc embed morphs/embed_leg3,0.8
+sens_thigh_scale_10_m,male,thigh_scale,cc embed morphs/embed_leg3,1.0
+sens_thigh_len_00_m,male,thigh_len,cc embed morphs/embed_leg4,-1.0
+sens_thigh_len_01_m,male,thigh_len,cc embed morphs/embed_leg4,-0.8
+sens_thigh_len_02_m,male,thigh_len,cc embed morphs/embed_leg4,-0.6
+sens_thigh_len_03_m,male,thigh_len,cc embed morphs/embed_leg4,-0.4
+sens_thigh_len_04_m,male,thigh_len,cc embed morphs/embed_leg4,-0.2
+sens_thigh_len_05_m,male,thigh_len,cc embed morphs/embed_leg4,0.0
+sens_thigh_len_06_m,male,thigh_len,cc embed morphs/embed_leg4,0.2
+sens_thigh_len_07_m,male,thigh_len,cc embed morphs/embed_leg4,0.4
+sens_thigh_len_08_m,male,thigh_len,cc embed morphs/embed_leg4,0.6
+sens_thigh_len_09_m,male,thigh_len,cc embed morphs/embed_leg4,0.8
+sens_thigh_len_10_m,male,thigh_len,cc embed morphs/embed_leg4,1.0
+sens_lower_leg_scale_00_m,male,lower_leg_scale,cc embed morphs/embed_leg2,-1.0
+sens_lower_leg_scale_01_m,male,lower_leg_scale,cc embed morphs/embed_leg2,-0.8
+sens_lower_leg_scale_02_m,male,lower_leg_scale,cc embed morphs/embed_leg2,-0.6
+sens_lower_leg_scale_03_m,male,lower_leg_scale,cc embed morphs/embed_leg2,-0.4
+sens_lower_leg_scale_04_m,male,lower_leg_scale,cc embed morphs/embed_leg2,-0.2
+sens_lower_leg_scale_05_m,male,lower_leg_scale,cc embed morphs/embed_leg2,0.0
+sens_lower_leg_scale_06_m,male,lower_leg_scale,cc embed morphs/embed_leg2,0.2
+sens_lower_leg_scale_07_m,male,lower_leg_scale,cc embed morphs/embed_leg2,0.4
+sens_lower_leg_scale_08_m,male,lower_leg_scale,cc embed morphs/embed_leg2,0.6
+sens_lower_leg_scale_09_m,male,lower_leg_scale,cc embed morphs/embed_leg2,0.8
+sens_lower_leg_scale_10_m,male,lower_leg_scale,cc embed morphs/embed_leg2,1.0
+sens_lower_leg_len_00_m,male,lower_leg_len,cc embed morphs/embed_leg5,-1.0
+sens_lower_leg_len_01_m,male,lower_leg_len,cc embed morphs/embed_leg5,-0.8
+sens_lower_leg_len_02_m,male,lower_leg_len,cc embed morphs/embed_leg5,-0.6
+sens_lower_leg_len_03_m,male,lower_leg_len,cc embed morphs/embed_leg5,-0.4
+sens_lower_leg_len_04_m,male,lower_leg_len,cc embed morphs/embed_leg5,-0.2
+sens_lower_leg_len_05_m,male,lower_leg_len,cc embed morphs/embed_leg5,0.0
+sens_lower_leg_len_06_m,male,lower_leg_len,cc embed morphs/embed_leg5,0.2
+sens_lower_leg_len_07_m,male,lower_leg_len,cc embed morphs/embed_leg5,0.4
+sens_lower_leg_len_08_m,male,lower_leg_len,cc embed morphs/embed_leg5,0.6
+sens_lower_leg_len_09_m,male,lower_leg_len,cc embed morphs/embed_leg5,0.8
+sens_lower_leg_len_10_m,male,lower_leg_len,cc embed morphs/embed_leg5,1.0
+sens_musc_arm_00_m,male,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.0
+sens_musc_arm_01_m,male,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.1
+sens_musc_arm_02_m,male,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.2
+sens_musc_arm_03_m,male,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.3
+sens_musc_arm_04_m,male,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.4
+sens_musc_arm_05_m,male,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.5
+sens_musc_arm_06_m,male,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.6
+sens_musc_arm_07_m,male,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.7
+sens_musc_arm_08_m,male,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.8
+sens_musc_arm_09_m,male,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,0.9
+sens_musc_arm_10_m,male,musc_arm,2025-05-05-12-31-36_embed_athetic_arn_01,1.0
+sens_musc_shoulder_00_m,male,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.0
+sens_musc_shoulder_01_m,male,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.1
+sens_musc_shoulder_02_m,male,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.2
+sens_musc_shoulder_03_m,male,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.3
+sens_musc_shoulder_04_m,male,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.4
+sens_musc_shoulder_05_m,male,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.5
+sens_musc_shoulder_06_m,male,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.6
+sens_musc_shoulder_07_m,male,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.7
+sens_musc_shoulder_08_m,male,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.8
+sens_musc_shoulder_09_m,male,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,0.9
+sens_musc_shoulder_10_m,male,musc_shoulder,2025-05-05-12-22-16_embed_athetic_shoulder_01,1.0
+sens_musc_back_00_m,male,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.0
+sens_musc_back_01_m,male,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.1
+sens_musc_back_02_m,male,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.2
+sens_musc_back_03_m,male,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.3
+sens_musc_back_04_m,male,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.4
+sens_musc_back_05_m,male,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.5
+sens_musc_back_06_m,male,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.6
+sens_musc_back_07_m,male,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.7
+sens_musc_back_08_m,male,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.8
+sens_musc_back_09_m,male,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,0.9
+sens_musc_back_10_m,male,musc_back,2025-05-05-12-31-03_embed_athetic_back_01,1.0
+sens_musc_chest_a_00_m,male,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.0
+sens_musc_chest_a_01_m,male,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.1
+sens_musc_chest_a_02_m,male,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.2
+sens_musc_chest_a_03_m,male,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.3
+sens_musc_chest_a_04_m,male,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.4
+sens_musc_chest_a_05_m,male,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.5
+sens_musc_chest_a_06_m,male,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.6
+sens_musc_chest_a_07_m,male,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.7
+sens_musc_chest_a_08_m,male,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.8
+sens_musc_chest_a_09_m,male,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,0.9
+sens_musc_chest_a_10_m,male,musc_chest_a,2025-05-05-12-07-08_embed_athetic_chest_01,1.0
+sens_musc_chest_b_00_m,male,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.0
+sens_musc_chest_b_01_m,male,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.1
+sens_musc_chest_b_02_m,male,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.2
+sens_musc_chest_b_03_m,male,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.3
+sens_musc_chest_b_04_m,male,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.4
+sens_musc_chest_b_05_m,male,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.5
+sens_musc_chest_b_06_m,male,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.6
+sens_musc_chest_b_07_m,male,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.7
+sens_musc_chest_b_08_m,male,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.8
+sens_musc_chest_b_09_m,male,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,0.9
+sens_musc_chest_b_10_m,male,musc_chest_b,2025-05-08-11-32-58_embed_athetic_chest_02,1.0
+sens_musc_chest_c_00_m,male,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.0
+sens_musc_chest_c_01_m,male,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.1
+sens_musc_chest_c_02_m,male,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.2
+sens_musc_chest_c_03_m,male,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.3
+sens_musc_chest_c_04_m,male,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.4
+sens_musc_chest_c_05_m,male,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.5
+sens_musc_chest_c_06_m,male,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.6
+sens_musc_chest_c_07_m,male,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.7
+sens_musc_chest_c_08_m,male,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.8
+sens_musc_chest_c_09_m,male,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,0.9
+sens_musc_chest_c_10_m,male,musc_chest_c,2025-06-10-15-34-47_embed_athetic_chest_c,1.0
+sens_musc_abs_00_m,male,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.0
+sens_musc_abs_01_m,male,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.1
+sens_musc_abs_02_m,male,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.2
+sens_musc_abs_03_m,male,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.3
+sens_musc_abs_04_m,male,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.4
+sens_musc_abs_05_m,male,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.5
+sens_musc_abs_06_m,male,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.6
+sens_musc_abs_07_m,male,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.7
+sens_musc_abs_08_m,male,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.8
+sens_musc_abs_09_m,male,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,0.9
+sens_musc_abs_10_m,male,musc_abs,2025-05-08-15-26-33_embed_athetic_abs_iso_01,1.0
+sens_musc_obliques_00_m,male,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.0
+sens_musc_obliques_01_m,male,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.1
+sens_musc_obliques_02_m,male,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.2
+sens_musc_obliques_03_m,male,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.3
+sens_musc_obliques_04_m,male,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.4
+sens_musc_obliques_05_m,male,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.5
+sens_musc_obliques_06_m,male,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.6
+sens_musc_obliques_07_m,male,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.7
+sens_musc_obliques_08_m,male,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.8
+sens_musc_obliques_09_m,male,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,0.9
+sens_musc_obliques_10_m,male,musc_obliques,2025-05-08-15-29-44_embed_athetic_side_abs_01,1.0
+sens_musc_thigh_00_m,male,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.0
+sens_musc_thigh_01_m,male,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.1
+sens_musc_thigh_02_m,male,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.2
+sens_musc_thigh_03_m,male,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.3
+sens_musc_thigh_04_m,male,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.4
+sens_musc_thigh_05_m,male,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.5
+sens_musc_thigh_06_m,male,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.6
+sens_musc_thigh_07_m,male,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.7
+sens_musc_thigh_08_m,male,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.8
+sens_musc_thigh_09_m,male,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,0.9
+sens_musc_thigh_10_m,male,musc_thigh,2025-05-05-12-32-25_embed_athetic_thigh_01,1.0
+sens_musc_calf_00_m,male,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.0
+sens_musc_calf_01_m,male,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.1
+sens_musc_calf_02_m,male,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.2
+sens_musc_calf_03_m,male,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.3
+sens_musc_calf_04_m,male,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.4
+sens_musc_calf_05_m,male,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.5
+sens_musc_calf_06_m,male,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.6
+sens_musc_calf_07_m,male,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.7
+sens_musc_calf_08_m,male,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.8
+sens_musc_calf_09_m,male,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,0.9
+sens_musc_calf_10_m,male,musc_calf,2025-05-05-12-33-02_embed_athetic_calf_01,1.0
+sens_musc_neck_00_m,male,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.0
+sens_musc_neck_01_m,male,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.1
+sens_musc_neck_02_m,male,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.2
+sens_musc_neck_03_m,male,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.3
+sens_musc_neck_04_m,male,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.4
+sens_musc_neck_05_m,male,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.5
+sens_musc_neck_06_m,male,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.6
+sens_musc_neck_07_m,male,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.7
+sens_musc_neck_08_m,male,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.8
+sens_musc_neck_09_m,male,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,0.9
+sens_musc_neck_10_m,male,musc_neck,2025-05-05-13-47-33_embed_athetic_chest_01,1.0
+sens_musc_waist_00_m,male,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.0
+sens_musc_waist_01_m,male,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.1
+sens_musc_waist_02_m,male,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.2
+sens_musc_waist_03_m,male,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.3
+sens_musc_waist_04_m,male,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.4
+sens_musc_waist_05_m,male,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.5
+sens_musc_waist_06_m,male,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.6
+sens_musc_waist_07_m,male,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.7
+sens_musc_waist_08_m,male,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.8
+sens_musc_waist_09_m,male,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,0.9
+sens_musc_waist_10_m,male,musc_waist,2025-05-05-12-18-34_embed_athetic_abs_01,1.0
+sens_skin_arm_00_m,male,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.0
+sens_skin_arm_01_m,male,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.1
+sens_skin_arm_02_m,male,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.2
+sens_skin_arm_03_m,male,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.3
+sens_skin_arm_04_m,male,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.4
+sens_skin_arm_05_m,male,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.5
+sens_skin_arm_06_m,male,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.6
+sens_skin_arm_07_m,male,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.7
+sens_skin_arm_08_m,male,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.8
+sens_skin_arm_09_m,male,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,0.9
+sens_skin_arm_10_m,male,skin_arm,2025-05-07-14-12-07_pack_skinny_arm_01,1.0
+sens_skin_shoulder_00_m,male,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.0
+sens_skin_shoulder_01_m,male,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.1
+sens_skin_shoulder_02_m,male,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.2
+sens_skin_shoulder_03_m,male,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.3
+sens_skin_shoulder_04_m,male,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.4
+sens_skin_shoulder_05_m,male,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.5
+sens_skin_shoulder_06_m,male,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.6
+sens_skin_shoulder_07_m,male,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.7
+sens_skin_shoulder_08_m,male,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.8
+sens_skin_shoulder_09_m,male,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,0.9
+sens_skin_shoulder_10_m,male,skin_shoulder,2025-05-07-12-21-11_pack_skinny_shoulder_01,1.0
+sens_skin_back_00_m,male,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.0
+sens_skin_back_01_m,male,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.1
+sens_skin_back_02_m,male,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.2
+sens_skin_back_03_m,male,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.3
+sens_skin_back_04_m,male,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.4
+sens_skin_back_05_m,male,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.5
+sens_skin_back_06_m,male,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.6
+sens_skin_back_07_m,male,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.7
+sens_skin_back_08_m,male,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.8
+sens_skin_back_09_m,male,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,0.9
+sens_skin_back_10_m,male,skin_back,2025-06-10-17-08-24_pack_skinny_back_02,1.0
+sens_skin_chest_00_m,male,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.0
+sens_skin_chest_01_m,male,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.1
+sens_skin_chest_02_m,male,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.2
+sens_skin_chest_03_m,male,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.3
+sens_skin_chest_04_m,male,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.4
+sens_skin_chest_05_m,male,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.5
+sens_skin_chest_06_m,male,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.6
+sens_skin_chest_07_m,male,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.7
+sens_skin_chest_08_m,male,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.8
+sens_skin_chest_09_m,male,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,0.9
+sens_skin_chest_10_m,male,skin_chest,2025-05-08-14-58-30_pack_skinny_chest_03,1.0
+sens_skin_abs_00_m,male,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.0
+sens_skin_abs_01_m,male,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.1
+sens_skin_abs_02_m,male,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.2
+sens_skin_abs_03_m,male,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.3
+sens_skin_abs_04_m,male,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.4
+sens_skin_abs_05_m,male,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.5
+sens_skin_abs_06_m,male,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.6
+sens_skin_abs_07_m,male,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.7
+sens_skin_abs_08_m,male,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.8
+sens_skin_abs_09_m,male,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,0.9
+sens_skin_abs_10_m,male,skin_abs,2025-05-07-13-43-26_pack_skinny_abs_01,1.0
+sens_skin_ribcage_00_m,male,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.0
+sens_skin_ribcage_01_m,male,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.1
+sens_skin_ribcage_02_m,male,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.2
+sens_skin_ribcage_03_m,male,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.3
+sens_skin_ribcage_04_m,male,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.4
+sens_skin_ribcage_05_m,male,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.5
+sens_skin_ribcage_06_m,male,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.6
+sens_skin_ribcage_07_m,male,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.7
+sens_skin_ribcage_08_m,male,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.8
+sens_skin_ribcage_09_m,male,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,0.9
+sens_skin_ribcage_10_m,male,skin_ribcage,2025-05-07-12-27-17_pack_skinny_rib_01,1.0
+sens_skin_thigh_00_m,male,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.0
+sens_skin_thigh_01_m,male,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.1
+sens_skin_thigh_02_m,male,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.2
+sens_skin_thigh_03_m,male,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.3
+sens_skin_thigh_04_m,male,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.4
+sens_skin_thigh_05_m,male,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.5
+sens_skin_thigh_06_m,male,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.6
+sens_skin_thigh_07_m,male,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.7
+sens_skin_thigh_08_m,male,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.8
+sens_skin_thigh_09_m,male,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,0.9
+sens_skin_thigh_10_m,male,skin_thigh,2025-06-10-17-18-17_pack_skinny_thigh_02,1.0
+sens_skin_calf_00_m,male,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.0
+sens_skin_calf_01_m,male,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.1
+sens_skin_calf_02_m,male,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.2
+sens_skin_calf_03_m,male,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.3
+sens_skin_calf_04_m,male,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.4
+sens_skin_calf_05_m,male,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.5
+sens_skin_calf_06_m,male,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.6
+sens_skin_calf_07_m,male,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.7
+sens_skin_calf_08_m,male,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.8
+sens_skin_calf_09_m,male,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,0.9
+sens_skin_calf_10_m,male,skin_calf,2025-05-07-14-35-43_pack_skinny_calf_01,1.0
+sens_skin_buttocks_00_m,male,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.0
+sens_skin_buttocks_01_m,male,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.1
+sens_skin_buttocks_02_m,male,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.2
+sens_skin_buttocks_03_m,male,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.3
+sens_skin_buttocks_04_m,male,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.4
+sens_skin_buttocks_05_m,male,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.5
+sens_skin_buttocks_06_m,male,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.6
+sens_skin_buttocks_07_m,male,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.7
+sens_skin_buttocks_08_m,male,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.8
+sens_skin_buttocks_09_m,male,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,0.9
+sens_skin_buttocks_10_m,male,skin_buttocks,2025-06-10-17-01-51_pack_skinny_bottom_02,1.0
+sens_skin_neck_00_m,male,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.0
+sens_skin_neck_01_m,male,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.1
+sens_skin_neck_02_m,male,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.2
+sens_skin_neck_03_m,male,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.3
+sens_skin_neck_04_m,male,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.4
+sens_skin_neck_05_m,male,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.5
+sens_skin_neck_06_m,male,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.6
+sens_skin_neck_07_m,male,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.7
+sens_skin_neck_08_m,male,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.8
+sens_skin_neck_09_m,male,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,0.9
+sens_skin_neck_10_m,male,skin_neck,2025-05-07-12-04-51_pack_skinny_neck_01,1.0
+sens_skin_spine_00_m,male,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.0
+sens_skin_spine_01_m,male,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.1
+sens_skin_spine_02_m,male,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.2
+sens_skin_spine_03_m,male,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.3
+sens_skin_spine_04_m,male,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.4
+sens_skin_spine_05_m,male,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.5
+sens_skin_spine_06_m,male,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.6
+sens_skin_spine_07_m,male,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.7
+sens_skin_spine_08_m,male,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.8
+sens_skin_spine_09_m,male,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,0.9
+sens_skin_spine_10_m,male,skin_spine,2025-05-07-14-17-56_pack_skinny_spine_01,1.0

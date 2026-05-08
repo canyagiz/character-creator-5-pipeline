@@ -1,0 +1,28 @@
+body_fat morph — hacim sonuclari
+=================================
+
+[FEMALE]
+morph=0.0  ->  58.337 L   (waist=75.46 cm)
+morph=0.1  ->  67.935 L   (waist=84.23 cm)
+morph=0.2  ->  78.407 L   (waist=93.15 cm)
+morph=0.3  ->  89.768 L   (waist=102.16 cm)
+morph=0.4  -> 102.031 L   (waist=111.26 cm)
+morph=0.5  -> 115.212 L   (waist=120.42 cm)
+morph=0.6  -> 129.325 L   (waist=129.63 cm)
+morph=0.7  -> 144.385 L   (waist=138.86 cm)
+morph=0.8  -> 160.405 L   (waist=148.12 cm)
+morph=0.9  -> 177.401 L   (waist=157.40 cm)
+morph=1.0  -> 195.386 L   (waist=166.71 cm)
+
+[MALE]
+morph=0.0  ->  58.158 L   (waist=75.41 cm)
+morph=0.1  ->  67.692 L   (waist=84.15 cm)
+morph=0.2  ->  78.091 L   (waist=93.02 cm)
+morph=0.3  ->  89.371 L   (waist=102.00 cm)
+morph=0.4  -> 101.545 L   (waist=111.06 cm)
+morph=0.5  -> 114.628 L   (waist=120.18 cm)
+morph=0.6  -> 128.634 L   (waist=129.34 cm)
+morph=0.7  -> 143.577 L   (waist=138.53 cm)
+morph=0.8  -> 159.472 L   (waist=147.75 cm)
+morph=0.9  -> 176.333 L   (waist=156.99 cm)
+morph=1.0  -> 194.174 L   (waist=166.26 cm)

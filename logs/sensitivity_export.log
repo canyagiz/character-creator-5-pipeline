@@ -1,0 +1,95 @@
+=== sensitivity_export START 2026-05-06 19:56:39 ===
+Toplam: 1168 probe
+  [project] female yuklendi
+[50/1168] 50 export, 0 atlandi, 0 hata
+[100/1168] 100 export, 0 atlandi, 0 hata
+[150/1168] 150 export, 0 atlandi, 0 hata
+[200/1168] 200 export, 0 atlandi, 0 hata
+[250/1168] 250 export, 0 atlandi, 0 hata
+[300/1168] 300 export, 0 atlandi, 0 hata
+[350/1168] 350 export, 0 atlandi, 0 hata
+=== sensitivity_export START 2026-05-07 00:11:11 ===
+Toplam: 1168 probe
+  [project] female yuklendi
+[443/1168] 50 export, 393 atlandi, 0 hata
+[493/1168] 100 export, 393 atlandi, 0 hata
+[543/1168] 150 export, 393 atlandi, 0 hata
+  [project] male yuklendi
+[593/1168] 200 export, 393 atlandi, 0 hata
+[643/1168] 250 export, 393 atlandi, 0 hata
+[693/1168] 300 export, 393 atlandi, 0 hata
+[743/1168] 350 export, 393 atlandi, 0 hata
+  [HATA] sens_breast_prox_10_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_scale_00_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_scale_01_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_scale_02_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_scale_03_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_scale_04_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_scale_05_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_scale_06_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_scale_07_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_scale_08_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_scale_10_m: FBX cok kucuk (2 bytes)
+  [HATA] sens_pectoral_height_01_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_height_03_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_height_04_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_height_05_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_height_06_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_height_07_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_height_08_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_height_09_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_pectoral_height_10_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_scale_00_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_scale_01_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_scale_02_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_scale_03_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_scale_04_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_scale_05_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_scale_06_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_scale_07_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_scale_08_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_scale_09_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_scale_10_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_len_00_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_len_01_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_len_02_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_len_03_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_len_04_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_len_05_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_len_06_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_len_07_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_len_08_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_len_09_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_neck_len_10_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_scale_00_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_scale_01_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_scale_02_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_scale_03_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_scale_04_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_scale_05_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_scale_06_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_scale_07_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_scale_08_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_scale_09_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_scale_10_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_depth_00_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_depth_01_m: FBX cok kucuk (-1 bytes)
+  [HATA] sens_abdomen_depth_02_m: FBX cok kucuk (-1 bytes)
+=== sensitivity_export START 2026-05-07 09:10:21 ===
+Toplam: 1168 probe
+  [project] male yuklendi
+[798/1168] 50 export, 748 atlandi, 0 hata
+[848/1168] 100 export, 748 atlandi, 0 hata
+[898/1168] 150 export, 748 atlandi, 0 hata
+[948/1168] 200 export, 748 atlandi, 0 hata
+[998/1168] 250 export, 748 atlandi, 0 hata
+[1048/1168] 300 export, 748 atlandi, 0 hata
+[1098/1168] 350 export, 748 atlandi, 0 hata
+[1148/1168] 400 export, 748 atlandi, 0 hata
+[1168/1168] 420 export, 748 atlandi, 0 hata
+
+Bitti: 420 OK, 748 SKIP, 0 HATA
+=== sensitivity_export START 2026-05-07 17:18:01 ===
+Toplam: 1168 probe
+
+Bitti: 0 OK, 1168 SKIP, 0 HATA

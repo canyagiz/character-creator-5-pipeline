@@ -20,10 +20,13 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import os
+from pathlib import Path
 
-ANSUR_CSV = r"C:\Users\aliya\workspace\cc5-scripts\logs\ansur_samples_10k.csv"
-OUT_DIR   = r"C:\Users\aliya\workspace\cc5-scripts\analysis\ansur_plots"
-LOG_DIR   = r"C:\Users\aliya\workspace\cc5-scripts\logs"
+_ROOT = Path(__file__).resolve().parent.parent
+
+ANSUR_CSV = str(_ROOT / "logs" / "ansur_samples_10k.csv")
+OUT_DIR   = str(_ROOT / "analysis" / "ansur_plots")
+LOG_DIR   = str(_ROOT / "logs")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 MEAS_COLS = [

@@ -20,13 +20,15 @@ import gc
 import math
 import os
 import sys
+from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\aliya\workspace\cc5-scripts")
+_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_ROOT))
 from cc5_helpers import compute_all_weights, ALL_MORPHS, PROJECT_FILES
 
-DATASET_CSV = r"C:\Users\aliya\workspace\cc5-scripts\dataset_10k.csv"
-OUTPUT_DIR  = r"C:\Users\aliya\workspace\cc5-scripts\fbx_export"
-LOG_DIR     = r"C:\Users\aliya\workspace\cc5-scripts\logs"
+DATASET_CSV = str(_ROOT / "dataset_10k.csv")
+OUTPUT_DIR  = str(_ROOT / "fbx_export")
+LOG_DIR     = str(_ROOT / "logs")
 PROBE_CSV   = os.path.join(LOG_DIR, "somatotype_probe_10k.csv")
 OVERWRITE   = True
 N_PER_SOMA  = 10

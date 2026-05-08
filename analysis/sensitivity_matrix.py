@@ -15,11 +15,14 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import os
+from pathlib import Path
 
-IN_CSV        = r"C:\Users\aliya\workspace\cc5-scripts\logs\sensitivity_measurements.csv"
-HEIGHT_CSV    = r"C:\Users\aliya\workspace\cc5-scripts\logs\height_sensitivity_measurements.csv"
-OUT_DIR       = r"C:\Users\aliya\workspace\cc5-scripts\analysis\sensitivity_plots"
-JAC_CSV       = r"C:\Users\aliya\workspace\cc5-scripts\logs\jacobian.csv"
+_ROOT = Path(__file__).resolve().parent.parent
+
+IN_CSV        = str(_ROOT / "logs" / "sensitivity_measurements.csv")
+HEIGHT_CSV    = str(_ROOT / "logs" / "height_sensitivity_measurements.csv")
+OUT_DIR       = str(_ROOT / "analysis" / "sensitivity_plots")
+JAC_CSV       = str(_ROOT / "logs" / "jacobian.csv")
 os.makedirs(OUT_DIR, exist_ok=True)
 
 MEASUREMENTS = [

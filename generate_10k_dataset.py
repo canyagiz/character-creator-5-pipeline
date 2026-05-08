@@ -17,11 +17,14 @@ import pandas as pd
 import numpy as np
 from scipy.stats import qmc
 import os, json
+from pathlib import Path
 
-JAC_CSV    = r"C:\Users\aliya\workspace\cc5-scripts\logs\jacobian.csv"
-RANGES_CSV = r"C:\Users\aliya\workspace\cc5-scripts\logs\ansur_ranges.csv"
-SENS_CSV   = r"C:\Users\aliya\workspace\cc5-scripts\logs\sensitivity_measurements.csv"
-OUT_CSV    = r"C:\Users\aliya\workspace\cc5-scripts\logs\dataset_10k.csv"
+_ROOT = Path(__file__).resolve().parent
+
+JAC_CSV    = str(_ROOT / "logs" / "jacobian.csv")
+RANGES_CSV = str(_ROOT / "logs" / "ansur_ranges.csv")
+SENS_CSV   = str(_ROOT / "logs" / "sensitivity_measurements.csv")
+OUT_CSV    = str(_ROOT / "logs" / "dataset_10k.csv")
 os.makedirs(os.path.dirname(OUT_CSV), exist_ok=True)
 
 TARGET_N = 5000   # cinsiyet basina

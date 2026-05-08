@@ -9,9 +9,12 @@ iyi kapsamak. Blender'da ölçülüp slider → gerçek ölçüm modeli kurulaca
 
 import pandas as pd
 import numpy as np
+from pathlib import Path
 
-DATASET  = r"C:\Users\aliya\workspace\cc5-scripts\dataset.csv"
-OUTPUT   = r"C:\Users\aliya\workspace\cc5-scripts\analysis\calibration_probe.csv"
+_ROOT = Path(__file__).resolve().parent.parent
+
+DATASET  = str(_ROOT / "dataset.csv")
+OUTPUT   = str(_ROOT / "analysis" / "calibration_probe.csv")
 
 df = pd.read_csv(DATASET)
 

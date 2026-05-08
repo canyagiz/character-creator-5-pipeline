@@ -10,13 +10,15 @@ Cikti: logs/sensitivity_measurements.csv
 """
 
 import subprocess, sys, os, csv, json, time, argparse, signal
+from pathlib import Path
 
+_ROOT = Path(__file__).resolve().parent.parent
 BLENDER_EXE  = r"C:\Program Files\Blender Foundation\Blender 4.5\blender.exe"
 SCRIPT       = os.path.join(os.path.dirname(__file__), "measure_anthropometry.py")
-PROBE_CSV    = r"C:\Users\aliya\workspace\cc5-scripts\logs\sensitivity_probe.csv"
-FBX_DIR      = r"C:\Users\aliya\workspace\cc5-scripts\fbx_export_sensitivity"
-META_TMP_DIR = r"C:\Users\aliya\workspace\cc5-scripts\logs\sensitivity_meta"
-OUT_CSV      = r"C:\Users\aliya\workspace\cc5-scripts\logs\sensitivity_measurements.csv"
+PROBE_CSV    = str(_ROOT / "logs" / "sensitivity_probe.csv")
+FBX_DIR      = str(_ROOT / "fbx_export_sensitivity")
+META_TMP_DIR = str(_ROOT / "logs" / "sensitivity_meta")
+OUT_CSV      = str(_ROOT / "logs" / "sensitivity_measurements.csv")
 POLL_SEC     = 10   # yeni FBX kontrol araligi (saniye)
 
 os.makedirs(META_TMP_DIR, exist_ok=True)

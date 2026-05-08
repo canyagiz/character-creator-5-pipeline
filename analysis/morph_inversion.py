@@ -37,11 +37,14 @@ def navy_body_fat_pct(gender, waist_cm, hip_cm, neck_cm, height_cm):
         val = 86.010 * math.log10(w - n) - 70.041 * math.log10(h) + 36.76
     return round(max(0.0, val), 2)
 
-ANSUR_CSV  = r"C:\Users\aliya\workspace\cc5-scripts\logs\ansur_samples_10k.csv"
-JAC_CSV    = r"C:\Users\aliya\workspace\cc5-scripts\logs\jacobian.csv"
-SENS_CSV   = r"C:\Users\aliya\workspace\cc5-scripts\logs\sensitivity_measurements.csv"
-PROBE_CSV  = r"C:\Users\aliya\workspace\cc5-scripts\logs\sensitivity_probe.csv"
-OUT_CSV    = r"C:\Users\aliya\workspace\cc5-scripts\logs\dataset_inverted.csv"
+from pathlib import Path as _Path
+_ROOT = _Path(__file__).resolve().parent.parent
+
+ANSUR_CSV  = str(_ROOT / "logs" / "ansur_samples_10k.csv")
+JAC_CSV    = str(_ROOT / "logs" / "jacobian.csv")
+SENS_CSV   = str(_ROOT / "logs" / "sensitivity_measurements.csv")
+PROBE_CSV  = str(_ROOT / "logs" / "sensitivity_probe.csv")
+OUT_CSV    = str(_ROOT / "logs" / "dataset_inverted.csv")
 os.makedirs(os.path.dirname(OUT_CSV), exist_ok=True)
 
 # Inversion hedef olcumleri

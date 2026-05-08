@@ -13,10 +13,13 @@ Calistir: python generate_score_morph_map.py
 import csv
 import os
 import sys
-sys.path.insert(0, r"C:\Users\aliya\workspace\cc5-scripts")
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(_ROOT))
 from cc5_helpers import compute_all_weights, ALL_MORPHS
 
-OUT_PATH = r"C:\Users\aliya\workspace\cc5-scripts\logs\score_to_morph_map.csv"
+OUT_PATH = str(_ROOT / "logs" / "score_to_morph_map.csv")
 os.makedirs(os.path.dirname(OUT_PATH), exist_ok=True)
 
 # Baseline deger (degistirilmeyen sliderlar bu degerle tutulur)

@@ -8,10 +8,13 @@ Bağımlılık: numpy, pandas, scipy
 import numpy as np
 import pandas as pd
 from scipy.stats import qmc, beta as beta_dist, truncnorm
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parent
 
 TOTAL  = 30_000
 SEED   = 42
-OUTPUT = r"C:\Users\aliya\workspace\cc5-scripts\dataset.csv"
+OUTPUT = str(_ROOT / "dataset.csv")
 
 rng = np.random.default_rng(SEED)
 

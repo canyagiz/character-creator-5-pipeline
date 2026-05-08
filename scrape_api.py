@@ -1,6 +1,9 @@
 import RLPy
+from pathlib import Path
 
-OUTPUT = r"C:\Users\aliya\workspace\cc5-scripts\cc5-scraping\Full_API_Dump.txt"
+_ROOT = Path(__file__).resolve().parent
+
+OUTPUT = str(_ROOT / "cc5-scraping" / "Full_API_Dump.txt")
 
 def get_members(obj):
     return [m for m in dir(obj) if not m.startswith("__")]

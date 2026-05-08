@@ -19,9 +19,11 @@ import sys
 import time
 
 # ── Ayarlar ───────────────────────────────────────────────────────────────────
-CSV_PATH      = r"C:\Users\aliya\workspace\cc5-scripts\logs\dataset_inverted.csv"
-OUTPUT_DIR    = r"C:\Users\aliya\workspace\cc5-scripts\fbx_export"
-LOG_PATH      = r"C:\Users\aliya\workspace\cc5-scripts\logs\batch_export.log"
+_BASE         = os.path.dirname(os.path.abspath(__file__))
+_ROOT         = os.path.dirname(_BASE)          # cc5-scripts/
+CSV_PATH      = os.path.join(_ROOT, "logs", "dataset_inverted.csv")
+OUTPUT_DIR    = os.path.join(_ROOT, "fbx_export")
+LOG_PATH      = os.path.join(_ROOT, "logs", "batch_export.log")
 
 START_IDX     = 0       # Kacinci satirdan basla (0 = en bastan)
 OVERWRITE     = False   # True -> mevcut FBX'leri yeniden uret
@@ -87,7 +89,7 @@ MORPH_ID_MAP = {
 
 ALL_MORPH_IDS = list(MORPH_ID_MAP.values())
 
-sys.path.insert(0, r"C:\Users\aliya\workspace\cc5-scripts")
+sys.path.insert(0, _ROOT)
 from cc5_helpers import PROJECT_FILES
 
 # ── Hazirlik ──────────────────────────────────────────────────────────────────

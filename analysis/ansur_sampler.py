@@ -13,10 +13,13 @@ normalize uzayda birbirinden en uzak noktaları seçer (maximin LHS hybrid).
 import pandas as pd
 import numpy as np
 import os
+from pathlib import Path
 
-ANSUR_F = r"C:\Users\aliya\workspace\cc5-scripts\docs\ansur2\ANSUR_II_FEMALE_Public.csv"
-ANSUR_M = r"C:\Users\aliya\workspace\cc5-scripts\docs\ansur2\ANSUR_II_MALE_Public.csv"
-OUT_CSV = r"C:\Users\aliya\workspace\cc5-scripts\logs\ansur_samples_10k.csv"
+_ROOT = Path(__file__).resolve().parent.parent
+
+ANSUR_F = str(_ROOT / "docs" / "ansur2" / "ANSUR_II_FEMALE_Public.csv")
+ANSUR_M = str(_ROOT / "docs" / "ansur2" / "ANSUR_II_MALE_Public.csv")
+OUT_CSV = str(_ROOT / "logs" / "ansur_samples_10k.csv")
 N_EACH  = None   # None = tum gercek satirlar, imputasyon yok
 
 os.makedirs(os.path.dirname(OUT_CSV), exist_ok=True)

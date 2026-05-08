@@ -1,0 +1,12 @@
+=== height_sensitivity_export START 2026-05-08 11:55:27 ===
+Toplam: 296 probe | cikti: C:\Users\aliya\workspace\cc5-scripts\fbx_export_height_sensitivity
+  [project] female yuklendi
+[50/296] 50 export, 0 atlandi, 0 hata
+[100/296] 100 export, 0 atlandi, 0 hata
+  [project] male yuklendi
+[150/296] 150 export, 0 atlandi, 0 hata
+[200/296] 200 export, 0 atlandi, 0 hata
+[250/296] 250 export, 0 atlandi, 0 hata
+[296/296] 296 export, 0 atlandi, 0 hata
+
+Bitti: 296 OK, 0 SKIP, 0 HATA

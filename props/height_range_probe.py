@@ -7,7 +7,10 @@ CC5 Script Editor'da çalıştır (Male / Aaron projesiyle).
 
 import RLPy
 import sys
-sys.path.insert(0, r"C:\Users\aliya\workspace\cc5-scripts")
+from pathlib import Path
+
+_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_ROOT))
 from cc5_helpers import (
     PROJECT_FILES, ALL_MORPHS,
     M_CHEST_HEIGHT, M_HIP_LENGTH, M_THIGH_LENGTH, M_LOWER_LEG_LENGTH,
@@ -15,7 +18,7 @@ from cc5_helpers import (
     segment_weight,
 )
 
-LOG_PATH    = r"C:\Users\aliya\workspace\cc5-scripts\logs\height_range_probe.log"
+LOG_PATH    = str(_ROOT / "logs" / "height_range_probe.log")
 TEST_SCORES = [0.0, 0.10, 0.20, 0.25, 0.30, 0.40, 0.50, 0.60, 0.75, 1.0]
 SEG_NEUTRAL = 0.5  # tüm segment score'lar nötr
 

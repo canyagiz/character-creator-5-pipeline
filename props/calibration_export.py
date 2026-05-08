@@ -12,13 +12,15 @@ import gc
 import os
 import sys
 import time
+from pathlib import Path
 
-sys.path.insert(0, r"C:\Users\aliya\workspace\cc5-scripts")
+_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(_ROOT))
 from cc5_helpers import compute_all_weights, ALL_MORPHS, PROJECT_FILES
 
-CSV_PATH   = r"C:\Users\aliya\workspace\cc5-scripts\analysis\calibration_probe.csv"
-OUTPUT_DIR = r"C:\Users\aliya\workspace\cc5-scripts\fbx_export\calib"
-LOG_PATH   = r"C:\Users\aliya\workspace\cc5-scripts\logs\calibration_export.log"
+CSV_PATH   = str(_ROOT / "analysis" / "calibration_probe.csv")
+OUTPUT_DIR = str(_ROOT / "fbx_export" / "calib")
+LOG_PATH   = str(_ROOT / "logs" / "calibration_export.log")
 
 OVERWRITE  = False
 
