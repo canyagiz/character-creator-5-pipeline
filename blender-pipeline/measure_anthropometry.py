@@ -320,6 +320,14 @@ measurements = {
     "lower_leg_length_cm": bone_dist_cm("CC_Base_L_Calf",     "CC_Base_L_Foot"),
     "total_leg_length_cm": bone_dist_cm("CC_Base_L_Thigh",    "CC_Base_L_Foot"),
 
+    # Height segmentleri (render_debug_height.py ile aynı metodoloji)
+    "seg_foot_cm":     round((bone_z("CC_Base_L_Foot")       - z_floor)                          * 100, 2),
+    "seg_lower_leg_cm":round((bone_z("CC_Base_L_Calf")       - bone_z("CC_Base_L_Foot"))          * 100, 2),
+    "seg_upper_leg_cm":round((bone_z("CC_Base_L_Thigh")      - bone_z("CC_Base_L_Calf"))          * 100, 2),
+    "seg_torso_cm":    round((bone_z("CC_Base_NeckTwist01")  - bone_z("CC_Base_L_Thigh"))         * 100, 2),
+    "seg_neck_cm":     round((bone_z("CC_Base_Head")         - bone_z("CC_Base_NeckTwist01"))     * 100, 2),
+    "seg_head_cm":     round((z_top                          - bone_z("CC_Base_Head"))            * 100, 2),
+
 }
 
 # ── Hacim + Siri body fat ─────────────────────────────────────────────────────

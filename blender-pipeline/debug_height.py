@@ -131,18 +131,20 @@ print(f"Toplam: {total} FBX | cikti: {DEBUG_ROOT}\n")
 
 for i, fbx_path in enumerate(fbx_files):
     char_id  = os.path.splitext(os.path.basename(fbx_path))[0]
-    out_png  = os.path.join(DEBUG_ROOT, f"{char_id}_height_annotated_front.png")
+    char_dir = os.path.join(DEBUG_ROOT, char_id)
+    out_png  = os.path.join(char_dir, f"{char_id}_height_annotated_front.png")
 
     if not args.overwrite and os.path.exists(out_png):
         skipped += 1
         continue
 
+    os.makedirs(char_dir, exist_ok=True)
     print(f"[{i+1}/{total}] {char_id} ...", end=" ", flush=True)
 
     # Blender render
     r = subprocess.run(
         [BLENDER_EXE, "--background", "--python", RENDER_SCRIPT,
-         "--", os.path.abspath(fbx_path), DEBUG_ROOT],
+         "--", os.path.abspath(fbx_path), char_dir],
         capture_output=True, text=True
     )
 
@@ -153,10 +155,9 @@ for i, fbx_path in enumerate(fbx_files):
         continue
 
     # PIL annotation
-    out = annotate(char_id, DEBUG_ROOT)
+    out = annotate(char_id, char_dir)
     if out:
         done += 1
-        # Yükseklik özetini bul
         height_line = next(
             (l.strip() for l in r.stdout.splitlines() if "TOTAL:" in l), "")
         print(f"OK  {height_line}")

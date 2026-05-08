@@ -59,7 +59,12 @@
       "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/render_segmentation_masks.py -- fbx_export/ansur_0000.fbx renders/segmentation/ansur_0000)",
       "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/render_segmentation_masks.py -- \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\fbx_export\\\\ansur_0000.fbx\" \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\segmentation\\\\ansur_0000\")",
       "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/render_segmentation_masks.py -- \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\fbx_export\\\\ansur_00000.fbx\" \"C:\\\\Users\\\\aliya\\\\workspace\\\\cc5-scripts\\\\renders\\\\segmentation\\\\ansur_00000\")",
-      "Bash(Select-String -Pattern \"class|seg|ERROR|Saved|Traceback|Error\")"
+      "Bash(Select-String -Pattern \"class|seg|ERROR|Saved|Traceback|Error\")",
+      "Bash(grep \"\\\\.fbx$\")",
+      "Bash(Get-Content \"C:\\\\Users\\\\aliya\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-aliya-workspace-cc5-scripts\\\\1e677890-a7c0-4e9f-9336-734096e7d75a\\\\tasks\\\\b89xg2d41.output\" -Wait)",
+      "Bash(Select-String --line-buffered \"ansur_|Toplam|Maske|hata|ERROR\")",
+      "Bash(Get-Content \"C:\\\\Users\\\\aliya\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-aliya-workspace-cc5-scripts\\\\1e677890-a7c0-4e9f-9336-734096e7d75a\\\\tasks\\\\b89xg2d41.output\")",
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/measure_anthropometry.py -- fbx_export/ansur_00000.fbx logs/test_seg)"
     ]
   }
 }

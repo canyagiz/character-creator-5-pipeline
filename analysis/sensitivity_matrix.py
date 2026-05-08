@@ -16,9 +16,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import os
 
-IN_CSV  = r"C:\Users\aliya\workspace\cc5-scripts\logs\sensitivity_measurements.csv"
-OUT_DIR = r"C:\Users\aliya\workspace\cc5-scripts\analysis\sensitivity_plots"
-JAC_CSV = r"C:\Users\aliya\workspace\cc5-scripts\logs\jacobian.csv"
+IN_CSV        = r"C:\Users\aliya\workspace\cc5-scripts\logs\sensitivity_measurements.csv"
+HEIGHT_CSV    = r"C:\Users\aliya\workspace\cc5-scripts\logs\height_sensitivity_measurements.csv"
+OUT_DIR       = r"C:\Users\aliya\workspace\cc5-scripts\analysis\sensitivity_plots"
+JAC_CSV       = r"C:\Users\aliya\workspace\cc5-scripts\logs\jacobian.csv"
 os.makedirs(OUT_DIR, exist_ok=True)
 
 MEASUREMENTS = [
@@ -29,7 +30,22 @@ MEASUREMENTS = [
     "upper_leg_length_cm", "lower_leg_length_cm",
 ]
 
-df = pd.read_csv(IN_CSV)
+# Height probe'daki morphlar için 0.1 adım daha ince örnekleme sağlar.
+# Her iki CSV'yi birleştir; polyfit tüm noktaları kullanır.
+HEIGHT_MORPHS = {"thigh_len", "lower_leg_len", "hip_len", "chest_height", "neck_len",
+                 "upperarm_len", "forearm_len"}
+
+df_main = pd.read_csv(IN_CSV)
+frames  = [df_main]
+if os.path.exists(HEIGHT_CSV):
+    df_h = pd.read_csv(HEIGHT_CSV)
+    # Main probe'da zaten olan height morphlarının kaba verisini kaldır,
+    # yerine 0.1 adımlı height probe verisini kullan.
+    df_main = df_main[~df_main["morph_key"].isin(HEIGHT_MORPHS)]
+    frames  = [df_main, df_h]
+    print(f"Height probe yuklendi: {len(df_h)} satir")
+
+df = pd.concat(frames, ignore_index=True)
 print(f"Yuklendi: {len(df)} satir, {df['morph_key'].nunique()} morph")
 
 # Baseline

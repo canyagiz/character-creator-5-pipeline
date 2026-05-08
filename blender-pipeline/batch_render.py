@@ -26,11 +26,10 @@ import json
 
 # ── Ayarlar ───────────────────────────────────────────────────────────────────
 BLENDER_EXE    = r"C:\Program Files\Blender Foundation\Blender 4.5\blender.exe"
-RENDER_SCRIPT  = os.path.join(os.path.dirname(__file__), "render_views.py")
-MEASURE_SCRIPT = os.path.join(os.path.dirname(__file__), "measure_anthropometry.py")
-DEBUG_SCRIPT   = os.path.join(os.path.dirname(__file__), "render_debug_measurements.py")
-ANNOTATE_SCRIPT = os.path.join(os.path.dirname(__file__), "annotate_debug.py")
-MASK_SCRIPT    = os.path.join(os.path.dirname(__file__), "render_segmentation_masks.py")
+RENDER_SCRIPT      = os.path.join(os.path.dirname(__file__), "render_views.py")
+MEASURE_SCRIPT     = os.path.join(os.path.dirname(__file__), "measure_anthropometry.py")
+HEIGHT_DEBUG_SCRIPT = os.path.join(os.path.dirname(__file__), "debug_height.py")
+MASK_SCRIPT        = os.path.join(os.path.dirname(__file__), "render_segmentation_masks.py")
 _BASE          = os.path.dirname(os.path.abspath(__file__))
 FBX_ROOT       = os.path.abspath(os.path.join(_BASE, "..", "fbx_export"))
 RAW_ROOT       = os.path.abspath(os.path.join(_BASE, "..", "renders", "raw"))
@@ -175,23 +174,21 @@ for i, fbx_path in enumerate(fbx_files):
 
     # ── Debug görseli ─────────────────────────────────────────────────────────
     if args.debug:
-        annotated = os.path.join(DEBUG_ROOT, f"{char_name}_annotated_front.png")
+        char_debug_dir = os.path.join(DEBUG_ROOT, char_name)
+        annotated = os.path.join(char_debug_dir, f"{char_name}_height_annotated_front.png")
         if not args.overwrite and os.path.exists(annotated):
             debug_tag = "debug:SKIP"
         else:
-            os.makedirs(DEBUG_ROOT, exist_ok=True)
-            fbx_abs = os.path.abspath(fbx_path)
             r = subprocess.run(
-                [BLENDER_EXE, "--background", "--python", DEBUG_SCRIPT,
-                 "--", fbx_abs, DEBUG_ROOT],
+                [sys.executable, HEIGHT_DEBUG_SCRIPT,
+                 "--id", char_name, "--dir", fbx_dir]
+                + (["--overwrite"] if args.overwrite else []),
                 capture_output=True, text=True
             )
             if r.returncode != 0:
                 debug_tag = "debug:HATA"
+                print(r.stderr[-400:])
             else:
-                subprocess.run([sys.executable, ANNOTATE_SCRIPT,
-                                "--id", char_name, "--dir", DEBUG_ROOT],
-                               capture_output=True)
                 debug_tag = "debug:OK"
 
     # ── Satır çıktısı ──────────────────────────────────────────────────────────

@@ -1,24 +1,30 @@
 """
 render_segmentation_masks.py — Blender background script
-Her ölçüm bölgesi için vertex-level sınıflandırma yapar ve 8 yönde
-RGB instance-segmentation maskesi üretir.
+Vertex skin weight AGGREGATION ile morph-invariant bölge sınıflandırması.
 
 Strateji:
-  - Kol vertex'leri: her iki kol için bone segment silindiri testi
-  - Gövde/baş/bacak vertex'leri: en yakın ölçüm z-düzlemine Voronoi atama
-    → boşluk kalmaz, her vertex bir sınıfa girer
+  Her vertex için bone group weight toplamları hesaplanır:
+    arm_total, trunk_total, head_total, neck_total, shoulder_total, leg_total, foot_total
+  Dominant group → bölge; arm içi için bone-projection silindirleri (bone_len orantılı).
+  Geometrik parametre yok → tüm morph'larda aynı davranış.
 
-Palette (R, G, B) — class 0 arkaplan (siyah):
-  1  neck       (128, 0,   0  )
-  2  chest      (255, 0,   0  )
-  3  waist      (255, 128, 0  )
-  4  hip        (255, 255, 0  )
-  5  mid_thigh  (0,   255, 0  )
-  6  calf       (0,   128, 0  )
-  7  bicep      (0,   0,   255)
-  8  elbow      (0,   128, 255)
-  9  forearm    (0,   255, 255)
-  10 wrist      (128, 0,   255)
+Palette (R, G, B):
+  0  background  (0,   0,   0  )
+  1  neck        (128, 0,   0  )
+  2  chest       (255, 0,   0  )
+  3  waist       (255, 128, 0  )
+  4  hip         (255, 255, 0  )
+  5  mid_thigh   (0,   255, 0  )
+  6  calf        (0,   128, 0  )
+  7  bicep       (0,   0,   255)
+  8  elbow       (0,   128, 255)
+  9  forearm     (0,   255, 255)
+  10 wrist       (128, 0,   255)
+  11 head        (255, 128, 255)
+  12 foot        (128, 128, 128)
+  13 hand        (255, 255, 255)
+  14 trapezius   (153, 76,  25 )
+  15 shoulder    (153, 255, 0  )
 
 Kullanım:
   blender --background --python render_segmentation_masks.py -- <fbx_path> <out_dir>
@@ -29,13 +35,13 @@ import math
 import sys
 import os
 import mathutils
+import numpy as np
 
 # ── Args ──────────────────────────────────────────────────────────────────────
 argv     = sys.argv[sys.argv.index("--") + 1:]
 fbx_path = argv[0]
 out_dir  = argv[1]
 os.makedirs(out_dir, exist_ok=True)
-
 char_name = os.path.splitext(os.path.basename(fbx_path))[0]
 
 # ── Import ────────────────────────────────────────────────────────────────────
@@ -44,263 +50,325 @@ scene = bpy.context.scene
 bpy.ops.import_scene.fbx(filepath=fbx_path)
 
 # ── Mesh + Armature ───────────────────────────────────────────────────────────
-arm_obj = next((o for o in scene.objects if o.type == 'ARMATURE'), None)
-if not arm_obj:
-    print("ERROR: Armature bulunamadi"); sys.exit(1)
-
+arm_obj   = next((o for o in scene.objects if o.type == 'ARMATURE'), None)
 mesh_objs = [o for o in scene.objects if o.type == 'MESH']
-if not mesh_objs:
-    print("ERROR: Mesh bulunamadi"); sys.exit(1)
+if not arm_obj:  print("ERROR: Armature yok"); sys.exit(1)
+if not mesh_objs: print("ERROR: Mesh yok");    sys.exit(1)
 
-all_verts_bb = []
+all_bb = []
 for obj in mesh_objs:
-    for corner in obj.bound_box:
-        all_verts_bb.append(obj.matrix_world @ mathutils.Vector(corner))
-z_floor  = min(v.z for v in all_verts_bb)
-z_top    = max(v.z for v in all_verts_bb)
+    for c in obj.bound_box:
+        all_bb.append(obj.matrix_world @ mathutils.Vector(c))
+z_floor  = min(v.z for v in all_bb)
+z_top    = max(v.z for v in all_bb)
 height_m = z_top - z_floor
+center_y = (max(v.y for v in all_bb) + min(v.y for v in all_bb)) / 2
 
 def mesh_z_span(obj):
     zs = [(obj.matrix_world @ mathutils.Vector(c)).z for c in obj.bound_box]
     return min(zs), max(zs)
 
-body_candidates = [obj for obj in mesh_objs
+body_candidates = [o for o in mesh_objs
                    if (lambda zn, zx: zn < z_floor + height_m * 0.15
                                    and zx > z_floor + height_m * 0.70
-                       )(*mesh_z_span(obj))]
+                       )(*mesh_z_span(o))]
 body_obj = max(body_candidates or mesh_objs, key=lambda o: len(o.data.vertices))
 print(f"Body mesh: {body_obj.name} ({len(body_obj.data.vertices)} vertex)")
 
-# ── Kemik pozisyonları ────────────────────────────────────────────────────────
+# ── Kemik yardımcıları ────────────────────────────────────────────────────────
+pose_bones = arm_obj.pose.bones
+
 def bone_world(name):
-    return arm_obj.matrix_world @ arm_obj.pose.bones[name].head
+    return arm_obj.matrix_world @ pose_bones[name].head
 
 def bone_z(name):
     return bone_world(name).z
 
-z_head      = bone_z("CC_Base_Head")
-z_neck      = (bone_z("CC_Base_NeckTwist01") + bone_z("CC_Base_NeckTwist02")) / 2
-z_chest     = bone_z("CC_Base_L_Breast")
-z_waist     = bone_z("CC_Base_Waist")
-z_hip       = bone_z("CC_Base_L_Thigh") + (bone_z("CC_Base_Waist") - bone_z("CC_Base_L_Thigh")) * 0.15
-z_mid_thigh = (bone_z("CC_Base_L_Thigh") + bone_z("CC_Base_L_Calf")) / 2
-z_calf      = bone_z("CC_Base_L_CalfTwist02")
-z_foot      = bone_z("CC_Base_L_Foot")
+def try_z(name, fallback):
+    try:    return bone_z(name)
+    except: return fallback
 
-# Voronoi z-bölgeleme: neck dahil değil — neck ayrı silindir ile atanır.
+# ── Trunk z-seviyeleri ────────────────────────────────────────────────────────
+z_chest     = try_z("CC_Base_L_Breast",    z_floor + height_m * 0.60)
+z_waist     = try_z("CC_Base_Waist",       z_floor + height_m * 0.48)
+z_thigh     = try_z("CC_Base_L_Thigh",     z_floor + height_m * 0.47)
+z_hip       = z_thigh + (z_waist - z_thigh) * 0.15
+z_calf_top  = try_z("CC_Base_L_Calf",      z_floor + height_m * 0.25)
+z_mid_thigh = (z_thigh + z_calf_top) / 2
+z_calf_mid  = try_z("CC_Base_L_CalfTwist02", z_floor + height_m * 0.12)
+z_foot      = try_z("CC_Base_L_Foot",      z_floor + height_m * 0.02)
+z_head      = try_z("CC_Base_Head",        z_floor + height_m * 0.87)
+z_shoulder  = (try_z("CC_Base_L_Upperarm", z_floor + height_m * 0.78) +
+               try_z("CC_Base_R_Upperarm", z_floor + height_m * 0.78)) / 2
+z_neck_base = try_z("CC_Base_NeckTwist01", z_floor + height_m * 0.83)
+
 TRUNK_ZONES = [
-    (z_head,      11),  # head
-    (z_chest,     2),   # chest
-    (z_waist,     3),   # waist
-    (z_hip,       4),   # hip
-    (z_mid_thigh, 5),   # mid_thigh
-    (z_calf,      6),   # calf
-    (z_foot,      12),  # foot
+    (z_neck_base, 2),   # boyun altı / üst göğüs → göğüs (head class sadece bone-weight'ten gelir)
+    (z_chest,     2),
+    (z_waist,     3),
+    (z_hip,       4),
+    (z_foot,      12),
 ]
 
 def nearest_trunk_class(z):
     return min(TRUNK_ZONES, key=lambda t: abs(t[0] - z))[1]
 
-# Boyun silindiri — sadece kafayla gövdeyi bağlayan ince silindirik alan.
-# NeckTwist01 (alt) → NeckTwist02 (üst). Dar radius: trapez ve çene dışarıda kalır.
-def _build_neck_cyl():
-    p0   = bone_world("CC_Base_NeckTwist01")
-    p1   = bone_world("CC_Base_NeckTwist02")
-    axis = (p1 - p0).normalized()
-    bone_len = (p1 - p0).length
-    R    = 0.075   # ~7.5cm — gerçek boyun çevresi ≈ 35-45cm → radius ≈ 6-7cm, marj dahil 7.5
-    def _test(wv):
+def trunk_class(wv):
+    """Trunk vertex sınıfı: z_neck_base üstü arka → trapez, diğerleri z-Voronoi."""
+    if wv.z >= z_neck_base and wv.y > center_y:  # yalnızca boyun tabanı üstü arka: trapez
+        return 14
+    return nearest_trunk_class(wv.z)
+
+# ── Bone group sınıflandırması ────────────────────────────────────────────────
+_ARM_STARTS = (
+    "CC_Base_L_Upperarm", "CC_Base_R_Upperarm",
+    "CC_Base_L_Forearm",  "CC_Base_R_Forearm",
+    "CC_Base_L_Hand",     "CC_Base_R_Hand",
+)
+_LEG_STARTS = (
+    "CC_Base_L_Thigh",    "CC_Base_R_Thigh",
+    "CC_Base_L_Calf",     "CC_Base_R_Calf",
+)
+_FOOT_STARTS = ("CC_Base_L_Foot", "CC_Base_R_Foot")
+
+def bone_group(bn):
+    """Bone adını geniş bir bölge grubuna ('arm','head','neck','shoulder','leg','foot','trunk') map et."""
+    bnu = bn.upper()
+    if any(bn.startswith(p) for p in _ARM_STARTS):
+        return 'arm'
+    # Parmak kemikleri
+    if any(k in bnu for k in ("FINGER", "THUMB", "INDEX", "PINKY", "RING", "MID")) and "TOE" not in bnu:
+        return 'arm'
+    if "NECKT" in bnu:
+        return 'neck'
+    if bn.startswith("CC_Base_Head") or any(k in bn for k in ("Eye", "Jaw", "FacialBone")):
+        return 'head'
+    if "Clavicle" in bn:
+        return 'shoulder'
+    if any(bn.startswith(p) for p in _LEG_STARTS):
+        return 'leg'
+    if any(bn.startswith(p) for p in _FOOT_STARTS) or "Toe" in bn:
+        return 'foot'
+    return 'trunk'
+
+# ── Vertex group index → bone adı ────────────────────────────────────────────
+vg_name = {vg.index: vg.name for vg in body_obj.vertex_groups}
+print(f"Armature: {len(arm_obj.pose.bones)} bone | VGroup: {len(vg_name)}")
+
+# ── Arm içi silindir subdivizyon ──────────────────────────────────────────────
+# Sadece arm olduğu teyit edilen vertex'ler için çağrılır.
+# Parametreler bone_len orantılı → morph-invariant.
+
+def _seg(p0n, p1n, start_f, end_f, radius_f):
+    p0, p1    = bone_world(p0n), bone_world(p1n)
+    axis      = (p1 - p0).normalized()
+    bone_len  = (p1 - p0).length
+    seg_start = bone_len * start_f
+    seg_end   = bone_len * end_f
+    radius    = bone_len * radius_f
+    def _t(wv):
         to_v = wv - p0
         proj = to_v.dot(axis)
-        # p0'dan 1cm aşağı, p1'den 1cm yukarı marj — trapez ve çene kaçar
-        if proj < -0.01 or proj > bone_len + 0.01:
-            return False
-        return (to_v - axis * proj).length <= R
-    return _test
+        if proj < seg_start or proj > seg_end: return False
+        return (to_v - axis * proj).length <= radius
+    return _t
 
-_NECK_TEST = _build_neck_cyl()
+def _sphere(center_bone, ref_p0, ref_p1, radius_f):
+    """Omuz eklemi gibi yuvarlak bölgeler için küre testi — bone_len orantılı."""
+    center = bone_world(center_bone)
+    p0, p1 = bone_world(ref_p0), bone_world(ref_p1)
+    radius = (p1 - p0).length * radius_f
+    def _t(wv):
+        return (wv - center).length <= radius
+    return _t
 
-# Trapez bölgesi: z_chest ile z_neck_base arasında, boyun silindiri dışı, kol değil.
-_z_neck_base = bone_z("CC_Base_NeckTwist01")
-
-def is_trap_vertex(wv):
-    return z_chest <= wv.z <= _z_neck_base + 0.03 and not _NECK_TEST(wv)
-
-# Omuz (deltoid): üst kol ekseninin ilk 7cm'i — bicep yerine omuz etiketi alır.
-def build_shoulder_seg(p0_name, p1_name, length=0.07, abs_radius=0.11):
-    p0   = bone_world(p0_name)
-    p1   = bone_world(p1_name)
-    axis = (p1 - p0).normalized()
-    def _test(wv):
-        to_v = wv - p0
-        proj = to_v.dot(axis)
-        return 0.0 <= proj <= length and (to_v - axis * proj).length <= abs_radius
-    return _test
-
-_SHOULDER_TESTS = [
-    build_shoulder_seg("CC_Base_L_Upperarm", "CC_Base_L_Forearm"),
-    build_shoulder_seg("CC_Base_R_Upperarm", "CC_Base_R_Forearm"),
-]
-
-# ── Kol segment testi (her iki kol) ──────────────────────────────────────────
-ARM_SEGMENTS = [
-    # (class_id, p0_bone, p1_bone, cut_at, radius_f, margin_f)
-    (7,  "CC_Base_L_Upperarm", "CC_Base_L_Forearm", "mid",  0.60, 0.30),  # L bicep
-    (7,  "CC_Base_R_Upperarm", "CC_Base_R_Forearm", "mid",  0.60, 0.30),  # R bicep
-    (8,  "CC_Base_L_Upperarm", "CC_Base_L_Forearm", "end",  0.55, 0.20),  # L elbow
-    (8,  "CC_Base_R_Upperarm", "CC_Base_R_Forearm", "end",  0.55, 0.20),  # R elbow
-    (9,  "CC_Base_L_Forearm",  "CC_Base_L_Hand",    "mid",  0.60, 0.30),  # L forearm
-    (9,  "CC_Base_R_Forearm",  "CC_Base_R_Hand",    "mid",  0.60, 0.30),  # R forearm
-    (10, "CC_Base_L_Forearm",  "CC_Base_L_Hand",    "end",  0.50, 0.20),  # L wrist
-    (10, "CC_Base_R_Forearm",  "CC_Base_R_Hand",    "end",  0.50, 0.20),  # R wrist
-]
-
-def build_arm_test(p0_name, p1_name, cut_at, radius_f, margin_f):
-    p0       = bone_world(p0_name)
-    p1       = bone_world(p1_name)
-    axis     = (p1 - p0).normalized()
-    bone_len = (p1 - p0).length
-    margin   = bone_len * margin_f
-    cut_pt   = (p0 + p1) * 0.5 if cut_at == "mid" else p1
-    cut_half = bone_len * 0.28
-    def _test(wv):
-        to_v = wv - p0
-        proj = to_v.dot(axis)
-        if proj < -margin or proj > bone_len + margin:
-            return False
-        if (to_v - axis * proj).length > bone_len * radius_f:
-            return False
-        return abs((wv - cut_pt).dot(axis)) <= cut_half
-    return _test
-
-arm_rules = [(cls, build_arm_test(p0n, p1n, cut, rf, mf))
-             for cls, p0n, p1n, cut, rf, mf in ARM_SEGMENTS]
-
-# Kol testi: sabit absolute yarıçaplı silindir — A-pose'da çapraz inen kollar için güvenli.
-# margin_start: p0 (shoulder) tarafına uzama — küçük tutulursa omuz/göğüs overlap'i önlenir.
-# margin_end:   p1 (elbow/hand) tarafına uzama — segmentler arası boşluğu kapatır.
-def build_arm_cyl(p0_name, p1_name, abs_radius, margin_start=0.02, margin_end=0.20):
-    p0       = bone_world(p0_name)
-    p1       = bone_world(p1_name)
-    axis     = (p1 - p0).normalized()
-    bone_len = (p1 - p0).length
-    def _test(wv):
-        to_v = wv - p0
-        proj = to_v.dot(axis)
-        if proj < -margin_start or proj > bone_len + margin_end:
-            return False
-        return (to_v - axis * proj).length <= abs_radius
-    return _test
-
-# El silindiri: hand kemiğinden forearm ekseni boyunca parmak uçlarına uzanır.
-def build_hand_cyl(forearm_name, hand_name, abs_radius=0.08, length=0.18):
-    p_fore = bone_world(forearm_name)
-    p_hand = bone_world(hand_name)
-    axis   = (p_hand - p_fore).normalized()
-    def _test(wv):
+def _hand_cone(forearm_n, hand_n, radius_f=0.55, length_f=0.90, back_f=0.05):
+    p_fore, p_hand = bone_world(forearm_n), bone_world(hand_n)
+    fore_len = (p_hand - p_fore).length
+    axis     = (p_hand - p_fore).normalized()
+    radius   = fore_len * radius_f
+    length   = fore_len * length_f
+    back     = fore_len * back_f
+    def _t(wv):
         to_v = wv - p_hand
         proj = to_v.dot(axis)
-        if proj < -0.02 or proj > length:
-            return False
-        return (to_v - axis * proj).length <= abs_radius
-    return _test
+        if proj < -back or proj > length: return False
+        return (to_v - axis * proj).length <= radius
+    return _t
 
-# El testi: hand kemiğinden parmak yönüne uzanan geniş yarı-silindir.
-# proj < 0 → geriye forearm'a uzanmaz. Geniş radius parmakları yakalar.
-def build_hand_cone(forearm_name, hand_name, abs_radius=0.12, length=0.20, back=0.03):
-    p_fore = bone_world(forearm_name)
-    p_hand = bone_world(hand_name)
-    axis   = (p_hand - p_fore).normalized()
-    def _test(wv):
-        to_v = wv - p_hand
-        proj = to_v.dot(axis)
-        if proj < -back or proj > length:
-            return False
-        return (to_v - axis * proj).length <= abs_radius
-    return _test
+# Her kural: (class_id, test_fn) — ilk eşleşen kullanılır.
+try:
+    ARM_RULES = [
+        # ← el (el en önce kontrol edilmeli)
+        (13, _hand_cone("CC_Base_L_Forearm", "CC_Base_L_Hand")),
+        (13, _hand_cone("CC_Base_R_Forearm", "CC_Base_R_Hand")),
+        # bilek
+        (10, _seg("CC_Base_L_Forearm", "CC_Base_L_Hand",    0.65, 1.15, 0.40)),
+        (10, _seg("CC_Base_R_Forearm", "CC_Base_R_Hand",    0.65, 1.15, 0.40)),
+        # ön kol
+        (9,  _seg("CC_Base_L_Forearm", "CC_Base_L_Hand",    0.10, 0.65, 0.40)),
+        (9,  _seg("CC_Base_R_Forearm", "CC_Base_R_Hand",    0.10, 0.65, 0.40)),
+        # dirsek
+        (8,  _seg("CC_Base_L_Upperarm", "CC_Base_L_Forearm", 0.55, 1.15, 0.42)),
+        (8,  _seg("CC_Base_R_Upperarm", "CC_Base_R_Forearm", 0.55, 1.15, 0.42)),
+        # omuz deltoid — omuz eklemi etrafında küre
+        # radius = upperarm_len * 0.22 → kompakt deltoid, bicep'e girmez
+        (15, _sphere("CC_Base_L_Upperarm", "CC_Base_L_Upperarm", "CC_Base_L_Forearm", 0.22)),
+        (15, _sphere("CC_Base_R_Upperarm", "CC_Base_R_Upperarm", "CC_Base_R_Forearm", 0.22)),
+        # bicep (geri kalan üst kol)
+        (7,  _seg("CC_Base_L_Upperarm", "CC_Base_L_Forearm", 0.0,  1.10, 0.38)),
+        (7,  _seg("CC_Base_R_Upperarm", "CC_Base_R_Forearm", 0.0,  1.10, 0.38)),
+    ]
+    _ARM_RULES_OK = True
+except Exception as e:
+    print(f"WARN: ARM_RULES oluşturulamadı: {e}")
+    ARM_RULES = []
+    _ARM_RULES_OK = False
 
-_ARM_CYLS = [
-    build_arm_cyl("CC_Base_L_Upperarm", "CC_Base_L_Forearm", abs_radius=0.10, margin_start=0.00, margin_end=0.12),
-    build_arm_cyl("CC_Base_R_Upperarm", "CC_Base_R_Forearm", abs_radius=0.10, margin_start=0.00, margin_end=0.12),
-    build_arm_cyl("CC_Base_L_Forearm",  "CC_Base_L_Hand",    abs_radius=0.09, margin_start=0.00, margin_end=0.10),
-    build_arm_cyl("CC_Base_R_Forearm",  "CC_Base_R_Hand",    abs_radius=0.09, margin_start=0.00, margin_end=0.10),
-    build_hand_cone("CC_Base_L_Forearm", "CC_Base_L_Hand"),
-    build_hand_cone("CC_Base_R_Forearm", "CC_Base_R_Hand"),
-]
+def arm_subclass(wv):
+    """Arm olduğu belirlenen vertex için silindir ile bicep/dirsek/önkol/bilek/el."""
+    for cls, test in ARM_RULES:
+        if test(wv):
+            return cls
+    return 7  # fallback: bicep
 
-def is_arm_vertex(wv):
-    return any(cyl(wv) for cyl in _ARM_CYLS)
+# Trunk sınıfı alan ama dirsek / önkol bölgesinde kalan vertex'ler için override.
+try:
+    _ARM_OVERRIDE_TESTS = [
+        _seg("CC_Base_L_Upperarm", "CC_Base_L_Forearm", 0.50, 1.20, 0.44),
+        _seg("CC_Base_R_Upperarm", "CC_Base_R_Forearm", 0.50, 1.20, 0.44),
+        _seg("CC_Base_L_Forearm",  "CC_Base_L_Hand",    0.0,  1.10, 0.42),
+        _seg("CC_Base_R_Forearm",  "CC_Base_R_Hand",    0.0,  1.10, 0.42),
+    ]
+    def _in_arm_override(wv):
+        return any(t(wv) for t in _ARM_OVERRIDE_TESTS)
+except Exception:
+    def _in_arm_override(wv): return False
 
-_HAND_TESTS = [
-    build_hand_cone("CC_Base_L_Forearm", "CC_Base_L_Hand"),
-    build_hand_cone("CC_Base_R_Forearm", "CC_Base_R_Hand"),
-]
+# Trunk sınıfı alan ama bacak bölgesinde olan vertex'ler için override (diz sarı/gri sorunu).
+# %10'dan başlar — kalça eklemi karışmasın.
+try:
+    _LEG_OVERRIDE_TESTS = [
+        _seg("CC_Base_L_Thigh", "CC_Base_L_Calf", 0.10, 1.10, 0.52),
+        _seg("CC_Base_R_Thigh", "CC_Base_R_Calf", 0.10, 1.10, 0.52),
+        _seg("CC_Base_L_Calf",  "CC_Base_L_Foot", 0.0,  1.10, 0.48),
+        _seg("CC_Base_R_Calf",  "CC_Base_R_Foot", 0.0,  1.10, 0.48),
+    ]
+    def _in_leg_override(wv):
+        return any(t(wv) for t in _LEG_OVERRIDE_TESTS)
+except Exception:
+    def _in_leg_override(wv): return False
+
+# ── Leg içi subdivizyon ───────────────────────────────────────────────────────
+def leg_subclass(z):
+    if z >= z_mid_thigh: return 4   # üst uyluk → sarı (kalça ölçümüyle örtüşür)
+    if z >= z_calf_top:  return 5   # alt uyluk + diz üstü → açık yeşil
+    if z >= z_foot:      return 6   # baldır → koyu yeşil
+    return 12                        # ayak
 
 # ── Palette ───────────────────────────────────────────────────────────────────
 PALETTE = {
-    0:  (0.0,   0.0,   0.0),    # background
-    1:  (0.502, 0.0,   0.0),    # neck
-    2:  (1.0,   0.0,   0.0),    # chest
-    3:  (1.0,   0.502, 0.0),    # waist
-    4:  (1.0,   1.0,   0.0),    # hip
-    5:  (0.0,   1.0,   0.0),    # mid_thigh
-    6:  (0.0,   0.502, 0.0),    # calf
-    7:  (0.0,   0.0,   1.0),    # bicep
-    8:  (0.0,   0.502, 1.0),    # elbow
-    9:  (0.0,   1.0,   1.0),    # forearm
-    10: (0.502, 0.0,   1.0),    # wrist
-    11: (1.0,   0.502, 1.0),    # head
-    12: (0.502, 0.502, 0.502),  # foot
-    13: (1.0,   1.0,   1.0),    # hand (beyaz)
-    14: (0.6,   0.3,   0.1),    # trapezius (kahverengi)
-    15: (0.6,   1.0,   0.0),    # shoulder / deltoid (limon sarısı-yeşil)
+    0:  (0.0,   0.0,   0.0),
+    1:  (0.502, 0.0,   0.0),
+    2:  (1.0,   0.0,   0.0),
+    3:  (1.0,   0.502, 0.0),
+    4:  (1.0,   1.0,   0.0),
+    5:  (0.0,   1.0,   0.0),
+    6:  (0.0,   0.502, 0.0),
+    7:  (0.0,   0.0,   1.0),
+    8:  (0.0,   0.502, 1.0),
+    9:  (0.0,   1.0,   1.0),
+    10: (0.502, 0.0,   1.0),
+    11: (1.0,   0.502, 1.0),
+    12: (0.502, 0.502, 0.502),
+    13: (1.0,   1.0,   1.0),
+    14: (0.6,   0.3,   0.1),
+    15: (0.6,   1.0,   0.0),
 }
-
 CLASS_NAMES = {
-    1: "neck", 2: "chest", 3: "waist", 4: "hip",
-    5: "mid_thigh", 6: "calf",
-    7: "bicep", 8: "elbow", 9: "forearm", 10: "wrist",
-    11: "head", 12: "foot", 13: "hand",
-    14: "trapezius", 15: "shoulder",
+    1:"neck", 2:"chest", 3:"waist", 4:"hip",
+    5:"mid_thigh", 6:"calf", 7:"bicep", 8:"elbow",
+    9:"forearm", 10:"wrist", 11:"head", 12:"foot",
+    13:"hand", 14:"trapezius", 15:"shoulder",
 }
 
 # ── Vertex sınıflandırma ──────────────────────────────────────────────────────
-mesh     = body_obj.data
+mesh      = body_obj.data
 mat_world = body_obj.matrix_world
 
 for attr in list(mesh.color_attributes):
     mesh.color_attributes.remove(attr)
 col_attr = mesh.color_attributes.new(name="SegClass", type='FLOAT_COLOR', domain='POINT')
 
-counts = {}
+# ── Pass 1: Ham sınıflandırma ─────────────────────────────────────────────────
+n_verts  = len(mesh.vertices)
+vert_cls = [0] * n_verts
+
 for v in mesh.vertices:
-    wv  = mat_world @ v.co
-    cls = 0
+    wv = mat_world @ v.co
 
-    if is_arm_vertex(wv):
-        if any(st(wv) for st in _SHOULDER_TESTS):
-            cls = 15                        # omuz (deltoid) — bicep'ten önce kontrol
-        else:
-            cls = 7                         # varsayılan: bicep
-            for arm_cls, arm_test in arm_rules:
-                if arm_test(wv):
-                    cls = arm_cls
-        if any(ht(wv) for ht in _HAND_TESTS):
-            cls = 13
-    elif _NECK_TEST(wv):
-        cls = 1
-    elif is_trap_vertex(wv):
-        cls = 14
-    else:
+    if not v.groups:
         cls = nearest_trunk_class(wv.z)
+    else:
+        grp_w = {}
+        for g in v.groups:
+            bn  = vg_name.get(g.group, "")
+            grp = bone_group(bn)
+            grp_w[grp] = grp_w.get(grp, 0.0) + g.weight
 
+        primary = max(grp_w, key=lambda r: grp_w[r])
+
+        if   primary == 'arm':      cls = arm_subclass(wv)
+        elif primary == 'head':     cls = 11
+        elif primary == 'neck':     cls = 1
+        elif primary == 'shoulder': cls = 15
+        elif primary == 'leg':      cls = leg_subclass(wv.z)
+        elif primary == 'foot':     cls = 12
+        else:                       cls = trunk_class(wv)
+
+        if cls in (2, 3, 4, 14) and _in_arm_override(wv):
+            cls = arm_subclass(wv)
+        elif cls in (2, 3, 4, 12) and _in_leg_override(wv):
+            cls = leg_subclass(wv.z)
+
+    vert_cls[v.index] = cls
+
+# ── Pass 2: Majority-vote smoothing (glitter giderme) ────────────────────────
+# Her vertex komşularının çoğunluk sınıfını alır — izole noisy vertex'ler temizlenir.
+adj = [[] for _ in range(n_verts)]
+for edge in mesh.edges:
+    v0, v1 = edge.vertices
+    adj[v0].append(v1)
+    adj[v1].append(v0)
+
+NUM_SMOOTH = 3
+for _ in range(NUM_SMOOTH):
+    new_cls = vert_cls[:]
+    for vi in range(n_verts):
+        nbrs = adj[vi]
+        if not nbrs:
+            continue
+        cnt = {}
+        for n in nbrs:
+            c = vert_cls[n]
+            cnt[c] = cnt.get(c, 0) + 1
+        best      = max(cnt, key=lambda c: cnt[c])
+        own_count = cnt.get(vert_cls[vi], 0)
+        # Komşuların yarısından fazlası farklı bir sınıfta ise geçiş yap
+        if cnt[best] > own_count and cnt[best] > len(nbrs) * 0.50:
+            new_cls[vi] = best
+    vert_cls = new_cls
+
+# ── Pass 3: Renk yazma ────────────────────────────────────────────────────────
+counts = {}
+for vi, cls in enumerate(vert_cls):
     counts[cls] = counts.get(cls, 0) + 1
     col = PALETTE[cls]
-    col_attr.data[v.index].color = (col[0], col[1], col[2], 1.0)
+    col_attr.data[vi].color = (col[0], col[1], col[2], 1.0)
 
-for cls_id, cnt in sorted(counts.items()):
-    name = CLASS_NAMES.get(cls_id, "background")
-    print(f"  class {cls_id:2d} {name:<12} {cnt} vertices")
+print("\n--- Sinif dagilimi ---")
+for cid, cnt in sorted(counts.items()):
+    print(f"  class {cid:2d} {CLASS_NAMES.get(cid,'bg'):<12} {cnt}")
 
 # ── Materyal: vertex color → emission ────────────────────────────────────────
 bpy.context.view_layer.objects.active = body_obj
@@ -309,11 +377,11 @@ seg_mat.use_nodes = True
 nodes = seg_mat.node_tree.nodes
 links = seg_mat.node_tree.links
 nodes.clear()
-vc_node   = nodes.new('ShaderNodeVertexColor');  vc_node.layer_name = "SegClass"
-emit_node = nodes.new('ShaderNodeEmission');     emit_node.inputs["Strength"].default_value = 1.0
-out_node  = nodes.new('ShaderNodeOutputMaterial')
-links.new(vc_node.outputs["Color"],    emit_node.inputs["Color"])
-links.new(emit_node.outputs["Emission"], out_node.inputs["Surface"])
+vc   = nodes.new('ShaderNodeVertexColor');    vc.layer_name = "SegClass"
+emit = nodes.new('ShaderNodeEmission');       emit.inputs["Strength"].default_value = 1.0
+out  = nodes.new('ShaderNodeOutputMaterial')
+links.new(vc.outputs["Color"],   emit.inputs["Color"])
+links.new(emit.outputs["Emission"], out.inputs["Surface"])
 
 for obj in scene.objects:
     if obj.type == 'MESH':
@@ -341,23 +409,20 @@ bg.inputs["Strength"].default_value = 1.0
 scene.use_nodes = True
 ctree = scene.node_tree
 for n in list(ctree.nodes): ctree.nodes.remove(n)
-rl_node   = ctree.nodes.new('CompositorNodeRLayers')
-comp_node = ctree.nodes.new('CompositorNodeComposite')
-ctree.links.new(rl_node.outputs['Image'], comp_node.inputs['Image'])
+rl   = ctree.nodes.new('CompositorNodeRLayers')
+comp = ctree.nodes.new('CompositorNodeComposite')
+ctree.links.new(rl.outputs['Image'], comp.inputs['Image'])
 
 # ── Kamera ────────────────────────────────────────────────────────────────────
 bpy.ops.object.camera_add()
 cam_obj = bpy.context.active_object
 scene.camera = cam_obj
-FOCAL_MM  = 85.0
-SENSOR_MM = 36.0
+FOCAL_MM, SENSOR_MM = 85.0, 36.0
 cam_obj.data.lens         = FOCAL_MM
 cam_obj.data.sensor_width = SENSOR_MM
 
-xs_all    = [v.x for v in all_verts_bb]
-ys_all    = [v.y for v in all_verts_bb]
-center_x  = (max(xs_all) + min(xs_all)) / 2
-center_y  = (max(ys_all) + min(ys_all)) / 2
+xs = [v.x for v in all_bb]; ys = [v.y for v in all_bb]
+center_x   = (max(xs) + min(xs)) / 2
 cam_target = mathutils.Vector((center_x, center_y, z_floor + height_m * 0.50))
 cam_elev   = 8
 vfov_half  = math.atan(SENSOR_MM / 2.0 / FOCAL_MM)
@@ -365,9 +430,8 @@ cam_dist   = (height_m * 1.20) / (2.0 * math.tan(vfov_half))
 elev_rad   = math.radians(cam_elev)
 
 VIEWS = [
-    ("front",       0),  ("front_right", 45),  ("right",      90),
-    ("back_right", 135), ("back",        180),  ("back_left", 225),
-    ("left",       270), ("front_left",  315),
+    ("front",0),("front_right",45),("right",90),("back_right",135),
+    ("back",180),("back_left",225),("left",270),("front_left",315),
 ]
 
 def position_camera(angle_deg):
@@ -379,9 +443,31 @@ def position_camera(angle_deg):
     direction              = cam_target - mathutils.Vector((cx, cy, cz))
     cam_obj.rotation_euler = direction.to_track_quat('-Z', 'Y').to_euler()
 
+# Palette numpy array — render sonrası piksel snap için
+_PAL = np.array([PALETTE[k] for k in sorted(PALETTE.keys())], dtype=np.float32)  # (16, 3)
+
+def snap_to_palette(filepath):
+    """Her pikseli en yakın palette rengine snapleler — interpolasyon artefaktlarını kaldırır."""
+    img = bpy.data.images.load(filepath, check_existing=False)
+    w, h = img.size
+    px  = np.array(img.pixels[:], dtype=np.float32).reshape(h * w, 4)
+    rgb = px[:, :3]
+    # (N,1,3) - (1,16,3) → (N,16,3) → L2 dist → nearest
+    dists   = np.sum((rgb[:, None] - _PAL[None]) ** 2, axis=2)
+    nearest = np.argmin(dists, axis=1)
+    px[:, :3] = _PAL[nearest]
+    px[:, 3]  = 1.0
+    img.pixels[:] = px.flatten()
+    img.filepath_raw = filepath
+    img.file_format  = 'PNG'
+    img.save()
+    bpy.data.images.remove(img)
+
 for view_name, angle_deg in VIEWS:
     position_camera(angle_deg)
-    scene.render.filepath = os.path.join(out_dir, f"{char_name}_{view_name}.png")
+    fpath = os.path.join(out_dir, f"{char_name}_{view_name}.png")
+    scene.render.filepath = fpath
     bpy.ops.render.render(write_still=True)
+    snap_to_palette(fpath)
 
 print(f"\n[seg] 8 maske -> {out_dir}")

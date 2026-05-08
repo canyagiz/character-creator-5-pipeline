@@ -137,6 +137,7 @@ SHAPE_MORPHS = [
     "upperarm_scale", "forearm_scale",
     "neck_scale",
     "thigh_len", "lower_leg_len",
+    "hip_len", "chest_height", "neck_len",
     "upperarm_len", "forearm_len",
 ]
 jac = jac.loc[jac.index.isin(SHAPE_MORPHS)]
