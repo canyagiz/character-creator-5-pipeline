@@ -120,6 +120,28 @@ def _build_neck_cyl():
 
 _NECK_TEST = _build_neck_cyl()
 
+# Trapez bölgesi: z_chest ile z_neck_base arasında, boyun silindiri dışı, kol değil.
+_z_neck_base = bone_z("CC_Base_NeckTwist01")
+
+def is_trap_vertex(wv):
+    return z_chest <= wv.z <= _z_neck_base + 0.03 and not _NECK_TEST(wv)
+
+# Omuz (deltoid): üst kol ekseninin ilk 7cm'i — bicep yerine omuz etiketi alır.
+def build_shoulder_seg(p0_name, p1_name, length=0.07, abs_radius=0.11):
+    p0   = bone_world(p0_name)
+    p1   = bone_world(p1_name)
+    axis = (p1 - p0).normalized()
+    def _test(wv):
+        to_v = wv - p0
+        proj = to_v.dot(axis)
+        return 0.0 <= proj <= length and (to_v - axis * proj).length <= abs_radius
+    return _test
+
+_SHOULDER_TESTS = [
+    build_shoulder_seg("CC_Base_L_Upperarm", "CC_Base_L_Forearm"),
+    build_shoulder_seg("CC_Base_R_Upperarm", "CC_Base_R_Forearm"),
+]
+
 # ── Kol segment testi (her iki kol) ──────────────────────────────────────────
 ARM_SEGMENTS = [
     # (class_id, p0_bone, p1_bone, cut_at, radius_f, margin_f)
@@ -230,6 +252,8 @@ PALETTE = {
     11: (1.0,   0.502, 1.0),    # head
     12: (0.502, 0.502, 0.502),  # foot
     13: (1.0,   1.0,   1.0),    # hand (beyaz)
+    14: (0.6,   0.3,   0.1),    # trapezius (kahverengi)
+    15: (0.6,   1.0,   0.0),    # shoulder / deltoid (limon sarısı-yeşil)
 }
 
 CLASS_NAMES = {
@@ -237,6 +261,7 @@ CLASS_NAMES = {
     5: "mid_thigh", 6: "calf",
     7: "bicep", 8: "elbow", 9: "forearm", 10: "wrist",
     11: "head", 12: "foot", 13: "hand",
+    14: "trapezius", 15: "shoulder",
 }
 
 # ── Vertex sınıflandırma ──────────────────────────────────────────────────────
@@ -253,14 +278,19 @@ for v in mesh.vertices:
     cls = 0
 
     if is_arm_vertex(wv):
-        cls = 7  # varsayılan: bicep
-        for arm_cls, arm_test in arm_rules:
-            if arm_test(wv):
-                cls = arm_cls
+        if any(st(wv) for st in _SHOULDER_TESTS):
+            cls = 15                        # omuz (deltoid) — bicep'ten önce kontrol
+        else:
+            cls = 7                         # varsayılan: bicep
+            for arm_cls, arm_test in arm_rules:
+                if arm_test(wv):
+                    cls = arm_cls
         if any(ht(wv) for ht in _HAND_TESTS):
             cls = 13
     elif _NECK_TEST(wv):
-        cls = 1  # neck — silindir içi, Voronoi değil
+        cls = 1
+    elif is_trap_vertex(wv):
+        cls = 14
     else:
         cls = nearest_trunk_class(wv.z)
 
