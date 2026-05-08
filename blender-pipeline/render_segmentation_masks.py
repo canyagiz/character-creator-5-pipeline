@@ -87,10 +87,9 @@ z_mid_thigh = (bone_z("CC_Base_L_Thigh") + bone_z("CC_Base_L_Calf")) / 2
 z_calf      = bone_z("CC_Base_L_CalfTwist02")
 z_foot      = bone_z("CC_Base_L_Foot")
 
-# Voronoi z-bölgeleme: her z-yüksekliğine class ID
+# Voronoi z-bölgeleme: neck dahil değil — neck ayrı silindir ile atanır.
 TRUNK_ZONES = [
     (z_head,      11),  # head
-    (z_neck,      1),   # neck
     (z_chest,     2),   # chest
     (z_waist,     3),   # waist
     (z_hip,       4),   # hip
@@ -100,8 +99,26 @@ TRUNK_ZONES = [
 ]
 
 def nearest_trunk_class(z):
-    """Vertex z'sine en yakın ölçüm düzleminin class ID'sini döndürür."""
     return min(TRUNK_ZONES, key=lambda t: abs(t[0] - z))[1]
+
+# Boyun silindiri — sadece kafayla gövdeyi bağlayan ince silindirik alan.
+# NeckTwist01 (alt) → NeckTwist02 (üst). Dar radius: trapez ve çene dışarıda kalır.
+def _build_neck_cyl():
+    p0   = bone_world("CC_Base_NeckTwist01")
+    p1   = bone_world("CC_Base_NeckTwist02")
+    axis = (p1 - p0).normalized()
+    bone_len = (p1 - p0).length
+    R    = 0.075   # ~7.5cm — gerçek boyun çevresi ≈ 35-45cm → radius ≈ 6-7cm, marj dahil 7.5
+    def _test(wv):
+        to_v = wv - p0
+        proj = to_v.dot(axis)
+        # p0'dan 1cm aşağı, p1'den 1cm yukarı marj — trapez ve çene kaçar
+        if proj < -0.01 or proj > bone_len + 0.01:
+            return False
+        return (to_v - axis * proj).length <= R
+    return _test
+
+_NECK_TEST = _build_neck_cyl()
 
 # ── Kol segment testi (her iki kol) ──────────────────────────────────────────
 ARM_SEGMENTS = [
@@ -240,9 +257,10 @@ for v in mesh.vertices:
         for arm_cls, arm_test in arm_rules:
             if arm_test(wv):
                 cls = arm_cls
-        # El: wrist üzerine yazar — en yüksek öncelik
         if any(ht(wv) for ht in _HAND_TESTS):
             cls = 13
+    elif _NECK_TEST(wv):
+        cls = 1  # neck — silindir içi, Voronoi değil
     else:
         cls = nearest_trunk_class(wv.z)
 
