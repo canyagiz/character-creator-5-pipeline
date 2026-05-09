@@ -383,10 +383,19 @@ out  = nodes.new('ShaderNodeOutputMaterial')
 links.new(vc.outputs["Color"],   emit.inputs["Color"])
 links.new(emit.outputs["Emission"], out.inputs["Surface"])
 
+head_col = PALETTE[11]  # pembe — göz, kaş, dil vb. yüz mesh'leri
 for obj in scene.objects:
-    if obj.type == 'MESH':
-        obj.data.materials.clear()
-        obj.data.materials.append(seg_mat)
+    if obj.type != 'MESH':
+        continue
+    obj.data.materials.clear()
+    obj.data.materials.append(seg_mat)
+    if obj is body_obj:
+        continue
+    for attr in list(obj.data.color_attributes):
+        obj.data.color_attributes.remove(attr)
+    ca = obj.data.color_attributes.new(name="SegClass", type='FLOAT_COLOR', domain='POINT')
+    for i in range(len(obj.data.vertices)):
+        ca.data[i].color = (head_col[0], head_col[1], head_col[2], 1.0)
 
 # ── Render ayarları ───────────────────────────────────────────────────────────
 scene.render.engine       = 'BLENDER_EEVEE_NEXT'

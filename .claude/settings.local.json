@@ -64,7 +64,15 @@
       "Bash(Get-Content \"C:\\\\Users\\\\aliya\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-aliya-workspace-cc5-scripts\\\\1e677890-a7c0-4e9f-9336-734096e7d75a\\\\tasks\\\\b89xg2d41.output\" -Wait)",
       "Bash(Select-String --line-buffered \"ansur_|Toplam|Maske|hata|ERROR\")",
       "Bash(Get-Content \"C:\\\\Users\\\\aliya\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-aliya-workspace-cc5-scripts\\\\1e677890-a7c0-4e9f-9336-734096e7d75a\\\\tasks\\\\b89xg2d41.output\")",
-      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/measure_anthropometry.py -- fbx_export/ansur_00000.fbx logs/test_seg)"
+      "Bash(\"C:\\\\Program Files\\\\Blender Foundation\\\\Blender 4.5\\\\blender.exe\" --background --python blender-pipeline/measure_anthropometry.py -- fbx_export/ansur_00000.fbx logs/test_seg)",
+      "Bash(/c/Users/HP/AppData/Local/Programs/Antigravity/bin/python *)",
+      "Bash(/c/Users/HP/AppData/Local/Programs/Python/Python313/python.exe *)",
+      "PowerShell(python -c \"import torch; print\\('PyTorch:', torch.__version__\\); print\\('CUDA available:', torch.cuda.is_available\\(\\)\\); print\\('CUDA version \\(torch\\):', torch.version.cuda\\)\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\fbx_export\\\\ansur_00000.fbx\" -ErrorAction SilentlyContinue | Select-Object Name, @{N=\"MB\";E={[math]::Round\\($_.Length/1MB,1\\)}}, LastWriteTime)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\fbx_export\\\\\" | Sort-Object Name | Select-Object -First 10 Name, @{N=\"MB\";E={[math]::Round\\($_.Length/1MB,1\\)}}, LastWriteTime)",
+      "PowerShell(python -c \"import torch; print\\('CUDA available:', torch.cuda.is_available\\(\\)\\); print\\('GPU:', torch.cuda.get_device_name\\(0\\) if torch.cuda.is_available\\(\\) else 'N/A'\\)\")",
+      "PowerShell(\\(Get-Item \"C:\\\\Program Files\\\\Reallusion\\\\Character Creator 5\\\\Bin64\\\\CharacterCreator.exe\"\\).VersionInfo | Select-Object FileVersion, ProductVersion)",
+      "PowerShell([System.Diagnostics.FileVersionInfo]::GetVersionInfo\\(\"C:\\\\Program Files\\\\Reallusion\\\\Character Creator 5\\\\Bin64\\\\CharacterCreator.exe\"\\) | Select-Object FileVersion, ProductVersion, FileMajorPart, FileMinorPart, FileBuildPart)"
     ]
   }
 }
