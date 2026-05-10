@@ -29,6 +29,7 @@ START_IDX     = 0       # Kacinci satirdan basla (0 = bu node'un kendi sirasinda
 OVERWRITE     = False   # True -> mevcut FBX'leri yeniden uret
 GENDER_FILTER = None    # "male" / "female" / None (hepsi)
 
+import sys as _sys; _sys.path.insert(0, _BASE)
 from local_config import NODE_ID, NODE_COUNT
 
 # Her FORCE_RELOAD_EVERY exporttan sonra proje zorla yeniden yuklenir.
