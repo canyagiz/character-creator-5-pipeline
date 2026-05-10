@@ -25,14 +25,17 @@ CSV_PATH      = os.path.join(_ROOT, "logs", "dataset_inverted_combined.csv")
 OUTPUT_DIR    = os.path.join(_ROOT, "fbx_export")
 LOG_PATH      = os.path.join(_ROOT, "logs", "batch_export.log")
 
-START_IDX     = 0       # Kacinci satirdan basla (0 = en bastan)
+START_IDX     = 0       # Kacinci satirdan basla (0 = bu node'un kendi sirasinda)
 OVERWRITE     = False   # True -> mevcut FBX'leri yeniden uret
 GENDER_FILTER = None    # "male" / "female" / None (hepsi)
 
+from local_config import NODE_ID, NODE_COUNT
+
 # Her FORCE_RELOAD_EVERY exporttan sonra proje zorla yeniden yuklenir.
-# Bu CC5'in undo stack'ini ve morph history'sini temizler — memory leak'i onler.
-# Gender degisiminde zaten reload oluyor; bu sadece uzun ayni-cinsiyet serilerini korur.
-FORCE_RELOAD_EVERY = 150
+# Log analizi: karakter basina ~250-300 MB kalici RAM birikimi var, reload
+# yalnizca undo stack'i temizliyor (~1-2 GB). 150 cok gec — ~110 karakterde
+# sistem RAM'i dolup cokuyor. 15'te bir reload bu birikimi kontrol altinda tutar.
+FORCE_RELOAD_EVERY = 15
 
 # ── morph_key -> CC5 morph ID eslemesi ───────────────────────────────────────
 # sensitivity_probe.csv'den turetildi (morph_key -> ilk gecerli morph_id)
@@ -95,6 +98,7 @@ MORPH_ID_MAP = {
 ALL_MORPH_IDS = list(MORPH_ID_MAP.values())
 
 sys.path.insert(0, _ROOT)
+sys.path.insert(0, _BASE)
 from cc5_helpers import PROJECT_FILES
 
 # ── Hazirlik ──────────────────────────────────────────────────────────────────
@@ -126,6 +130,12 @@ with open(CSV_PATH, "r", encoding="utf-8") as f:
 
 if GENDER_FILTER:
     rows = [r for r in rows if r["gender"] == GENDER_FILTER]
+else:
+    # Once male sonra female: gender switch reload sayisini ~4000'den ~1'e indirir
+    rows = sorted(rows, key=lambda r: r["gender"], reverse=True)  # "male" > "female" → m once
+
+if NODE_COUNT > 1:
+    rows = rows[NODE_ID::NODE_COUNT]
 
 rows = rows[START_IDX:]
 total = len(rows)
@@ -139,7 +149,7 @@ morph_cols = {
 }
 
 log(f"=== batch_export START {time.strftime('%Y-%m-%d %H:%M:%S')} ===")
-log(f"Toplam: {total} karakter | Morph kolon sayisi: {len(morph_cols)}")
+log(f"Node: {NODE_ID}/{NODE_COUNT} | Toplam: {total} karakter | Morph kolon sayisi: {len(morph_cols)}")
 log()
 
 # ── FBX export ayarlari ───────────────────────────────────────────────────────
