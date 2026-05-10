@@ -109,7 +109,7 @@ os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
 # ── Resource monitor: yeni konsolda otomatik baslat ──────────────────────────
 # CC5 Script Editor kendi Python'unu kullanir; sistem Python'unu ac.
 import subprocess as _sp
-_SYSTEM_PYTHON  = r"C:\Users\HP\AppData\Local\Programs\Python\Python313\python.exe"
+from local_config import SYSTEM_PYTHON as _SYSTEM_PYTHON
 _monitor_script = os.path.join(_ROOT, "monitor_resources.py")
 if os.path.exists(_monitor_script) and os.path.exists(_SYSTEM_PYTHON):
     try:
