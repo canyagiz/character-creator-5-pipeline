@@ -1,5 +1,4 @@
 MEASUREMENTS = [
-    "height_cm",
     "neck_circ_cm", "chest_circ_cm", "waist_circ_cm", "hip_circ_cm",
     "mid_thigh_circ_cm", "calf_circ_cm", "bicep_circ_cm", "elbow_circ_cm",
     "forearm_circ_cm", "wrist_circ_cm",

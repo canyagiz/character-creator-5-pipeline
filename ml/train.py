@@ -144,12 +144,9 @@ def train(cfg: TrainConfig):
             gt_seg_cls   = batch["gt_seg_cls"].to(device)
             targets      = batch["targets"].to(device)
 
-            # height_weight: derive from targets (height_cm is index 0, volume→weight proxy)
-            # For now pass zeros; replace with real height/weight once dataset has it
-            height_weight = torch.stack([
-                targets[:, 0],                          # height (normalised)
-                targets[:, MEASUREMENTS.index("volume_L")],   # volume proxy for weight
-            ], dim=1)
+            # height_weight: user-provided inputs, not targets
+            # batch must include "height_cm" and "weight_kg" from dataset
+            height_weight = batch["height_weight"].to(device)  # [B, 2]
 
             optimizer.zero_grad(set_to_none=True)
             with autocast():

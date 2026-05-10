@@ -173,8 +173,8 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
 </head>
 <body>
 
-<h1>Body Measurement Regressor — Tensor Akışı</h1>
-<p class="subtitle">EfficientNet-B3 · Seg-guided Masked Pooling · FiLM Conditioning · 8-View Attention</p>
+<h1>Body Measurement Regressor — Tensor Akışı (25 target)</h1>
+<p class="subtitle">EfficientNet-B3 · Seg-guided Masked Pooling · FiLM Conditioning · 8-View Attention · 25 output</p>
 
 <!-- ── Dimension Legend ── -->
 <div class="dim-legend">
@@ -227,9 +227,9 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
       <div class="tensor">
         <div class="tensor-shape">height_weight: [B, 2]</div>
         <div class="tensor-desc">
-          <span class="dim">[:,0]</span> height_cm (z-score normalised)<br>
-          <span class="dim">[:,1]</span> volume_L proxy (weight bilgisi)<br>
-          Kullanıcıdan alınan 2 skaler — FiLM'e gidecek
+          <span class="dim">[:,0]</span> height_cm — kullanıcıdan, normalize: (h−170)/10<br>
+          <span class="dim">[:,1]</span> weight_kg — kullanıcıdan, normalize: (w−75)/15<br>
+          Target değil, sadece FiLM conditioning inputu
         </div>
       </div>
       <div class="tensor" style="margin-top:4px; border-color:#6e40c944">
@@ -633,8 +633,8 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
       <div class="step">
         <div class="step-num">4</div>
         <div class="step-body">
-          <code>Linear(128 → 26)</code><br>
-          <code class="shape">[B, 128]</code> → <code class="shape">[B, 26]</code><br>
+          <code>Linear(128 → 25)</code><br>
+          <code class="shape">[B, 128]</code> → <code class="shape">[B, 25]</code><br>
           <span style="color:#484f58">Soft routing burada implicit: ilk katman ağırlıkları </span>
           <span style="color:#3fb950">bicep_circ</span>
           <span style="color:#484f58"> çıkışı için embed'in "arm bölgesi" boyutlarına yüksek ağırlık verecek şekilde öğrenir</span>
@@ -642,9 +642,10 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
       </div>
     </div>
     <div class="tensor">
-      <div class="tensor-shape">predictions: [B, 26]</div>
+      <div class="tensor-shape">predictions: [B, 25]</div>
       <div class="tensor-desc">
-        Z-score normalise edilmiş tahminler. Inference'ta: <code>pred_cm = pred_norm × std + mean</code>
+        Z-score normalise edilmiş tahminler. Inference'ta: <code>pred_cm = pred_norm × std + mean</code><br>
+        <span style="color:#484f58">height_cm burada yok — kullanıcıdan input olarak alındı</span>
       </div>
     </div>
   </div>
@@ -701,8 +702,8 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
       <div style="display:flex; flex-direction:column; gap:7px; font-size:11.5px; color:#8b949e;">
         <div><span style="color:#79c0ff; font-family:monospace">normal_map × 8</span><br><span style="color:#484f58; font-size:10.5px">dış model (DSINE)</span></div>
         <div><span style="color:#79c0ff; font-family:monospace">silhouette × 8</span><br><span style="color:#484f58; font-size:10.5px">dış model</span></div>
-        <div><span style="color:#79c0ff; font-family:monospace">height_cm</span><br><span style="color:#484f58; font-size:10.5px">kullanıcıdan</span></div>
-        <div><span style="color:#79c0ff; font-family:monospace">weight_kg</span><br><span style="color:#484f58; font-size:10.5px">kullanıcıdan</span></div>
+        <div><span style="color:#f472b6; font-family:monospace">height_cm</span><br><span style="color:#484f58; font-size:10.5px">kullanıcıdan → FiLM</span></div>
+        <div><span style="color:#f472b6; font-family:monospace">weight_kg</span><br><span style="color:#484f58; font-size:10.5px">kullanıcıdan → FiLM</span></div>
         <div style="border-top:1px solid #21262d; padding-top:7px; color:#484f58; font-size:10.5px">
           <span style="color:#6e40c9aa">+ gt_seg_cls × 8</span><br>sadece eğitimde
         </div>
@@ -735,7 +736,7 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
 
     <!-- OUTPUT -->
     <div style="background:#161b22; border:1px solid #1f6feb; border-radius:8px; padding:14px 16px;">
-      <div style="font-size:11px; font-weight:700; color:#58a6ff; letter-spacing:0.6px; text-transform:uppercase; margin-bottom:12px;">26 Ölçüm (cm / L)</div>
+      <div style="font-size:11px; font-weight:700; color:#58a6ff; letter-spacing:0.6px; text-transform:uppercase; margin-bottom:12px;">25 Ölçüm (cm / L)</div>
       <div style="display:flex; flex-direction:column; gap:10px; font-size:11px;">
 
         <div>
@@ -787,10 +788,12 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
         </div>
 
         <div>
-          <div style="color:#484f58; font-size:10px; margin-bottom:4px;">DİĞER (2)</div>
+          <div style="color:#484f58; font-size:10px; margin-bottom:4px;">DİĞER (1)</div>
           <div style="display:flex; flex-wrap:wrap; gap:3px;">
-            <span style="background:#0d1f3c; padding:2px 6px; border-radius:3px; font-family:monospace; color:#79c0ff; font-size:10px;">height_cm</span>
             <span style="background:#0d1f3c; padding:2px 6px; border-radius:3px; font-family:monospace; color:#79c0ff; font-size:10px;">volume_L</span>
+          </div>
+          <div style="margin-top:5px; font-size:10px; color:#484f58;">
+            height_cm → input (FiLM), target değil
           </div>
         </div>
 

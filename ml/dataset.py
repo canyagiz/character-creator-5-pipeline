@@ -124,6 +124,11 @@ class BodyMeasurementDataset(Dataset):
             dtype=torch.float32,
         )
 
+        # User-provided inputs — normalised with fixed population stats
+        height_cm = (meta["height_cm"] - 170.0) / 10.0
+        weight_kg = (meta.get("weight_kg", meta["volume_L"] * 0.985) - 75.0) / 15.0
+        height_weight = torch.tensor([height_cm, weight_kg], dtype=torch.float32)
+
         do_flip = self.augment and random.random() > 0.5
 
         normal_sils, seg_cls_maps = [], []
@@ -146,7 +151,8 @@ class BodyMeasurementDataset(Dataset):
         return {
             "normal_sils":  torch.stack(normal_sils),   # [V, 4, H, W]
             "gt_seg_cls":   torch.stack(seg_cls_maps),  # [V, H, W]  int64
-            "targets":      targets,                    # [26]
+            "targets":      targets,                    # [25]
+            "height_weight": height_weight,             # [2]
             "char_id":      cid,
         }
 
