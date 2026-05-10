@@ -21,13 +21,18 @@ import time
 # ── Ayarlar ───────────────────────────────────────────────────────────────────
 _BASE         = os.path.dirname(os.path.abspath(__file__))
 _ROOT         = os.path.dirname(_BASE)          # cc5-scripts/
-CSV_PATH      = os.path.join(_ROOT, "logs", "dataset_inverted.csv")
+CSV_PATH      = os.path.join(_ROOT, "logs", "dataset_inverted_combined.csv")
 OUTPUT_DIR    = os.path.join(_ROOT, "fbx_export")
 LOG_PATH      = os.path.join(_ROOT, "logs", "batch_export.log")
 
 START_IDX     = 0       # Kacinci satirdan basla (0 = en bastan)
 OVERWRITE     = False   # True -> mevcut FBX'leri yeniden uret
 GENDER_FILTER = None    # "male" / "female" / None (hepsi)
+
+# Her FORCE_RELOAD_EVERY exporttan sonra proje zorla yeniden yuklenir.
+# Bu CC5'in undo stack'ini ve morph history'sini temizler — memory leak'i onler.
+# Gender degisiminde zaten reload oluyor; bu sadece uzun ayni-cinsiyet serilerini korur.
+FORCE_RELOAD_EVERY = 150
 
 # ── morph_key -> CC5 morph ID eslemesi ───────────────────────────────────────
 # sensitivity_probe.csv'den turetildi (morph_key -> ilk gecerli morph_id)
@@ -96,6 +101,20 @@ from cc5_helpers import PROJECT_FILES
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
 
+# ── Resource monitor: yeni konsolda otomatik baslat ──────────────────────────
+# CC5 Script Editor kendi Python'unu kullanir; sistem Python'unu ac.
+import subprocess as _sp
+_SYSTEM_PYTHON  = r"C:\Users\HP\AppData\Local\Programs\Python\Python313\python.exe"
+_monitor_script = os.path.join(_ROOT, "monitor_resources.py")
+if os.path.exists(_monitor_script) and os.path.exists(_SYSTEM_PYTHON):
+    try:
+        _sp.Popen(
+            [_SYSTEM_PYTHON, _monitor_script, "--interval", "10"],
+            creationflags=_sp.CREATE_NEW_CONSOLE,
+        )
+    except Exception as _e:
+        print(f"[monitor] baslatilamadi: {_e}")
+
 log_file = open(LOG_PATH, "a", encoding="utf-8", buffering=1)
 
 def log(msg=""):
@@ -145,14 +164,19 @@ for i, row in enumerate(rows):
     fbx_path = os.path.join(OUTPUT_DIR, f"{char_id}.fbx")
     global_idx = START_IDX + i + 1
 
-    if not OVERWRITE and os.path.exists(fbx_path):
+    render_done = os.path.exists(
+        os.path.join(_ROOT, "renders", "silhouettes", char_id, f"{char_id}_front.png")
+    )
+    if not OVERWRITE and (os.path.exists(fbx_path) or render_done):
         skipped += 1
         continue
 
-    if gender != current_gender:
+    force_reload = (done > 0 and done % FORCE_RELOAD_EVERY == 0)
+    if gender != current_gender or force_reload:
         RLPy.RFileIO.LoadFile(PROJECT_FILES[gender])
         current_gender = gender
-        log(f"  [project] {gender} yuklendi")
+        reason = "zorla temizlik" if force_reload else gender
+        log(f"  [project] yuklendi ({reason})")
 
     try:
         avatar  = RLPy.RScene.GetAvatars()[0]
@@ -236,7 +260,7 @@ for i, row in enumerate(rows):
             del shaping, avatar
         except NameError:
             pass
-        if (done + failed) % 500 == 0:
+        if (done + failed) % 100 == 0:
             gc.collect()
 
 log()

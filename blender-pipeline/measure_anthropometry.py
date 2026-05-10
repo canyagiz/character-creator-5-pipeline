@@ -26,7 +26,7 @@ char_name = os.path.splitext(os.path.basename(fbx_path))[0]
 # ── Import ────────────────────────────────────────────────────────────────────
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene = bpy.context.scene
-bpy.ops.import_scene.fbx(filepath=fbx_path)
+bpy.ops.import_scene.fbx(filepath=fbx_path, use_image_search=False)
 
 # ── Armature ──────────────────────────────────────────────────────────────────
 arm_obj = next((o for o in scene.objects if o.type == 'ARMATURE'), None)
@@ -275,20 +275,34 @@ for _obj in mesh_objs:
             _sh_xs.append(_wv.x)
 shoulder_width_cm = round((max(_sh_xs) - min(_sh_xs)) * 100, 2) if len(_sh_xs) >= 2 else 0.0
 
-# ── Kalça genişliği: A-pose'da el/ön kol kalça yüksekliğinde olur → kol dışla ─
-# Thigh kemiği X pozisyonu + 10 cm et marjı ile X'i kliple.
+# ── Kalça genişliği: obez karakterlerde yağ dokusu thigh kemiğinin çok ötesine
+# taşar → _HIP_M büyük tutulur. Kol interferansı arm bone proximity ile dışlanır.
 _p_hip_L  = arm_obj.matrix_world @ arm_obj.pose.bones["CC_Base_L_Thigh"].head
 _p_hip_R  = arm_obj.matrix_world @ arm_obj.pose.bones["CC_Base_R_Thigh"].head
-_HIP_M    = 0.10
+_HIP_M    = 0.35   # 10 cm → 35 cm: obez kalça yağ taşmasını yakalar
 _x_hip_lo = min(_p_hip_L.x, _p_hip_R.x) - _HIP_M
 _x_hip_hi = max(_p_hip_L.x, _p_hip_R.x) + _HIP_M
-_hip_xs   = []
+
+# A-pose'da kol/el kalça yüksekliğinde → kol kemiği merkezinden 8 cm içindeki
+# vertex'leri dışla.
+_ARM_EXCL_R2 = 0.08 ** 2
+_arm_bone_pts = []
+for _bn in ["CC_Base_L_Forearm", "CC_Base_L_Hand",
+            "CC_Base_R_Forearm", "CC_Base_R_Hand"]:
+    if _bn in arm_obj.pose.bones:
+        _arm_bone_pts.append(arm_obj.matrix_world @ arm_obj.pose.bones[_bn].head)
+
+_hip_xs = []
 for _obj in mesh_objs:
     _mat = _obj.matrix_world
     for _v in _obj.data.vertices:
         _wv = _mat @ _v.co
-        if abs(_wv.z - z_hip_bone) <= 0.05 and _x_hip_lo <= _wv.x <= _x_hip_hi:
-            _hip_xs.append(_wv.x)
+        if not (abs(_wv.z - z_hip_bone) <= 0.05 and _x_hip_lo <= _wv.x <= _x_hip_hi):
+            continue
+        if any((_wv.x-_ap.x)**2 + (_wv.y-_ap.y)**2 + (_wv.z-_ap.z)**2 < _ARM_EXCL_R2
+               for _ap in _arm_bone_pts):
+            continue
+        _hip_xs.append(_wv.x)
 hip_width_cm = round((max(_hip_xs) - min(_hip_xs)) * 100, 2) if len(_hip_xs) >= 2 else 0.0
 
 # ── Ölçümler ──────────────────────────────────────────────────────────────────
