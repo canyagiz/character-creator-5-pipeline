@@ -19,7 +19,7 @@ MAX_CC5_RAM_GB = max(8.0, psutil.virtual_memory().total / 1024**3 * 0.80)
 
 LOADER_SCRIPT    = str(Path(__file__).parent / "props" / "loader.py")
 META_DIR         = Path(__file__).parent / "renders" / "meta"
-CHECK_INTERVAL   = 30
+CHECK_INTERVAL   = 90
 CC5_LOAD_WAIT    = 120
 DIALOG_TIMEOUT   = 20
 IDLE_TIMEOUT_MIN = 5    # meta'da bu kadar dakika yeni dosya yoksa yeniden baslatir
@@ -39,13 +39,29 @@ def get_cc5_ram_gb():
     return total
 
 def kill_cc5():
-    log("CC5 kapatiliyor...")
-    subprocess.run(["taskkill", "/f", "/im", "CharacterCreator.exe"], capture_output=True)
-    for _ in range(15):
+    log("CC5 kapatiliyor (nazik)...")
+    hwnd = find_cc5_hwnd()
+    if hwnd:
+        win32gui.PostMessage(hwnd, win32con.WM_CLOSE, 0, 0)
+    else:
+        subprocess.run(["taskkill", "/im", "CharacterCreator.exe"], capture_output=True)
+
+    # Nazik kapanma icin bekleme (Qt shared memory'nin temizlenmesi)
+    for i in range(30):
         if get_cc5_ram_gb() == 0:
-            log("CC5 kapandi.")
+            log(f"CC5 kapandi ({i}s).")
+            time.sleep(3)
             return
         time.sleep(1)
+
+    # 30 saniyede kapanmadiysa force kill
+    log("Nazik kapanma zaman asimina ugradi, force kill...")
+    subprocess.run(["taskkill", "/f", "/im", "CharacterCreator.exe"], capture_output=True)
+    for _ in range(10):
+        if get_cc5_ram_gb() == 0:
+            break
+        time.sleep(1)
+    time.sleep(5)
 
 def find_cc5_hwnd():
     result = []
