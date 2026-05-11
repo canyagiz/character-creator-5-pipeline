@@ -25,7 +25,7 @@ CSV_PATH      = os.path.join(_ROOT, "logs", "dataset_inverted_combined.csv")
 OUTPUT_DIR    = os.path.join(_ROOT, "fbx_export")
 LOG_PATH      = os.path.join(_ROOT, "logs", "batch_export.log")
 
-START_IDX     = 0       # Kacinci satirdan basla (0 = bu node'un kendi sirasinda)
+START_IDX     = 0       # 0 ise checkpoint'ten otomatik okunur
 OVERWRITE     = False   # True -> mevcut FBX'leri yeniden uret
 GENDER_FILTER = None    # "male" / "female" / None (hepsi)
 
