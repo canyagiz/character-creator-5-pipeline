@@ -1,0 +1,55 @@
+{
+  "_comment": "CC5 karakter dataset kararlari: hedef metrikler, drop edilenler, filtreleme esikleri.",
+
+  "target_metrics": {
+    "values": [
+      "height_cm",
+      "neck_circ_cm",
+      "chest_circ_cm",
+      "waist_circ_cm",
+      "hip_circ_cm",
+      "mid_thigh_circ_cm",
+      "calf_circ_cm",
+      "bicep_circ_cm",
+      "elbow_circ_cm",
+      "forearm_circ_cm",
+      "wrist_circ_cm",
+      "shoulder_width_cm",
+      "seg_upper_leg_cm",
+      "seg_lower_leg_cm",
+      "seg_torso_cm",
+      "seg_neck_cm",
+      "volume_L"
+    ],
+    "note": "ML modeli icin hedef degiskenler. seg_ serisi kullaniliyor cunku toplami height_cm'e esit (hard constraint). _length serisi drop edildi."
+  },
+
+  "dropped_metrics": {
+    "upper_leg_length_cm": "seg_upper_leg_cm ile ~0.03cm fark, multicollinearity. seg_ versiyonu tercih edildi.",
+    "lower_leg_length_cm": "seg_lower_leg_cm ile ~0.03cm fark, multicollinearity. seg_ versiyonu tercih edildi.",
+    "total_leg_length_cm": "seg_upper_leg + seg_lower_leg toplaminin tureyi, bagimsiz bilgi yok.",
+    "upper_arm_length_cm": "Render'da T/A-pose'da gorsel olarak tahmin edilemiyor. Cevre olcumleri (bicep, forearm_circ) daha bilgi tasıyor.",
+    "forearm_length_cm":   "Ayni sebep, upper_arm_length ile ayni sorun.",
+    "total_arm_length_cm": "upper_arm + forearm toplaminin tureyi, bagimsiz bilgi yok.",
+    "hip_width_cm":        "Bin 5 sonrasi (>~41cm) karakterler gorsel olarak bozuk. hip_circ zaten kalcayi temsil ediyor.",
+    "seg_foot_cm":         "std=0.09cm, aralik=0.55cm — neredeyse sabit. Sifir discriminative bilgi.",
+    "seg_head_cm":         "Randomize edilmedi, tum karakterlerde benzer deger. Discriminative degil."
+  },
+
+  "filters": {
+    "hip_circ_chest_circ_ratio": {
+      "max": 1.2,
+      "note": "Gercek populasyonda hip/chest nadiren 1.2 uzerine cikar. Asimi armut/anormal slider kombinasyonu. Analiz: docs/hip_chest_ratio.md. Veri setinde >1.2: %12.1, >1.3: %2.5."
+    },
+    "shoulder_width_cm": {
+      "note": "43-44cm bandinda CC5 minimum clamp'inden kaynaklanan anormal pik var (%15.1). Bu bandi filtrelemek veya metrigi tamamen drop etmek dusunulebilir.",
+      "suspect_range_max": 44.13
+    }
+  },
+
+  "seg_vs_length_decision": {
+    "chosen": "seg_",
+    "reason": "seg_ degerleri dikey Z farkini olcer ve toplami height_cm'e esittir (hard constraint). _length degerleri 3D Oklid kemik uzunlugudur — T/A-pose'da fark ihmal edilebilir (~0.03cm) ama seg_ modelde constraint olarak kullanilabilir.",
+    "exception": "Kollar icin seg_ karsiligi uretilmedi, bu yuzden kol olcumleri cevre bazli (bicep_circ, elbow_circ, forearm_circ, wrist_circ) olarak tutuldu."
+  }
+}
