@@ -565,3 +565,17 @@ Node: 0/3 | Toplam: 2406 karakter | Morph kolon sayisi: 24
   [project] yuklendi (zorla temizlik)
   [project] yuklendi (zorla temizlik)
   [project] yuklendi (zorla temizlik)
+=== batch_export START 2026-05-12 11:45:39 ===
+Node: 0/3 | Toplam: 2406 karakter | Morph kolon sayisi: 24
+
+  [project] yuklendi (male)
+  [project] yuklendi (female)
+
+=== TAMAMLANDI 2026-05-12 11:47:52 ===
+Export: 3 | Atlandi: 2403 | Hata: 0
+=== batch_export START 2026-05-12 12:16:33 ===
+Node: 0/3 | Toplam: 2406 karakter | Morph kolon sayisi: 24
+
+
+=== TAMAMLANDI 2026-05-12 12:16:33 ===
+Export: 0 | Atlandi: 2406 | Hata: 0

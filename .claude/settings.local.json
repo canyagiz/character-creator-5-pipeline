@@ -72,7 +72,17 @@
       "PowerShell(Get-ChildItem \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\fbx_export\\\\\" | Sort-Object Name | Select-Object -First 10 Name, @{N=\"MB\";E={[math]::Round\\($_.Length/1MB,1\\)}}, LastWriteTime)",
       "PowerShell(python -c \"import torch; print\\('CUDA available:', torch.cuda.is_available\\(\\)\\); print\\('GPU:', torch.cuda.get_device_name\\(0\\) if torch.cuda.is_available\\(\\) else 'N/A'\\)\")",
       "PowerShell(\\(Get-Item \"C:\\\\Program Files\\\\Reallusion\\\\Character Creator 5\\\\Bin64\\\\CharacterCreator.exe\"\\).VersionInfo | Select-Object FileVersion, ProductVersion)",
-      "PowerShell([System.Diagnostics.FileVersionInfo]::GetVersionInfo\\(\"C:\\\\Program Files\\\\Reallusion\\\\Character Creator 5\\\\Bin64\\\\CharacterCreator.exe\"\\) | Select-Object FileVersion, ProductVersion, FileMajorPart, FileMinorPart, FileBuildPart)"
+      "PowerShell([System.Diagnostics.FileVersionInfo]::GetVersionInfo\\(\"C:\\\\Program Files\\\\Reallusion\\\\Character Creator 5\\\\Bin64\\\\CharacterCreator.exe\"\\) | Select-Object FileVersion, ProductVersion, FileMajorPart, FileMinorPart, FileBuildPart)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\renders\" -Recurse | Where-Object { !$_.PSIsContainer } | Select-Object -First 10 FullName)",
+      "PowerShell(\\(Get-ChildItem \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\renders\" -Recurse | Where-Object { !$_.PSIsContainer }\\).Count)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\renders\" -Recurse | Where-Object { $_.Extension -eq \".json\" } | Select-Object -First 3 FullName)",
+      "PowerShell($files = Get-ChildItem \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\renders\" -Recurse; Write-Host \"Total items: $\\($files.Count\\)\"; $files | Where-Object { !$_.PSIsContainer } | Select-Object -First 5 | ForEach-Object { Write-Host $_.FullName })",
+      "PowerShell($files = Get-ChildItem \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\renders\\\\meta\" -Recurse; Write-Host \"Count: $\\($files.Count\\)\"; $files | Select-Object -First 5 | ForEach-Object { Write-Host $_.FullName })",
+      "PowerShell($dirs = Get-ChildItem \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\renders\\\\debug\" -Directory; Write-Host \"Total debug chars: $\\($dirs.Count\\)\"; $dirs | Select-Object -First 5 Name)",
+      "PowerShell(python -c \"from PIL import Image; print\\('pillow ok'\\)\")",
+      "PowerShell($items = Get-ChildItem \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\docs\\\\plots\\\\samples\" -Recurse; Write-Host \"Count: $\\($items.Count\\)\"; $items | Select-Object -First 5 | ForEach-Object { Write-Host $_.FullName })",
+      "PowerShell($items = Get-ChildItem \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\docs\\\\plots\\\\samples\\\\height_cm\" -Recurse; $items | Select-Object -First 3 | ForEach-Object { Write-Host $_.FullName })",
+      "PowerShell(python \"C:\\\\Users\\\\HP\\\\character-creator-5-pipeline\\\\_insert_descriptions.py\")"
     ]
   }
 }
