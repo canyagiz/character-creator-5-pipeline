@@ -1,14 +1,13 @@
-# Eksik render/veri — 2 karakter
+# Eksik render/veri — 1 karakter
 # renders: C:\Users\HP\character-creator-5-pipeline\renders
 
-char_02917
-  - normal_maps/front.png
-  - normal_maps/front_right.png
-  - normal_maps/right.png
-  - normal_maps/back_right.png
-  - normal_maps/back.png
-  - normal_maps/back_left.png
-  - normal_maps/left.png
-  - normal_maps/front_left.png
-char_04776
+char_05456
+  - meta json
+  - raw/ klasörü yok
   - normal_maps/ klasörü yok
+  - segmentation/back_right.png
+  - segmentation/back.png
+  - segmentation/back_left.png
+  - segmentation/left.png
+  - segmentation/front_left.png
+  - silhouettes/ klasörü yok

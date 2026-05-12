@@ -10,3 +10,5 @@ renders*
 *.jpg
 *.log
 *resource
+
+batch_export.log
