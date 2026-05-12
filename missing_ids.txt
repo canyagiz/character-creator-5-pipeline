@@ -1,0 +1,13 @@
+# Eksik render/veri — 1 karakter
+# renders: C:\Users\HP\character-creator-5-pipeline\renders
+
+char_05456
+  - meta json
+  - raw/ klasörü yok
+  - normal_maps/ klasörü yok
+  - segmentation/back_right.png
+  - segmentation/back.png
+  - segmentation/back_left.png
+  - segmentation/left.png
+  - segmentation/front_left.png
+  - silhouettes/ klasörü yok

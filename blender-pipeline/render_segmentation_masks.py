@@ -47,7 +47,7 @@ char_name = os.path.splitext(os.path.basename(fbx_path))[0]
 # ── Import ────────────────────────────────────────────────────────────────────
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene = bpy.context.scene
-bpy.ops.import_scene.fbx(filepath=fbx_path)
+bpy.ops.import_scene.fbx(filepath=fbx_path, use_image_search=False)
 
 # ── Mesh + Armature ───────────────────────────────────────────────────────────
 arm_obj   = next((o for o in scene.objects if o.type == 'ARMATURE'), None)
@@ -62,7 +62,9 @@ for obj in mesh_objs:
 z_floor  = min(v.z for v in all_bb)
 z_top    = max(v.z for v in all_bb)
 height_m = z_top - z_floor
-center_y = (max(v.y for v in all_bb) + min(v.y for v in all_bb)) / 2
+y_bb_min = min(v.y for v in all_bb)
+y_bb_max = max(v.y for v in all_bb)
+center_y  = (y_bb_max + y_bb_min) / 2
 
 def mesh_z_span(obj):
     zs = [(obj.matrix_world @ mathutils.Vector(c)).z for c in obj.bound_box]
@@ -208,9 +210,9 @@ try:
         # ön kol
         (9,  _seg("CC_Base_L_Forearm", "CC_Base_L_Hand",    0.10, 0.65, 0.40)),
         (9,  _seg("CC_Base_R_Forearm", "CC_Base_R_Hand",    0.10, 0.65, 0.40)),
-        # dirsek
-        (8,  _seg("CC_Base_L_Upperarm", "CC_Base_L_Forearm", 0.55, 1.15, 0.42)),
-        (8,  _seg("CC_Base_R_Upperarm", "CC_Base_R_Forearm", 0.55, 1.15, 0.42)),
+        # dirsek — sadece son 1/3: bicep ilk 2/3'ü alır
+        (8,  _seg("CC_Base_L_Upperarm", "CC_Base_L_Forearm", 0.95, 1.15, 0.42)),
+        (8,  _seg("CC_Base_R_Upperarm", "CC_Base_R_Forearm", 0.95, 1.15, 0.42)),
         # omuz deltoid — omuz eklemi etrafında küre
         # radius = upperarm_len * 0.22 → kompakt deltoid, bicep'e girmez
         (15, _sphere("CC_Base_L_Upperarm", "CC_Base_L_Upperarm", "CC_Base_L_Forearm", 0.22)),
@@ -284,12 +286,20 @@ PALETTE = {
     13: (1.0,   1.0,   1.0),
     14: (0.6,   0.3,   0.1),
     15: (0.6,   1.0,   0.0),
+    16: (0.0,   0.75,  0.75),
+    17: (0.75,  0.0,   0.75),
+    18: (0.25,  0.0,   0.75),
+    19: (0.75,  0.75,  0.25),
+    20: (0.25,  0.75,  0.0 ),
+    21: (0.75,  0.25,  0.5 ),
 }
 CLASS_NAMES = {
     1:"neck", 2:"chest", 3:"waist", 4:"hip",
     5:"mid_thigh", 6:"calf", 7:"bicep", 8:"elbow",
     9:"forearm", 10:"wrist", 11:"head", 12:"foot",
     13:"hand", 14:"trapezius", 15:"shoulder",
+    16:"back", 17:"tricep", 18:"lower_back",
+    19:"gluteus", 20:"hamstring", 21:"shin",
 }
 
 # ── Vertex sınıflandırma ──────────────────────────────────────────────────────
@@ -359,6 +369,35 @@ for _ in range(NUM_SMOOTH):
             new_cls[vi] = best
     vert_cls = new_cls
 
+# ── Pass 2.5: Ön/arka ayrımı (vertex normal tabanlı) ─────────────────────────
+# Normal +Y → arka yüz, normal -Y → ön yüz.
+# Göğüs gibi eğrilikli/kabarık yüzeylerde kenar piksellerin kaymaması için
+# her sınıfa özel eşik: yüksek eşik = "aktif arkaya bakan" yüzey şartı.
+_norm_mat = mat_world.inverted().transposed().to_3x3()
+# {sınıf: (arka_eşiği, yeni_arka_sınıf)}
+# chest (2) çift koşul: hem normal arkaya bakmalı hem de vertex gövdenin arka yarısında
+_BACK_MAP = {
+    3: (0.15, 18),   # waist  → lower_back
+    4: (0.15, 19),   # hip    → gluteus
+    5: (0.00, 20),   # mid_thigh → hamstring
+    7: (0.00, 17),   # bicep  → tricep
+}
+for vi in range(n_verts):
+    cls = vert_cls[vi]
+    wv  = mat_world @ mesh.vertices[vi].co
+    wn  = (_norm_mat @ mesh.vertices[vi].normal).normalized()
+    if cls == 2:                              # chest → back: çift koşul
+        # Büyük göğüs bounding-box center_y'yi öne kaydırır; sabit offset ile dengele
+        if wn.y > 0.15 and wv.y > center_y + (y_bb_max - center_y) * 0.25:
+            vert_cls[vi] = 16
+    elif cls in _BACK_MAP:
+        thr, back_cls = _BACK_MAP[cls]
+        if wn.y > thr:
+            vert_cls[vi] = back_cls
+    elif cls == 6:       # calf ön yüzü → shin
+        if wn.y <= 0:
+            vert_cls[vi] = 21
+
 # ── Pass 3: Renk yazma ────────────────────────────────────────────────────────
 counts = {}
 for vi, cls in enumerate(vert_cls):
@@ -383,10 +422,19 @@ out  = nodes.new('ShaderNodeOutputMaterial')
 links.new(vc.outputs["Color"],   emit.inputs["Color"])
 links.new(emit.outputs["Emission"], out.inputs["Surface"])
 
+head_col = PALETTE[11]  # pembe — göz, kaş, dil vb. yüz mesh'leri
 for obj in scene.objects:
-    if obj.type == 'MESH':
-        obj.data.materials.clear()
-        obj.data.materials.append(seg_mat)
+    if obj.type != 'MESH':
+        continue
+    obj.data.materials.clear()
+    obj.data.materials.append(seg_mat)
+    if obj is body_obj:
+        continue
+    for attr in list(obj.data.color_attributes):
+        obj.data.color_attributes.remove(attr)
+    ca = obj.data.color_attributes.new(name="SegClass", type='FLOAT_COLOR', domain='POINT')
+    for i in range(len(obj.data.vertices)):
+        ca.data[i].color = (head_col[0], head_col[1], head_col[2], 1.0)
 
 # ── Render ayarları ───────────────────────────────────────────────────────────
 scene.render.engine       = 'BLENDER_EEVEE_NEXT'

@@ -30,7 +30,7 @@ char_name = os.path.splitext(os.path.basename(fbx_path))[0]
 # ── Sahneyi temizle + FBX import ──────────────────────────────────────────────
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene = bpy.context.scene
-bpy.ops.import_scene.fbx(filepath=fbx_path)
+bpy.ops.import_scene.fbx(filepath=fbx_path, use_image_search=False)
 
 # ── Bounds ────────────────────────────────────────────────────────────────────
 all_coords = []

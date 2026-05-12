@@ -1,0 +1,8 @@
+NODE_ID        = 0   # Bu PC icin: 0, 1 veya 2
+NODE_COUNT     = 3   # Toplam PC sayisi (1 = bolme yok)
+SYSTEM_PYTHON  = r"C:\Users\HP\AppData\Local\Programs\Python\Python313\python.exe"
+CC5_EXE        = r"C:\Program Files\Reallusion\Character Creator 5\Bin64\CharacterCreator.exe"
+# find_coords.py ile belirlenir — her PC icin farkli olabilir
+CANCEL_POPUP_XY = (1139, 565) # CC5 yeniden acilirken cikan proje popup'indaki Cancel
+SCRIPT_MENU_XY  = (541, 35)   # CC5 menu barindaki "Script" yazisinin koordinati
+LOAD_PYTHON_XY  = (560, 61)   # Script menusu acikken "Load Python" koordinati

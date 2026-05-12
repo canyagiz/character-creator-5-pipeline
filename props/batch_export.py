@@ -21,13 +21,22 @@ import time
 # ── Ayarlar ───────────────────────────────────────────────────────────────────
 _BASE         = os.path.dirname(os.path.abspath(__file__))
 _ROOT         = os.path.dirname(_BASE)          # cc5-scripts/
-CSV_PATH      = os.path.join(_ROOT, "logs", "dataset_inverted.csv")
+CSV_PATH      = os.path.join(_ROOT, "logs", "dataset_inverted_combined.csv")
 OUTPUT_DIR    = os.path.join(_ROOT, "fbx_export")
 LOG_PATH      = os.path.join(_ROOT, "logs", "batch_export.log")
 
-START_IDX     = 0       # Kacinci satirdan basla (0 = en bastan)
+START_IDX     = 0       # 0 ise checkpoint'ten otomatik okunur
 OVERWRITE     = False   # True -> mevcut FBX'leri yeniden uret
 GENDER_FILTER = None    # "male" / "female" / None (hepsi)
+
+import sys as _sys; _sys.path.insert(0, _BASE)
+from local_config import NODE_ID, NODE_COUNT
+
+# Her FORCE_RELOAD_EVERY exporttan sonra proje zorla yeniden yuklenir.
+# Log analizi: karakter basina ~250-300 MB kalici RAM birikimi var, reload
+# yalnizca undo stack'i temizliyor (~1-2 GB). 150 cok gec — ~110 karakterde
+# sistem RAM'i dolup cokuyor. 15'te bir reload bu birikimi kontrol altinda tutar.
+FORCE_RELOAD_EVERY = 15
 
 # ── morph_key -> CC5 morph ID eslemesi ───────────────────────────────────────
 # sensitivity_probe.csv'den turetildi (morph_key -> ilk gecerli morph_id)
@@ -90,11 +99,26 @@ MORPH_ID_MAP = {
 ALL_MORPH_IDS = list(MORPH_ID_MAP.values())
 
 sys.path.insert(0, _ROOT)
+sys.path.insert(0, _BASE)
 from cc5_helpers import PROJECT_FILES
 
 # ── Hazirlik ──────────────────────────────────────────────────────────────────
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
+
+# ── Resource monitor: yeni konsolda otomatik baslat ──────────────────────────
+# CC5 Script Editor kendi Python'unu kullanir; sistem Python'unu ac.
+import subprocess as _sp
+from local_config import SYSTEM_PYTHON as _SYSTEM_PYTHON
+_monitor_script = os.path.join(_ROOT, "monitor_resources.py")
+if os.path.exists(_monitor_script) and os.path.exists(_SYSTEM_PYTHON):
+    try:
+        _sp.Popen(
+            [_SYSTEM_PYTHON, _monitor_script, "--interval", "10"],
+            creationflags=_sp.CREATE_NEW_CONSOLE,
+        )
+    except Exception as _e:
+        print(f"[monitor] baslatilamadi: {_e}")
 
 log_file = open(LOG_PATH, "a", encoding="utf-8", buffering=1)
 
@@ -107,6 +131,12 @@ with open(CSV_PATH, "r", encoding="utf-8") as f:
 
 if GENDER_FILTER:
     rows = [r for r in rows if r["gender"] == GENDER_FILTER]
+else:
+    # Once male sonra female: gender switch reload sayisini ~4000'den ~1'e indirir
+    rows = sorted(rows, key=lambda r: r["gender"], reverse=True)  # "male" > "female" → m once
+
+if NODE_COUNT > 1:
+    rows = rows[NODE_ID::NODE_COUNT]
 
 rows = rows[START_IDX:]
 total = len(rows)
@@ -120,7 +150,7 @@ morph_cols = {
 }
 
 log(f"=== batch_export START {time.strftime('%Y-%m-%d %H:%M:%S')} ===")
-log(f"Toplam: {total} karakter | Morph kolon sayisi: {len(morph_cols)}")
+log(f"Node: {NODE_ID}/{NODE_COUNT} | Toplam: {total} karakter | Morph kolon sayisi: {len(morph_cols)}")
 log()
 
 # ── FBX export ayarlari ───────────────────────────────────────────────────────
@@ -145,14 +175,19 @@ for i, row in enumerate(rows):
     fbx_path = os.path.join(OUTPUT_DIR, f"{char_id}.fbx")
     global_idx = START_IDX + i + 1
 
-    if not OVERWRITE and os.path.exists(fbx_path):
+    render_done = os.path.exists(
+        os.path.join(_ROOT, "renders", "silhouettes", char_id, f"{char_id}_front.png")
+    )
+    if not OVERWRITE and (os.path.exists(fbx_path) or render_done):
         skipped += 1
         continue
 
-    if gender != current_gender:
+    force_reload = (done > 0 and done % FORCE_RELOAD_EVERY == 0)
+    if gender != current_gender or force_reload:
         RLPy.RFileIO.LoadFile(PROJECT_FILES[gender])
         current_gender = gender
-        log(f"  [project] {gender} yuklendi")
+        reason = "zorla temizlik" if force_reload else gender
+        log(f"  [project] yuklendi ({reason})")
 
     try:
         avatar  = RLPy.RScene.GetAvatars()[0]
@@ -236,7 +271,7 @@ for i, row in enumerate(rows):
             del shaping, avatar
         except NameError:
             pass
-        if (done + failed) % 500 == 0:
+        if (done + failed) % 100 == 0:
             gc.collect()
 
 log()

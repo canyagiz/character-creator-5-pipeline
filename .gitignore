@@ -1,3 +1,4 @@
+props/local_config.py
 meta-logs
 fbx*
 __pycache__
@@ -7,3 +8,7 @@ renders*
 *external*
 *.png
 *.jpg
+*.log
+*resource
+
+batch_export.log

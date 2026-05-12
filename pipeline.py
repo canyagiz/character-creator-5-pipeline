@@ -9,10 +9,11 @@ Restart güvenliği: her stage'in en son çıktısı --overwrite ile yeniden iş
 (çökme anında yarım kalan dosya temizlenir).
 
 Kullanım:
-  python pipeline.py                # fbx_export/ izle, tümünü işle
-  python pipeline.py --no-normal    # normal map adımını atla
-  python pipeline.py --no-measure   # render'da ölçüm adımını atla
-  python pipeline.py --poll 30      # FBX dizin kontrol aralığı (saniye, default 15)
+  python pipeline.py                      # fbx_export/ izle, tümünü işle
+  python pipeline.py --no-normal          # normal map adımını atla
+  python pipeline.py --no-measure         # render'da ölçüm adımını atla
+  python pipeline.py --poll 30            # FBX dizin kontrol aralığı (saniye, default 15)
+  python pipeline.py --with-deletion      # tüm render'lar bittikten sonra FBX + FBM sil
 
 Ctrl+C ile durdurulabilir — mevcut iş bittikten sonra temiz kapanır.
 """
@@ -41,9 +42,15 @@ parser.add_argument("--no-normal",  action="store_true")
 parser.add_argument("--no-measure", action="store_true")
 parser.add_argument("--debug",      action="store_true")
 parser.add_argument("--masks",      action="store_true")
-parser.add_argument("--poll",       type=int, default=15)
-parser.add_argument("--fbx-dir",    type=str, default=None,
+parser.add_argument("--poll",          type=int, default=15)
+parser.add_argument("--fbx-dir",       type=str, default=None,
                     help="FBX klasoru (default: fbx_export/)")
+parser.add_argument("--char",          type=str, default=None,
+                    help="Sadece bu char_id'yi işle ve overwrite et (ör: ansur_00018)")
+parser.add_argument("--with-deletion", action="store_true",
+                    help="Tum render'lar bittikten sonra FBX ve FBM klasorunu sil")
+parser.add_argument("--no-watch", action="store_true",
+                    help="Mevcut FBX'leri isle ve cik — yeni FBX bekleme (batch modu)")
 args = parser.parse_args()
 
 if args.fbx_dir:
@@ -59,6 +66,21 @@ def normal_done(char_id: str) -> bool:
 def run(script: Path, char_id: str, extra: tuple = ()) -> bool:
     r = subprocess.run([sys.executable, str(script), "--id", char_id, *extra])
     return r.returncode == 0
+
+def delete_fbx(char_id: str) -> None:
+    """FBX dosyasını ve FBM klasörünü siler (--with-deletion aktifse)."""
+    import shutil
+    fbx = FBX_DIR / f"{char_id}.fbx"
+    fbm = FBX_DIR / f"{char_id}.fbm"
+    deleted = []
+    if fbx.exists():
+        fbx.unlink()
+        deleted.append(fbx.name)
+    if fbm.exists() and fbm.is_dir():
+        shutil.rmtree(fbm)
+        deleted.append(fbm.name + "/")
+    if deleted:
+        print(f"[delete]  {char_id} | silindi: {', '.join(deleted)}")
 
 # ── Restart: en son dosyaları bul (çökmede yarım kalmış olabilirler) ──────────
 def _last_by_mtime(directory: Path, glob: str) -> str | None:
@@ -93,14 +115,17 @@ def fbx_watcher(render_q: queue.Queue, stop: threading.Event,
     # Başlangıçta mevcut FBX'leri tara
     for fbx in sorted(FBX_DIR.glob("*.fbx")):
         char_id = fbx.stem
+        if args.char and char_id != args.char:
+            continue
         seen.add(char_id)
-        overwrite = char_id in overwrite_render
+        overwrite = args.char is not None or char_id in overwrite_render
         if overwrite or not render_done(char_id):
             render_q.put((char_id, overwrite))
 
-    print(f"[watcher] {len(seen)} mevcut FBX, {render_q.qsize()} render bekliyor. İzleme başladı.")
+    mode = "tek karakter" if args.char else ("batch/no-watch" if args.no_watch else "izleme")
+    print(f"[watcher] {len(seen)} mevcut FBX, {render_q.qsize()} render bekliyor. Mod: {mode}")
 
-    while not stop.is_set():
+    while not stop.is_set() and args.char is None and not args.no_watch:
         stop.wait(args.poll)
         if stop.is_set():
             break
@@ -140,6 +165,9 @@ def render_worker(render_q: queue.Queue, normal_q: queue.Queue,
         if not args.no_normal:
             ow_normal = char_id in overwrite_normal
             normal_q.put((char_id, ow_normal))
+        elif args.with_deletion:
+            # --no-normal: render son aşama, burada sil
+            delete_fbx(char_id)
 
     normal_q.put(SENTINEL)
     print("[render]  worker bitti")
@@ -159,6 +187,11 @@ def normal_worker(normal_q: queue.Queue):
             print(f"[normal]  {char_id} | {'overwrite ' if overwrite else ''}başlıyor...")
             ok = run(NORMAL_SCRIPT, char_id, extra)
             print(f"[normal]  {char_id} | {'OK' if ok else 'HATA'}")
+            if not ok:
+                continue
+
+        if args.with_deletion and render_done(char_id) and normal_done(char_id):
+            delete_fbx(char_id)
 
     print("[normal]  worker bitti")
 
