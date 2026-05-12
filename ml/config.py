@@ -29,7 +29,7 @@ class TrainConfig:
     checkpoint_dir: str = "/content/checkpoints"
 
     # data
-    img_size: int = 256
+    img_size: int = 512
     val_split: float = 0.1
     num_workers: int = 2
 

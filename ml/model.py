@@ -29,9 +29,9 @@ class Backbone(nn.Module):
     EfficientNet-B3, 4-channel input, features_only.
 
     Returns:
-        feat_64 : [B, 32,  64, 64]   stride-4  (skip for seg head)
-        feat_32 : [B, 48,  32, 32]   stride-8  (skip for seg head)
-        F_map   : [B, 384,  8,  8]   stride-32 (main features)
+        feat_64 : [B, 32,  128, 128]  stride-4  (skip for seg head)
+        feat_32 : [B, 48,   64,  64]  stride-8  (skip for seg head)
+        F_map   : [B, 384,  16,  16]  stride-32 (main features)
     """
     CH_FEAT64 = 32
     CH_FEAT32 = 48

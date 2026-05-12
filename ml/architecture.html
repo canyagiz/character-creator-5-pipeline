@@ -182,9 +182,9 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
   <div class="dim-badge"><b>V</b> = 8 görüş (views)</div>
   <div class="dim-badge"><b>K</b> = seg sınıf sayısı (~15 renk)</div>
   <div class="dim-badge"><b>C</b> = kanal sayısı (context'e göre değişir)</div>
-  <div class="dim-badge"><b>H, W</b> = 256 × 256 (giriş çözünürlüğü)</div>
-  <div class="dim-badge"><b>Hs, Ws</b> = 64 × 64 (seg head çıkışı)</div>
-  <div class="dim-badge"><b>Hf, Wf</b> = 8 × 8 (backbone ana feature map)</div>
+  <div class="dim-badge"><b>H, W</b> = 512 × 512 (giriş çözünürlüğü)</div>
+  <div class="dim-badge"><b>Hs, Ws</b> = 128 × 128 (seg head çıkışı)</div>
+  <div class="dim-badge"><b>Hf, Wf</b> = 16 × 16 (backbone ana feature map)</div>
 </div>
 
 <div class="pipeline">
@@ -247,7 +247,7 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
 <!-- connector -->
 <div class="connector">
   <div class="conn-line"></div><div class="conn-tip"></div>
-  <div class="conn-label">[B*V, 4, 256, 256]  ←  view(B*V, 4, H, W)</div>
+  <div class="conn-label">[B*V, 4, 512, 512]  ←  view(B*V, 4, H, W)</div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════════
@@ -264,7 +264,7 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
   </div>
   <div class="module-body">
     <div class="tensor">
-      <div class="tensor-shape">input: [B·V, 4, 256, 256]</div>
+      <div class="tensor-shape">input: [B·V, 4, 512, 512]</div>
       <div class="tensor-desc">İlk conv katmanı 3ch → 4ch genişletildi. Mevcut ImageNet ağırlıkları ilk 3 kanala kopyalanır, 4. kanal (silhouette) sıfırdan öğrenir.</div>
     </div>
     <div class="steps">
@@ -272,32 +272,32 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
         <div class="step-num">1</div>
         <div class="step-body">
           Stage 1-2 (stride 4) →
-          <code class="shape">[B·V, 32, 64, 64]</code>
-          <span style="color:#484f58"> = feat_64 → skip connection olarak saklanır</span>
+          <code class="shape">[B·V, 32, 128, 128]</code>
+          <span style="color:#484f58"> = feat_128 → skip connection olarak saklanır</span>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-body">
           Stage 3 (stride 8) →
-          <code class="shape">[B·V, 48, 32, 32]</code>
-          <span style="color:#484f58"> = feat_32 → skip connection olarak saklanır</span>
+          <code class="shape">[B·V, 48, 64, 64]</code>
+          <span style="color:#484f58"> = feat_64 → skip connection olarak saklanır</span>
         </div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-body">
           Stage 4-5 (stride 32) →
-          <code class="shape">[B·V, 384, 8, 8]</code>
+          <code class="shape">[B·V, 384, 16, 16]</code>
           <span style="color:#484f58"> = F_map → ana feature map, her hücre ~32×32 px bölgeyi temsil eder</span>
         </div>
       </div>
     </div>
     <div class="tensor">
-      <div class="tensor-shape">F_map: [B·V, 384, 8, 8]</div>
+      <div class="tensor-shape">F_map: [B·V, 384, 16, 16]</div>
       <div class="tensor-desc">
-        <span class="dim">384</span> kanal: her 8×8 konumdaki vücut bölgesinin zengin özelliği<br>
-        <span class="dim">8×8</span>: 256px girdi, 32× downsampling → 8px feature grid
+        <span class="dim">384</span> kanal: her 16×16 konumdaki vücut bölgesinin zengin özelliği<br>
+        <span class="dim">16×16</span>: 512px girdi, 32× downsampling → 16px feature grid
       </div>
     </div>
   </div>
@@ -311,7 +311,7 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
   <div class="module-header">Seg Head — U-Net Decoder</div>
   <div class="module-body">
     <div class="tensor">
-      <div class="tensor-shape">input: F_map [B·V, 384, 8, 8]</div>
+      <div class="tensor-shape">input: F_map [B·V, 384, 16, 16]</div>
     </div>
 
     <div class="steps">
@@ -319,48 +319,48 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
         <div class="step-num">1</div>
         <div class="step-body">
           <code>Conv2d(384→256, kernel=1×1) + BN + ReLU</code><br>
-          <code class="shape">[B·V, 384, 8, 8]</code> → <code class="shape">[B·V, 256, 8, 8]</code>
+          <code class="shape">[B·V, 384, 16, 16]</code> → <code class="shape">[B·V, 256, 16, 16]</code>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-body">
           <code>interpolate(scale=2, bilinear)</code> + <code>Conv(3×3)</code><br>
-          <code class="shape">[B·V, 256, 8, 8]</code> → <code class="shape">[B·V, 256, 16, 16]</code><br>
+          <code class="shape">[B·V, 256, 16, 16]</code> → <code class="shape">[B·V, 256, 32, 32]</code><br>
           <span style="color:#484f58">Bu seviyede skip connection yok</span>
         </div>
       </div>
       <div class="step">
         <div class="step-num">3</div>
         <div class="step-body">
-          <code>interpolate(scale=2)</code> → <code class="shape">[B·V, 256, 32, 32]</code><br>
-          <code>skip_32: Conv(48→128, 1×1)</code> → <code class="shape">[B·V, 128, 32, 32]</code><br>
-          <code>cat(dim=1)</code> → <code class="shape">[B·V, 384, 32, 32]</code><br>
-          <code>Conv(384→256, 3×3)</code> → <code class="shape">[B·V, 256, 32, 32]</code>
+          <code>interpolate(scale=2)</code> → <code class="shape">[B·V, 256, 64, 64]</code><br>
+          <code>skip_64: Conv(48→128, 1×1)</code> → <code class="shape">[B·V, 128, 64, 64]</code><br>
+          <code>cat(dim=1)</code> → <code class="shape">[B·V, 384, 64, 64]</code><br>
+          <code>Conv(384→256, 3×3)</code> → <code class="shape">[B·V, 256, 64, 64]</code>
         </div>
       </div>
       <div class="step">
         <div class="step-num">4</div>
         <div class="step-body">
-          <code>interpolate(scale=2)</code> → <code class="shape">[B·V, 256, 64, 64]</code><br>
-          <code>skip_64: Conv(32→64, 1×1)</code> → <code class="shape">[B·V, 64, 64, 64]</code><br>
-          <code>cat(dim=1)</code> → <code class="shape">[B·V, 320, 64, 64]</code><br>
-          <code>Conv(320→128, 3×3)</code> → <code class="shape">[B·V, 128, 64, 64]</code>
+          <code>interpolate(scale=2)</code> → <code class="shape">[B·V, 256, 128, 128]</code><br>
+          <code>skip_128: Conv(32→64, 1×1)</code> → <code class="shape">[B·V, 64, 128, 128]</code><br>
+          <code>cat(dim=1)</code> → <code class="shape">[B·V, 320, 128, 128]</code><br>
+          <code>Conv(320→128, 3×3)</code> → <code class="shape">[B·V, 128, 128, 128]</code>
         </div>
       </div>
       <div class="step">
         <div class="step-num">5</div>
         <div class="step-body">
           <code>Conv(128→K, 1×1)</code> — sınıf başı logit<br>
-          <code class="shape">[B·V, 128, 64, 64]</code> → <code class="shape">[B·V, K, 64, 64]</code>
+          <code class="shape">[B·V, 128, 128, 128]</code> → <code class="shape">[B·V, K, 128, 128]</code>
         </div>
       </div>
     </div>
 
     <div class="tensor">
-      <div class="tensor-shape">seg_logits: [B·V, K, 64, 64]</div>
+      <div class="tensor-shape">seg_logits: [B·V, K, 128, 128]</div>
       <div class="tensor-desc">
-        <span class="dim">K≈15</span> sınıf · <span class="dim">64×64</span> çözünürlük · raw logits (softmax yok)<br>
+        <span class="dim">K≈15</span> sınıf · <span class="dim">128×128</span> çözünürlük · raw logits (softmax yok)<br>
         Eğitimde <code>L_seg = CrossEntropy(seg_logits, gt_mask)</code> ile supervise edilir<br>
         <span style="color:#484f58">Not: seg loss buradan, masked pooling için farklı akış</span>
       </div>
@@ -370,7 +370,7 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
 </div>
 <div class="skip-bar">
   <div class="skip-line"></div>
-  <div class="skip-tag">feat_64 [B·V,32,64,64] · feat_32 [B·V,48,32,32]</div>
+  <div class="skip-tag">feat_128 [B·V,32,128,128] · feat_64 [B·V,48,64,64]</div>
 </div>
 </div><!-- /with-skip -->
 
@@ -385,26 +385,26 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
         <div class="op-desc" style="border-color:#1a7f3744">
           <b style="color:#3fb950">EĞİTİM — GT mask kullanılır</b><br><br>
           <code>gt_seg_cls [B, V, H, W]</code><br>
-          → <code>view(B·V, H, W)</code> → <code class="shape">[B·V, 256, 256]</code><br>
-          → <code>interpolate(nearest, 64×64)</code> → <code class="shape">[B·V, 64, 64]</code><br>
-          → <code>F.one_hot(K)</code> → <code class="shape">[B·V, 64, 64, K]</code><br>
-          → <code>permute(0,3,1,2)</code> → <code class="shape">[B·V, K, 64, 64]</code><br><br>
+          → <code>view(B·V, H, W)</code> → <code class="shape">[B·V, 512, 512]</code><br>
+          → <code>interpolate(nearest, 128×128)</code> → <code class="shape">[B·V, 128, 128]</code><br>
+          → <code>F.one_hot(K)</code> → <code class="shape">[B·V, 128, 128, K]</code><br>
+          → <code>permute(0,3,1,2)</code> → <code class="shape">[B·V, K, 128, 128]</code><br><br>
           <span class="note">Her piksel tam olarak 1 sınıfa ait (hard assignment). Regression MLP seg kalitesinden bağımsız öğrenir.</span>
         </div>
       </div>
       <div>
         <div class="op-desc" style="border-color:#9d174d44">
           <b style="color:#f472b6">INFERENCE — tahmin kullanılır</b><br><br>
-          <code>seg_logits [B·V, K, 64, 64]</code><br>
+          <code>seg_logits [B·V, K, 128, 128]</code><br>
           → <code>F.softmax(dim=1)</code><br>
-          → <code class="shape">[B·V, K, 64, 64]</code><br><br>
+          → <code class="shape">[B·V, K, 128, 128]</code><br><br>
           Her piksel için K sınıf üzerinde olasılık dağılımı. Her sınıf değeri [0,1] arası, toplamı 1.<br><br>
           <span class="note">Seg head yeterince iyi öğrendiği için train-inference gap küçük kalır.</span>
         </div>
       </div>
     </div>
     <div class="tensor">
-      <div class="tensor-shape">seg_weights: [B·V, K, 64, 64]</div>
+      <div class="tensor-shape">seg_weights: [B·V, K, 128, 128]</div>
       <div class="tensor-desc">Her piksel için K sınıfa ait ağırlık. Toplamı 1 (one-hot veya softmax). Masked pooling bunu kullanır.</div>
     </div>
   </div>
@@ -418,12 +418,12 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
   <div class="module-body">
     <div class="two-col">
       <div class="tensor">
-        <div class="tensor-shape">F_map: [B·V, 384, 8, 8]</div>
+        <div class="tensor-shape">F_map: [B·V, 384, 16, 16]</div>
         <div class="tensor-desc">Backbone ana feature map</div>
       </div>
       <div class="tensor">
-        <div class="tensor-shape">seg_weights: [B·V, K, 64, 64]</div>
-        <div class="tensor-desc">Seg ağırlıkları (8×8'e resize edilecek)</div>
+        <div class="tensor-shape">seg_weights: [B·V, K, 128, 128]</div>
+        <div class="tensor-desc">Seg ağırlıkları (16×16'ya resize edilecek)</div>
       </div>
     </div>
 
@@ -431,16 +431,16 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
       <div class="step">
         <div class="step-num">1</div>
         <div class="step-body">
-          <code>interpolate(seg_weights, size=8×8, bilinear)</code><br>
-          <code class="shape">[B·V, K, 64, 64]</code> → <code class="shape">[B·V, K, 8, 8]</code><br>
+          <code>interpolate(seg_weights, size=16×16, bilinear)</code><br>
+          <code class="shape">[B·V, K, 128, 128]</code> → <code class="shape">[B·V, K, 16, 16]</code><br>
           <span style="color:#484f58">F_map ile aynı spatial boyuta getirilir</span>
         </div>
       </div>
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-body">
-          <code>F_map.unsqueeze(1)</code> → <code class="shape">[B·V, 1, 384, 8, 8]</code><br>
-          <code>seg_weights.unsqueeze(2)</code> → <code class="shape">[B·V, K, 1, 8, 8]</code><br>
+          <code>F_map.unsqueeze(1)</code> → <code class="shape">[B·V, 1, 384, 16, 16]</code><br>
+          <code>seg_weights.unsqueeze(2)</code> → <code class="shape">[B·V, K, 1, 16, 16]</code><br>
           <code>element-wise multiply → mean(dim=(-2,-1))</code><br>
           → <code class="shape">[B·V, K, 384]</code><br>
           <span style="color:#484f58">Her sınıf k için: F_map piksellerini o sınıfın olasılığıyla ağırlıklandırıp ortala.</span><br>
@@ -670,11 +670,11 @@ h1 { text-align:center; font-size:20px; color:#f0f6fc; margin-bottom:6px; }
       </div>
       <div class="op-desc">
         <b style="color:#a371f7">L_seg — Cross Entropy</b><br><br>
-        <code>seg_logits [B, V, K, 64, 64]</code><br>
-        → <code>view(B·V, K, 64, 64)</code><br>
+        <code>seg_logits [B, V, K, 128, 128]</code><br>
+        → <code>view(B·V, K, 128, 128)</code><br>
         <code>gt_seg_cls [B, V, H, W]</code><br>
-        → <code>interpolate(nearest, 64×64)</code><br>
-        → <code>view(B·V, 64, 64)</code><br><br>
+        → <code>interpolate(nearest, 128×128)</code><br>
+        → <code>view(B·V, 128, 128)</code><br><br>
         <code>F.cross_entropy(logits, gt)</code><br>
         <span class="note">Backbone'u bölge-bilinçli yapar</span>
       </div>
